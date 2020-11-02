@@ -9,7 +9,6 @@ module.exports = {
   Mutation: {
     register: async (_, args) => {
       const { username, password } = args;
-
       const { errors, valid } = registerValidator(username, password);
 
       if (!valid) {
@@ -50,7 +49,6 @@ module.exports = {
 
     login: async (_, args) => {
       const { username, password } = args;
-
       const { errors, valid } = loginValidator(username, password);
 
       if (!valid) {
