@@ -1,0 +1,54 @@
+const mongoose = require('mongoose');
+const commentSchema = require('./comment');
+const answerSchema = require('./answer');
+const schemaCleaner = require('../utils/schemaCleaner');
+
+const questionSchema = new mongoose.Schema({
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  body: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  tags: [{ type: String, required: true, trim: true }],
+  comments: [commentSchema],
+  answers: [answerSchema],
+  points: {
+    type: Number,
+    default: 0,
+  },
+  upvotedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  downvotedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  views: { type: Number, default: 0 },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+schemaCleaner(questionSchema);
+
+module.exports = mongoose.model('Question', questionSchema);
