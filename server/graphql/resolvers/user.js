@@ -32,7 +32,6 @@ module.exports = {
       });
 
       const savedUser = await user.save();
-
       const token = jwt.sign(
         {
           id: savedUser._id,
@@ -43,6 +42,7 @@ module.exports = {
       return {
         id: savedUser._id,
         username: savedUser.username,
+        role: savedUser.role,
         token,
       };
     },
@@ -82,6 +82,7 @@ module.exports = {
       return {
         id: user._id,
         username: user.username,
+        role: user.role,
         token,
       };
     },

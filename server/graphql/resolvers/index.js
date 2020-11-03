@@ -1,8 +1,14 @@
 const userResolvers = require('./user');
 
 module.exports = {
-  Query: {},
+  Query: {
+    sayHi: () => 'Hello',
+  },
   Mutation: {
     ...userResolvers.Mutation,
+  },
+  RoleType: {
+    USER: 'user',
+    ADMIN: 'admin',
   },
 };
