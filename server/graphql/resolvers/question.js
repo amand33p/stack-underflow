@@ -1,5 +1,8 @@
+const { UserInputError } = require('apollo-server');
 const question = require('../../models/question');
 const Question = require('../../models/question');
+const authChecker = require('../../utils/authChecker');
+const { questionValidator } = require('../../utils/validators');
 
 module.exports = {
   Query: {
@@ -11,7 +14,6 @@ module.exports = {
         throw new Error(err);
       }
     },
-
     getQuestion: async (_, args) => {
       const { quesId } = args;
 
@@ -26,5 +28,34 @@ module.exports = {
         throw new Error(err);
       }
     },
+  },
+  Mutation: {
+    postQuestion: async (_, args, context) => {
+      const user = authChecker(context);
+      const { title, body, tags } = args;
+      const { errors, valid } = questionValidator(title, body, tags);
+
+      if (!valid) {
+        throw new UserInputError(Object.values(errors)[0]);
+      }
+
+      const newQuestion = new Question({
+        title,
+        body,
+        tags,
+        author: user.id,
+      });
+
+      try {
+        const savedQues = await newQuestion.save();
+        const populatedQues = await savedQues.populate('author', 'username');
+        return populatedQues;
+      } catch (err) {
+        throw new UserInputError(err);
+      }
+    },
+  },
+  QuestionList: {
+    answersCount: (parent) => parent.answers.length,
   },
 };

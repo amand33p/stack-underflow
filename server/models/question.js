@@ -13,11 +13,13 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    minlength: 15,
   },
   body: {
     type: String,
     required: true,
     trim: true,
+    minlength: 30,
   },
   tags: [{ type: String, required: true, trim: true }],
   comments: [commentSchema],

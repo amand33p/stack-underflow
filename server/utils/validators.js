@@ -1,3 +1,5 @@
+const { UserInputError } = require('apollo-server');
+
 const registerValidator = (username, password) => {
   const errors = {};
 
@@ -19,11 +21,11 @@ const loginValidator = (username, password) => {
   const errors = {};
 
   if (!username) {
-    errors.username = "Username field can't be empty.";
+    errors.username = 'Username field must not be empty.';
   }
 
   if (!password) {
-    errors.password = "Password field can't be empty.";
+    errors.password = 'Password field must not be empty.';
   }
 
   return {
@@ -32,4 +34,25 @@ const loginValidator = (username, password) => {
   };
 };
 
-module.exports = { registerValidator, loginValidator };
+const questionValidator = (title, body, tags) => {
+  const errors = {};
+
+  if (!title || title.length < 15) {
+    errors.title = 'Title must be atleast 15 characters long.';
+  }
+
+  if (!body || body.length < 30) {
+    errors.body = 'Question body must be atleast 30 characters long.';
+  }
+
+  if (!tags || !Array.isArray(tags) || tags.length === 0 || tags.length > 5) {
+    errors.tags = 'Atleast one tag must be added. 5 is max limit.';
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};
+
+module.exports = { registerValidator, loginValidator, questionValidator };

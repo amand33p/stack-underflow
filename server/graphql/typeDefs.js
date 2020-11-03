@@ -20,19 +20,6 @@ module.exports = gql`
 
   scalar DateTime
 
-  type QuestionList {
-    id: ID!
-    author: Author!
-    title: String!
-    body: String!
-    tags: [String!]!
-    points: Int!
-    views: Int!
-    answersCount: Int!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-  }
-
   type Comment {
     id: ID!
     author: Author!
@@ -53,6 +40,20 @@ module.exports = gql`
     updatedAt: DateTime!
   }
 
+  type QuestionList {
+    id: ID!
+    author: Author!
+    title: String!
+    body: String!
+    tags: [String!]!
+    points: Int!
+    views: Int!
+    answers: [Answer]
+    answersCount: Int!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+  }
+
   type Question {
     id: ID!
     author: Author!
@@ -69,6 +70,12 @@ module.exports = gql`
     updatedAt: DateTime!
   }
 
+  input QuestionInput {
+    title: String!
+    body: String!
+    tags: [String!]!
+  }
+
   type Query {
     getAllQues: [QuestionList]!
     getQuestion: Question
@@ -77,5 +84,6 @@ module.exports = gql`
   type Mutation {
     register(username: String!, password: String!): User!
     login(username: String!, password: String!): User!
+    postQuestion(questionInput: QuestionInput!): Question!
   }
 `;

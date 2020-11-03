@@ -8,6 +8,7 @@ module.exports = {
   },
   Mutation: {
     ...userResolvers.Mutation,
+    ...questionResolvers.Mutation,
   },
   RoleType: {
     USER: 'user',
