@@ -1,8 +1,10 @@
 const userResolvers = require('./user');
+const questionResolvers = require('./question');
+const { GraphQLDateTime } = require('graphql-iso-date');
 
 module.exports = {
   Query: {
-    sayHi: () => 'Hello',
+    ...questionResolvers.Query,
   },
   Mutation: {
     ...userResolvers.Mutation,
@@ -11,4 +13,5 @@ module.exports = {
     USER: 'user',
     ADMIN: 'admin',
   },
+  DateTime: GraphQLDateTime,
 };

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const commentSchema = require('./comment');
-const answerSchema = require('./answer');
+const commentSchema = require('./comment').schema;
+const answerSchema = require('./answer').schema;
 const schemaCleaner = require('../utils/schemaCleaner');
 
 const questionSchema = new mongoose.Schema({

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const commentSchema = require('./comment');
+const commentSchema = require('./comment').schema;
 const schemaCleaner = require('../utils/schemaCleaner');
 
 const answerSchema = new mongoose.Schema({
