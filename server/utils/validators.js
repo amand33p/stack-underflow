@@ -1,5 +1,3 @@
-const { UserInputError } = require('apollo-server');
-
 const registerValidator = (username, password) => {
   const errors = {};
 
@@ -46,7 +44,11 @@ const questionValidator = (title, body, tags) => {
   }
 
   if (!tags || !Array.isArray(tags) || tags.length === 0 || tags.length > 5) {
-    errors.tags = 'Atleast one tag must be added. 5 is max limit.';
+    errors.tags = '1-5 tags must be added.';
+  }
+
+  if (tags.filter((t, index) => tags.indexOf(t) !== index).length > 0) {
+    errors.tags = 'Duplicate tags cannot be added.';
   }
 
   return {

@@ -1,5 +1,4 @@
 const { UserInputError } = require('apollo-server');
-const question = require('../../models/question');
 const Question = require('../../models/question');
 const authChecker = require('../../utils/authChecker');
 const { questionValidator } = require('../../utils/validators');
@@ -36,7 +35,7 @@ module.exports = {
       const { errors, valid } = questionValidator(title, body, tags);
 
       if (!valid) {
-        throw new UserInputError(Object.values(errors)[0]);
+        throw new UserInputError(Object.values(errors)[0], { errors });
       }
 
       const newQuestion = new Question({
@@ -48,7 +47,10 @@ module.exports = {
 
       try {
         const savedQues = await newQuestion.save();
-        const populatedQues = await savedQues.populate('author', 'username');
+        const populatedQues = await savedQues
+          .populate('author', 'username')
+          .execPopulate();
+
         return populatedQues;
       } catch (err) {
         throw new UserInputError(err);

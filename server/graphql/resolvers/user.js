@@ -12,7 +12,7 @@ module.exports = {
       const { errors, valid } = registerValidator(username, password);
 
       if (!valid) {
-        throw new UserInputError(Object.values(errors).join(', '), { errors });
+        throw new UserInputError(Object.values(errors)[0], { errors });
       }
 
       const existingUser = await User.findOne({
@@ -52,7 +52,7 @@ module.exports = {
       const { errors, valid } = loginValidator(username, password);
 
       if (!valid) {
-        throw new UserInputError(Object.values(errors).join(', '), { errors });
+        throw new UserInputError(Object.values(errors)[0], { errors });
       }
 
       const user = await User.findOne({
