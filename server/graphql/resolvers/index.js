@@ -10,6 +10,9 @@ module.exports = {
     ...userResolvers.Mutation,
     ...questionResolvers.Mutation,
   },
+  QuestionList: {
+    answersCount: (parent) => parent.answers.length,
+  },
   RoleType: {
     USER: 'user',
     ADMIN: 'admin',

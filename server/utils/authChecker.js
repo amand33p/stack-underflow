@@ -8,14 +8,12 @@ const authChecker = (context) => {
     throw new AuthenticationError('No auth token found. Authorization denied.');
   }
 
-  const decodedUser = jwt.verify(token, SECRET);
-  if (!decodedUser.id) {
-    throw new AuthenticationError(
-      'Token verification failed. Authorization denied.'
-    );
+  try {
+    const decodedUser = jwt.verify(token, SECRET);
+    return decodedUser;
+  } catch (err) {
+    throw new AuthenticationError(err);
   }
-
-  return decodedUser;
 };
 
 module.exports = authChecker;

@@ -72,12 +72,19 @@ module.exports = gql`
 
   type Query {
     getAllQues: [QuestionList]!
-    getQuestion: Question
+    getQuestion(quesId: ID!): Question
   }
 
   type Mutation {
     register(username: String!, password: String!): User!
     login(username: String!, password: String!): User!
     postQuestion(title: String!, body: String!, tags: [String!]!): Question!
+    deleteQuestion(quesId: ID!): ID!
+    editQuestion(
+      quesId: ID!
+      title: String!
+      body: String!
+      tags: [String!]!
+    ): Question!
   }
 `;
