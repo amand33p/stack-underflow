@@ -6,13 +6,30 @@ module.exports = gql`
     ADMIN
   }
 
+  enum VoteType {
+    UPVOTE
+    DOWNVOTE
+  }
+
   scalar DateTime
+
+  type UserQuestion {
+    quesId: ID!
+    rep: Int!
+  }
+
+  type UserAnswer {
+    ansId: ID!
+    rep: Int!
+  }
 
   type User {
     id: ID!
     username: String!
     token: String!
     role: RoleType!
+    questions: [UserQuestion]!
+    answers: [UserAnswer]!
   }
 
   type Author {
@@ -32,10 +49,10 @@ module.exports = gql`
     id: ID!
     author: Author!
     body: String!
-    comments: [Comment]
+    comments: [Comment]!
     points: Int!
-    upvotedBy: [ID]
-    downvotedBy: [ID]
+    upvotedBy: [ID]!
+    downvotedBy: [ID]!
     createdAt: DateTime!
     updatedAt: DateTime!
   }
@@ -48,7 +65,8 @@ module.exports = gql`
     tags: [String!]!
     points: Int!
     views: Int!
-    answers: [Answer]
+    accepted: Boolean!
+    answers: [Answer]!
     answersCount: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
@@ -62,22 +80,23 @@ module.exports = gql`
     tags: [String!]!
     points: Int!
     views: Int!
-    comments: [Comment]
-    answers: [Answer]
-    upvotedBy: [ID]
-    downvotedBy: [ID]
+    accepted: Boolean!
+    comments: [Comment]!
+    answers: [Answer]!
+    upvotedBy: [ID]!
+    downvotedBy: [ID]!
     createdAt: DateTime!
     updatedAt: DateTime!
   }
 
   type Query {
     getAllQues: [QuestionList]!
-    getQuestion(quesId: ID!): Question
   }
 
   type Mutation {
     register(username: String!, password: String!): User!
     login(username: String!, password: String!): User!
+    viewQuestion(quesId: ID!): Question
     postQuestion(title: String!, body: String!, tags: [String!]!): Question!
     deleteQuestion(quesId: ID!): ID!
     editQuestion(
@@ -86,5 +105,6 @@ module.exports = gql`
       body: String!
       tags: [String!]!
     ): Question!
+    voteQuestion(quesId: ID!, voteType: VoteType!): Question!
   }
 `;

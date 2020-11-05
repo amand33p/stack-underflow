@@ -4,6 +4,7 @@ const User = require('../../models/user');
 const authChecker = require('../../utils/authChecker');
 const { questionValidator } = require('../../utils/validators');
 const errorHandler = require('../../utils/errorHandler');
+const { upvoteIt, downvoteIt, quesRep } = require('../../utils/helperFuncs');
 
 module.exports = {
   Query: {
@@ -19,7 +20,9 @@ module.exports = {
         throw new UserInputError(err);
       }
     },
-    getQuestion: async (_, args) => {
+  },
+  Mutation: {
+    viewQuestion: async (_, args) => {
       const { quesId } = args;
 
       try {
@@ -28,17 +31,17 @@ module.exports = {
           'username'
         );
 
-        if (question) {
-          return question;
-        } else {
-          throw new Error('Question not found.');
+        if (!question) {
+          throw new Error(`Question with ID: ${quesId} does not exist in DB.`);
         }
+
+        question.views++;
+        await question.save();
+        return question;
       } catch (err) {
         throw new UserInputError(errorHandler(err));
       }
     },
-  },
-  Mutation: {
     postQuestion: async (_, args, context) => {
       const loggedUser = authChecker(context);
       const { title, body, tags } = args;
@@ -48,15 +51,21 @@ module.exports = {
         throw new UserInputError(Object.values(errors)[0], { errors });
       }
 
+      const author = await User.findById(loggedUser.id);
+
       const newQuestion = new Question({
         title,
         body,
         tags,
-        author: loggedUser.id,
+        author: author._id,
       });
 
       try {
         const savedQues = await newQuestion.save();
+
+        author.questions.push({ quesId: savedQues._id });
+        await author.save();
+
         const populatedQues = await savedQues
           .populate('author', 'username')
           .execPopulate();
@@ -70,29 +79,27 @@ module.exports = {
       const loggedUser = authChecker(context);
       const { quesId } = args;
 
-      const question = await Question.findById(quesId);
-      if (!question) {
-        throw new UserInputError(
-          `Question with ID: ${quesId} does not exist in DB.`
-        );
-      }
-
-      const user = await User.findById(loggedUser.id);
-
-      if (
-        question.author.toString() === user._id.toString() ||
-        user.role === 'admin'
-      ) {
-        try {
-          await Question.findByIdAndDelete(quesId);
-        } catch (err) {
-          throw new UserInputError(err);
+      try {
+        const user = await User.findById(loggedUser.id);
+        const question = await Question.findById(quesId);
+        if (!question) {
+          throw new UserInputError(
+            `Question with ID: ${quesId} does not exist in DB.`
+          );
         }
-      } else {
-        throw new AuthenticationError('Access is denied.');
-      }
 
-      return question._id;
+        if (
+          question.author.toString() !== user._id.toString() &&
+          user.role !== 'admin'
+        ) {
+          throw new AuthenticationError('Access is denied.');
+        }
+
+        await Question.findByIdAndDelete(quesId);
+        return question._id;
+      } catch (err) {
+        throw new UserInputError(errorHandler(err));
+      }
     },
     editQuestion: async (_, args, context) => {
       const loggedUser = authChecker(context);
@@ -103,17 +110,6 @@ module.exports = {
         throw new UserInputError(Object.values(errors)[0], { errors });
       }
 
-      const question = await Question.findById(quesId);
-      if (!question) {
-        throw new UserInputError(
-          `Question with ID: ${quesId} does not exist in DB.`
-        );
-      }
-
-      if (question.author.toString() !== loggedUser.id.toString()) {
-        throw new AuthenticationError('Access is denied.');
-      }
-
       const updatedQuesObj = {
         title,
         body,
@@ -122,6 +118,17 @@ module.exports = {
       };
 
       try {
+        const question = await Question.findById(quesId);
+        if (!question) {
+          throw new UserInputError(
+            `Question with ID: ${quesId} does not exist in DB.`
+          );
+        }
+
+        if (question.author.toString() !== loggedUser.id) {
+          throw new AuthenticationError('Access is denied.');
+        }
+
         const updatedQues = await Question.findByIdAndUpdate(
           quesId,
           updatedQuesObj,
@@ -129,6 +136,40 @@ module.exports = {
         ).populate('author', 'username');
 
         return updatedQues;
+      } catch (err) {
+        throw new UserInputError(errorHandler(err));
+      }
+    },
+    voteQuestion: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { quesId, voteType } = args;
+
+      try {
+        const user = await User.findById(loggedUser.id);
+        const question = await Question.findById(quesId);
+        if (!question) {
+          throw new UserInputError(
+            `Question with ID: ${quesId} does not exist in DB.`
+          );
+        }
+
+        if (question.author.toString() === user._id.toString()) {
+          throw new UserInputError("You can't vote for your own post.");
+        }
+
+        if (voteType === 'UPVOTE') {
+          const votedQues = upvoteIt(question, user);
+          await votedQues.save();
+        } else {
+          const votedQues = downvoteIt(question, user);
+          await votedQues.save();
+        }
+
+        const author = await User.findById(question.author);
+        const addedRepAuthor = quesRep(question, author);
+        await addedRepAuthor.save();
+
+        return question;
       } catch (err) {
         throw new UserInputError(err);
       }

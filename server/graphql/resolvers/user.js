@@ -43,6 +43,8 @@ module.exports = {
         id: savedUser._id,
         username: savedUser.username,
         role: savedUser.role,
+        questions: savedUser.questions,
+        answers: savedUser.answers,
         token,
       };
     },
@@ -83,6 +85,8 @@ module.exports = {
         id: user._id,
         username: user.username,
         role: user.role,
+        questions: user.questions,
+        answers: user.answers,
         token,
       };
     },

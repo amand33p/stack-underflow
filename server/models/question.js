@@ -41,6 +41,7 @@ const questionSchema = new mongoose.Schema({
     },
   ],
   views: { type: Number, default: 0 },
+  accepted: { type: Boolean, default: 'false' },
   createdAt: {
     type: Date,
     default: Date.now,

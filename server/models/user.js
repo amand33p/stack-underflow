@@ -16,7 +16,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    role: { type: String, required: true, default: 'user' },
+    role: { type: String, default: 'user' },
+    questions: [
+      {
+        quesId: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' },
+        rep: { type: Number, default: 0 },
+      },
+    ],
+    answers: [
+      {
+        ansId: { type: mongoose.Schema.Types.ObjectId, ref: 'Answer' },
+        rep: { type: Number, default: 0 },
+      },
+    ],
   },
   { timestamps: true }
 );
