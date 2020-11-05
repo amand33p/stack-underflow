@@ -106,5 +106,8 @@ module.exports = gql`
       tags: [String!]!
     ): Question!
     voteQuestion(quesId: ID!, voteType: VoteType!): Question!
+    addQuesComment(quesId: ID!, body: String!): [Comment!]!
+    editQuesComment(quesId: ID!, commentId: ID!, body: String!): [Comment!]!
+    deleteQuesComment(quesId: ID!, commentId: ID!): [Comment!]!
   }
 `;

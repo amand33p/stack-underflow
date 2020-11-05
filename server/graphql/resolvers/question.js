@@ -26,18 +26,19 @@ module.exports = {
       const { quesId } = args;
 
       try {
-        const question = await Question.findById(quesId).populate(
-          'author',
-          'username'
-        );
-
+        const question = await Question.findById(quesId);
         if (!question) {
           throw new Error(`Question with ID: ${quesId} does not exist in DB.`);
         }
 
         question.views++;
-        await question.save();
-        return question;
+        const savedQues = await question.save();
+        const populatedQues = await savedQues
+          .populate('author', 'username')
+          .populate('comments.author', 'username')
+          .execPopulate();
+
+        return populatedQues;
       } catch (err) {
         throw new UserInputError(errorHandler(err));
       }
@@ -62,13 +63,12 @@ module.exports = {
 
       try {
         const savedQues = await newQuestion.save();
-
-        author.questions.push({ quesId: savedQues._id });
-        await author.save();
-
         const populatedQues = await savedQues
           .populate('author', 'username')
           .execPopulate();
+
+        author.questions.push({ quesId: savedQues._id });
+        await author.save();
 
         return populatedQues;
       } catch (err) {
@@ -171,7 +171,7 @@ module.exports = {
 
         return question;
       } catch (err) {
-        throw new UserInputError(err);
+        throw new UserInputError(errorHandler(err));
       }
     },
   },
