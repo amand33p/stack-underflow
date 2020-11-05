@@ -96,6 +96,7 @@ module.exports = gql`
   type Mutation {
     register(username: String!, password: String!): User!
     login(username: String!, password: String!): User!
+
     viewQuestion(quesId: ID!): Question
     postQuestion(title: String!, body: String!, tags: [String!]!): Question!
     deleteQuestion(quesId: ID!): ID!
@@ -106,8 +107,22 @@ module.exports = gql`
       tags: [String!]!
     ): Question!
     voteQuestion(quesId: ID!, voteType: VoteType!): Question!
+
+    postAnswer(quesId: ID!, body: String!): [Answer!]!
+    deleteAnswer(quesId: ID!, ansId: ID!): ID!
+    editAnswer(quesId: ID!, ansId: ID!, body: String!): [Answer!]!
+
     addQuesComment(quesId: ID!, body: String!): [Comment!]!
+    deleteQuesComment(quesId: ID!, commentId: ID!): ID!
     editQuesComment(quesId: ID!, commentId: ID!, body: String!): [Comment!]!
-    deleteQuesComment(quesId: ID!, commentId: ID!): [Comment!]!
+
+    addAnsComment(quesId: ID!, ansId: ID!, body: String!): [Comment!]!
+    deleteAnsComment(quesId: ID!, ansId: ID!, commentId: ID!): ID!
+    editAnsComment(
+      quesId: ID!
+      ansId: ID!
+      commentId: ID!
+      body: String!
+    ): [Comment!]!
   }
 `;

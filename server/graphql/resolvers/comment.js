@@ -1,6 +1,5 @@
 const { UserInputError, AuthenticationError } = require('apollo-server');
 const Question = require('../../models/question');
-const User = require('../../models/user');
 const authChecker = require('../../utils/authChecker');
 const errorHandler = require('../../utils/errorHandler');
 
@@ -112,12 +111,8 @@ module.exports = {
         question.comments = question.comments.filter(
           (c) => c._id.toString() !== commentId
         );
-        const savedQues = await question.save();
-        const populatedQues = await savedQues
-          .populate('comments.author', 'username')
-          .execPopulate();
-
-        return populatedQues.comments;
+        await question.save();
+        return commentId;
       } catch (err) {
         throw new UserInputError(errorHandler(err));
       }
