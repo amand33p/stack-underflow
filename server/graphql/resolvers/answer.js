@@ -3,7 +3,7 @@ const Question = require('../../models/question');
 const User = require('../../models/user');
 const authChecker = require('../../utils/authChecker');
 const errorHandler = require('../../utils/errorHandler');
-const { upvoteIt, downvoteIt } = require('../../utils/helperFuncs');
+const { upvoteIt, downvoteIt, ansRep } = require('../../utils/helperFuncs');
 
 module.exports = {
   Mutation: {
@@ -123,6 +123,59 @@ module.exports = {
           .execPopulate();
 
         return populatedQues.answers;
+      } catch (err) {
+        throw new UserInputError(errorHandler(err));
+      }
+    },
+    voteAnswer: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { quesId, ansId, voteType } = args;
+
+      try {
+        const user = await User.findById(loggedUser.id);
+        const question = await Question.findById(quesId);
+        if (!question) {
+          throw new UserInputError(
+            `Question with ID: ${quesId} does not exist in DB.`
+          );
+        }
+
+        const targetAnswer = question.answers.find(
+          (a) => a._id.toString() === ansId
+        );
+
+        if (!targetAnswer) {
+          throw new UserInputError(
+            `Answer with ID: '${ansId}' does not exist in DB.`
+          );
+        }
+
+        if (question.author.toString() === user._id.toString()) {
+          throw new UserInputError("You can't vote for your own post.");
+        }
+
+        let votedAns;
+        if (voteType === 'UPVOTE') {
+          votedAns = upvoteIt(targetAnswer, user);
+        } else {
+          votedAns = downvoteIt(targetAnswer, user);
+        }
+
+        question.answers = question.answers.map((a) =>
+          a._id.toString() !== ansId ? a : votedAns
+        );
+
+        const savedQues = await question.save();
+        const populatedQues = await savedQues
+          .populate('answers.author', 'username')
+          .populate('answers.comments.author', 'username')
+          .execPopulate();
+
+        const author = await User.findById(targetAnswer.author);
+        const addedRepAuthor = ansRep(targetAnswer, author);
+        await addedRepAuthor.save();
+
+        return populatedQues.answers.find((a) => a._id.toString() === ansId);
       } catch (err) {
         throw new UserInputError(errorHandler(err));
       }

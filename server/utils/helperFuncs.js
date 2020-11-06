@@ -35,10 +35,21 @@ const quesRep = (question, author) => {
     question.upvotedBy.length * 10 - question.downvotedBy.length * 2;
 
   author.questions = author.questions.map((q) =>
-    q.quesId.equals(question.id) ? q : { quesId: q.quesId, rep: calculatedRep }
+    q.quesId.equals(question._id) ? { quesId: q.quesId, rep: calculatedRep } : q
   );
 
   return author;
 };
 
-module.exports = { upvoteIt, downvoteIt, quesRep };
+const ansRep = (answer, author) => {
+  const calculatedRep =
+    answer.upvotedBy.length * 10 - answer.downvotedBy.length * 2;
+
+  author.answers = author.answers.map((a) =>
+    a.ansId.equals(answer._id) ? { ansId: a.ansId, rep: calculatedRep } : a
+  );
+
+  return author;
+};
+
+module.exports = { upvoteIt, downvoteIt, quesRep, ansRep };

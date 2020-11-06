@@ -133,7 +133,9 @@ module.exports = {
           { new: true }
         )
           .populate('author', 'username')
-          .populate('comments.author', 'username');
+          .populate('comments.author', 'username')
+          .populate('answers.author', 'username')
+          .populate('answers.comments.author', 'username');
 
         return updatedQues;
       } catch (err) {
@@ -157,19 +159,24 @@ module.exports = {
           throw new UserInputError("You can't vote for your own post.");
         }
 
+        let votedQues;
         if (voteType === 'UPVOTE') {
-          const votedQues = upvoteIt(question, user);
-          await votedQues.save();
+          votedQues = upvoteIt(question, user);
         } else {
-          const votedQues = downvoteIt(question, user);
-          await votedQues.save();
+          votedQues = downvoteIt(question, user);
         }
 
+        const savedQues = await votedQues.save();
         const author = await User.findById(question.author);
         const addedRepAuthor = quesRep(question, author);
         await addedRepAuthor.save();
 
-        return question;
+        return await savedQues
+          .populate('author', 'username')
+          .populate('comments.author', 'username')
+          .populate('answers.author', 'username')
+          .populate('answers.comments.author', 'username')
+          .execPopulate();
       } catch (err) {
         throw new UserInputError(errorHandler(err));
       }
