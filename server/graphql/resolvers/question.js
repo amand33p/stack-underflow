@@ -36,6 +36,8 @@ module.exports = {
         const populatedQues = await savedQues
           .populate('author', 'username')
           .populate('comments.author', 'username')
+          .populate('answers.author', 'username')
+          .populate('answers.comments.author', 'username')
           .execPopulate();
 
         return populatedQues;

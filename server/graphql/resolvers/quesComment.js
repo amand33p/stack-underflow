@@ -10,7 +10,7 @@ module.exports = {
       const { quesId, body } = args;
 
       if (body.trim() === '' || body.length < 5) {
-        throw new UserInputError('Comment must be atleast 15 characters long.');
+        throw new UserInputError('Comment must be atleast 5 characters long.');
       }
 
       try {
@@ -76,7 +76,7 @@ module.exports = {
       const { quesId, commentId, body } = args;
 
       if (body.trim() === '' || body.length < 5) {
-        throw new UserInputError('Comment must be atleast 15 characters long.');
+        throw new UserInputError('Comment must be atleast 5 characters long.');
       }
 
       try {
