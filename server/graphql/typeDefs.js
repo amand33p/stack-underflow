@@ -13,23 +13,37 @@ module.exports = gql`
 
   scalar DateTime
 
-  type UserQuestion {
+  type QuestionRep {
     quesId: ID!
     rep: Int!
   }
 
-  type UserAnswer {
+  type AnswerRep {
     ansId: ID!
     rep: Int!
+  }
+
+  type LoggedUser {
+    id: ID!
+    username: String!
+    token: String!
+    role: RoleType!
   }
 
   type User {
     id: ID!
     username: String!
-    token: String!
     role: RoleType!
-    questions: [UserQuestion]!
-    answers: [UserAnswer]!
+    questions: [QuestionRep]!
+    answers: [AnswerRep]!
+    createdAt: DateTime!
+    reputation: Int!
+  }
+
+  type UserList {
+    id: ID!
+    username: String!
+    createdAt: DateTime!
   }
 
   type Author {
@@ -91,11 +105,13 @@ module.exports = gql`
 
   type Query {
     getAllQues: [QuestionList]!
+    getUser(username: String!): User!
+    getAllUsers: [UserList]!
   }
 
   type Mutation {
-    register(username: String!, password: String!): User!
-    login(username: String!, password: String!): User!
+    register(username: String!, password: String!): LoggedUser!
+    login(username: String!, password: String!): LoggedUser!
 
     viewQuestion(quesId: ID!): Question
     postQuestion(title: String!, body: String!, tags: [String!]!): Question!
