@@ -52,16 +52,14 @@ module.exports = {
         throw new UserInputError(Object.values(errors)[0], { errors });
       }
 
-      const author = await User.findById(loggedUser.id);
-
-      const newQuestion = new Question({
-        title,
-        body,
-        tags,
-        author: author._id,
-      });
-
       try {
+        const author = await User.findById(loggedUser.id);
+        const newQuestion = new Question({
+          title,
+          body,
+          tags,
+          author: author._id,
+        });
         const savedQues = await newQuestion.save();
         const populatedQues = await savedQues
           .populate('author', 'username')
@@ -133,7 +131,9 @@ module.exports = {
           quesId,
           updatedQuesObj,
           { new: true }
-        ).populate('author', 'username');
+        )
+          .populate('author', 'username')
+          .populate('comments.author', 'username');
 
         return updatedQues;
       } catch (err) {

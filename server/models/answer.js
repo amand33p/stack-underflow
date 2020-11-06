@@ -12,6 +12,7 @@ const answerSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    minlength: 30,
   },
   comments: [commentSchema],
   points: {

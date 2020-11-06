@@ -1,19 +1,22 @@
 const { UserInputError, AuthenticationError } = require('apollo-server');
 const Question = require('../../models/question');
+const User = require('../../models/user');
 const authChecker = require('../../utils/authChecker');
 const errorHandler = require('../../utils/errorHandler');
+const { upvoteIt, downvoteIt } = require('../../utils/helperFuncs');
 
 module.exports = {
   Mutation: {
-    addQuesComment: async (_, args, context) => {
+    postAnswer: async (_, args, context) => {
       const loggedUser = authChecker(context);
       const { quesId, body } = args;
 
-      if (body.trim() === '' || body.length < 5) {
-        throw new UserInputError('Comment must be atleast 15 characters long.');
+      if (body.trim() === '' || body.length < 30) {
+        throw new UserInputError('Answer must be atleast 30 characters long.');
       }
 
       try {
+        const author = await User.findById(loggedUser.id);
         const question = await Question.findById(quesId);
         if (!question) {
           throw new UserInputError(
@@ -21,24 +24,29 @@ module.exports = {
           );
         }
 
-        question.comments.push({
+        question.answers.push({
           body,
-          author: loggedUser.id,
+          author: author._id,
         });
-
         const savedQues = await question.save();
         const populatedQues = await savedQues
-          .populate('comments.author', 'username')
+          .populate('answers.author', 'username')
+          .populate('answers.comments.author', 'username')
           .execPopulate();
 
-        return populatedQues.comments;
+        author.answers.push({
+          ansId: savedQues.answers[savedQues.answers.length - 1]._id,
+        });
+        await author.save();
+
+        return populatedQues.answers;
       } catch (err) {
         throw new UserInputError(errorHandler(err));
       }
     },
-    deleteQuesComment: async (_, args, context) => {
+    deleteAnswer: async (_, args, context) => {
       const loggedUser = authChecker(context);
-      const { quesId, commentId } = args;
+      const { quesId, ansId } = args;
 
       try {
         const question = await Question.findById(quesId);
@@ -48,35 +56,35 @@ module.exports = {
           );
         }
 
-        const targetComment = question.comments.find(
-          (c) => c._id.toString() === commentId
+        const targetAnswer = question.answers.find(
+          (a) => a._id.toString() === ansId
         );
 
-        if (!targetComment) {
+        if (!targetAnswer) {
           throw new UserInputError(
-            `Comment with ID: '${commentId}' does not exist in DB.`
+            `Answer with ID: '${ansId}' does not exist in DB.`
           );
         }
 
-        if (targetComment.author.toString() !== loggedUser.id.toString()) {
+        if (targetAnswer.author.toString() !== loggedUser.id.toString()) {
           throw new AuthenticationError('Access is denied.');
         }
 
-        question.comments = question.comments.filter(
-          (c) => c._id.toString() !== commentId
+        question.answers = question.answers.filter(
+          (a) => a._id.toString() !== ansId
         );
         await question.save();
-        return commentId;
+        return ansId;
       } catch (err) {
         throw new UserInputError(errorHandler(err));
       }
     },
-    editQuesComment: async (_, args, context) => {
+    editAnswer: async (_, args, context) => {
       const loggedUser = authChecker(context);
-      const { quesId, commentId, body } = args;
+      const { quesId, ansId, body } = args;
 
-      if (body.trim() === '' || body.length < 5) {
-        throw new UserInputError('Comment must be atleast 15 characters long.');
+      if (body.trim() === '' || body.length < 30) {
+        throw new UserInputError('Answer must be atleast 30 characters long.');
       }
 
       try {
@@ -87,32 +95,34 @@ module.exports = {
           );
         }
 
-        const targetComment = question.comments.find(
-          (c) => c._id.toString() === commentId
+        const targetAnswer = question.answers.find(
+          (a) => a._id.toString() === ansId
         );
 
-        if (!targetComment) {
+        if (!targetAnswer) {
           throw new UserInputError(
-            `Comment with ID: '${commentId}' does not exist in DB.`
+            `Answer with ID: '${ansId}' does not exist in DB.`
           );
         }
 
-        if (targetComment.author.toString() !== loggedUser.id.toString()) {
+        if (targetAnswer.author.toString() !== loggedUser.id.toString()) {
           throw new AuthenticationError('Access is denied.');
         }
 
-        targetComment.body = body;
-        targetComment.updatedAt = Date.now();
+        targetAnswer.body = body;
+        targetAnswer.updatedAt = Date.now();
 
-        question.comments = question.comments.map((c) =>
-          c._id.toString() !== commentId ? c : targetComment
+        question.answers = question.answers.map((a) =>
+          a._id.toString() !== ansId ? a : targetAnswer
         );
+
         const savedQues = await question.save();
         const populatedQues = await savedQues
-          .populate('comments.author', 'username')
+          .populate('answers.author', 'username')
+          .populate('answers.comments.author', 'username')
           .execPopulate();
 
-        return populatedQues.comments;
+        return populatedQues.answers;
       } catch (err) {
         throw new UserInputError(errorHandler(err));
       }

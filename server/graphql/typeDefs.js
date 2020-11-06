@@ -111,6 +111,7 @@ module.exports = gql`
     postAnswer(quesId: ID!, body: String!): [Answer!]!
     deleteAnswer(quesId: ID!, ansId: ID!): ID!
     editAnswer(quesId: ID!, ansId: ID!, body: String!): [Answer!]!
+    voteAnswer(quesId: ID!, ansId: ID!, voteType: VoteType!): Answer!
 
     addQuesComment(quesId: ID!, body: String!): [Comment!]!
     deleteQuesComment(quesId: ID!, commentId: ID!): ID!

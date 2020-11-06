@@ -1,5 +1,6 @@
 const userResolvers = require('./user');
 const questionResolvers = require('./question');
+const answerResolvers = require('./answer');
 const commentResolvers = require('./comment');
 const { GraphQLDateTime } = require('graphql-iso-date');
 
@@ -11,6 +12,7 @@ module.exports = {
     ...userResolvers.Mutation,
     ...questionResolvers.Mutation,
     ...commentResolvers.Mutation,
+    ...answerResolvers.Mutation,
   },
   QuestionList: {
     answersCount: (parent) => parent.answers.length,
