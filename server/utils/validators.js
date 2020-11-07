@@ -43,12 +43,7 @@ const questionValidator = (title, body, tags) => {
     errors.body = 'Question body must be atleast 30 characters long.';
   }
 
-  if (
-    tags.trim() === '' ||
-    !Array.isArray(tags) ||
-    tags.length === 0 ||
-    tags.length > 5
-  ) {
+  if (!Array.isArray(tags) || tags.length === 0 || tags.length > 5) {
     errors.tags = '1-5 tags must be added.';
   }
 

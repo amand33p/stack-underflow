@@ -1,3 +1,29 @@
+const paginateResults = (page, limit, docCount) => {
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const results = {};
+
+  if (endIndex < docCount) {
+    results.next = {
+      page: page + 1,
+      limit,
+    };
+  }
+
+  if (startIndex > 0) {
+    results.previous = {
+      page: page - 1,
+      limit,
+    };
+  }
+
+  return {
+    startIndex,
+    endIndex,
+    results,
+  };
+};
+
 const upvoteIt = (quesAns, user) => {
   if (quesAns.upvotedBy.includes(user._id.toString())) {
     quesAns.upvotedBy = quesAns.upvotedBy.filter(
@@ -52,4 +78,4 @@ const ansRep = (answer, author) => {
   return author;
 };
 
-module.exports = { upvoteIt, downvoteIt, quesRep, ansRep };
+module.exports = { paginateResults, upvoteIt, downvoteIt, quesRep, ansRep };

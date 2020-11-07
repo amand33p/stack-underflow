@@ -1,5 +1,6 @@
 const { UserInputError, AuthenticationError } = require('apollo-server');
 const Question = require('../../models/question');
+const User = require('../../models/user');
 const authChecker = require('../../utils/authChecker');
 const errorHandler = require('../../utils/errorHandler');
 
@@ -41,6 +42,7 @@ module.exports = {
       const { quesId, commentId } = args;
 
       try {
+        const user = await User.findById(loggedUser.id);
         const question = await Question.findById(quesId);
         if (!question) {
           throw new UserInputError(
@@ -58,7 +60,10 @@ module.exports = {
           );
         }
 
-        if (targetComment.author.toString() !== loggedUser.id.toString()) {
+        if (
+          targetComment.author.toString() !== user._id.toString() &&
+          user.role !== 'admin'
+        ) {
           throw new AuthenticationError('Access is denied.');
         }
 

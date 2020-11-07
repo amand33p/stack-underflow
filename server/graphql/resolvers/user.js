@@ -1,4 +1,5 @@
 const User = require('../../models/user');
+const Question = require('../../models/question');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { registerValidator, loginValidator } = require('../../utils/validators');
@@ -22,8 +23,17 @@ module.exports = {
         throw new UserInputError(`User '${username}' does not exist.`);
       }
 
-      const questionRep = user.questions.reduce((sum, q) => sum + q.rep, 0);
-      const answerRep = user.answers.reduce((sum, a) => sum + a.rep, 0);
+      const recentQuestions = await Question.find({ author: user._id })
+        .sort({ createdAt: -1 })
+        .select('id title points createdAt')
+        .limit(5);
+
+      const recentAnswers = await Question.find({
+        answers: { $elemMatch: { author: user._id } },
+      })
+        .sort({ createdAt: -1 })
+        .select('id title points createdAt')
+        .limit(5);
 
       return {
         id: user._id,
@@ -32,7 +42,8 @@ module.exports = {
         questions: user.questions,
         answers: user.answers,
         createdAt: user.createdAt,
-        reputation: 1 + questionRep + answerRep,
+        recentQuestions,
+        recentAnswers,
       };
     },
     getAllUsers: async () => {

@@ -4,18 +4,56 @@ const User = require('../../models/user');
 const authChecker = require('../../utils/authChecker');
 const { questionValidator } = require('../../utils/validators');
 const errorHandler = require('../../utils/errorHandler');
-const { upvoteIt, downvoteIt, quesRep } = require('../../utils/helperFuncs');
+const {
+  paginateResults,
+  upvoteIt,
+  downvoteIt,
+  quesRep,
+} = require('../../utils/helperFuncs');
 
 module.exports = {
   Query: {
-    getAllQues: async () => {
-      try {
-        const questions = await Question.find({}).populate(
-          'author',
-          'username'
-        );
+    getAllQues: async (_, args) => {
+      const sortBy = args.sortBy;
+      const page = Number(args.page);
+      const limit = Number(args.limit);
 
-        return questions;
+      let sortQuery;
+      switch (sortBy) {
+        case 'votes':
+          sortQuery = { points: -1 };
+          break;
+        case 'views':
+          sortQuery = { views: -1 };
+          break;
+        case 'newest':
+          sortQuery = { createdAt: -1 };
+          break;
+        case 'oldest':
+          sortQuery = { createdAt: 1 };
+          break;
+        case 'hot':
+          sortQuery = { hotAlgo: -1 };
+          break;
+        default:
+          sortQuery = { hotAlgo: -1 };
+      }
+
+      try {
+        const quesCount = await Question.countDocuments();
+        const paginated = paginateResults(page, limit, quesCount);
+        const questions = await Question.find({})
+          .sort(sortQuery)
+          .limit(limit)
+          .skip(paginated.startIndex)
+          .populate('author', 'username');
+
+        const paginatedQues = {
+          previous: paginated.results.previous,
+          questions,
+          next: paginated.results.next,
+        };
+        return paginatedQues;
       } catch (err) {
         throw new UserInputError(err);
       }
@@ -162,11 +200,16 @@ module.exports = {
         }
 
         let votedQues;
-        if (voteType === 'UPVOTE') {
+        if (voteType === 'upvote') {
           votedQues = upvoteIt(question, user);
         } else {
           votedQues = downvoteIt(question, user);
         }
+
+        votedQues.hotAlgo =
+          Math.log(Math.max(Math.abs(votedQues.points), 1)) +
+          Math.log(Math.max(votedQues.views * 2, 1)) +
+          votedQues.createdAt / 4500;
 
         const savedQues = await votedQues.save();
         const author = await User.findById(question.author);

@@ -41,7 +41,11 @@ const questionSchema = new mongoose.Schema({
     },
   ],
   views: { type: Number, default: 0 },
-  accepted: { type: Boolean, default: 'false' },
+  hotAlgo: { type: Number, default: 0 },
+  acceptedAnswer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Answer',
+  },
   createdAt: {
     type: Date,
     default: Date.now,

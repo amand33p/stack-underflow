@@ -49,6 +49,7 @@ module.exports = {
       const { quesId, ansId } = args;
 
       try {
+        const user = await User.findById(loggedUser.id);
         const question = await Question.findById(quesId);
         if (!question) {
           throw new UserInputError(
@@ -66,7 +67,10 @@ module.exports = {
           );
         }
 
-        if (targetAnswer.author.toString() !== loggedUser.id.toString()) {
+        if (
+          targetAnswer.author.toString() !== user._id.toString() &&
+          user.role !== 'admin'
+        ) {
           throw new AuthenticationError('Access is denied.');
         }
 
@@ -155,7 +159,7 @@ module.exports = {
         }
 
         let votedAns;
-        if (voteType === 'UPVOTE') {
+        if (voteType === 'upvote') {
           votedAns = upvoteIt(targetAnswer, user);
         } else {
           votedAns = downvoteIt(targetAnswer, user);
@@ -176,6 +180,54 @@ module.exports = {
         await addedRepAuthor.save();
 
         return populatedQues.answers.find((a) => a._id.toString() === ansId);
+      } catch (err) {
+        throw new UserInputError(errorHandler(err));
+      }
+    },
+    acceptAnswer: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { quesId, ansId } = args;
+
+      try {
+        const question = await Question.findById(quesId);
+        if (!question) {
+          throw new UserInputError(
+            `Question with ID: ${quesId} does not exist in DB.`
+          );
+        }
+
+        const targetAnswer = question.answers.find(
+          (a) => a._id.toString() === ansId
+        );
+
+        if (!targetAnswer) {
+          throw new UserInputError(
+            `Answer with ID: '${ansId}' does not exist in DB.`
+          );
+        }
+
+        if (question.author.toString() !== loggedUser.id.toString()) {
+          throw new UserInputError(
+            'Only the author of question can accept answers.'
+          );
+        }
+
+        if (
+          !question.acceptedAnswer ||
+          !question.acceptedAnswer.equals(targetAnswer._id)
+        ) {
+          question.acceptedAnswer = targetAnswer._id;
+        } else {
+          question.acceptedAnswer = null;
+        }
+
+        const savedQues = await question.save();
+        const populatedQues = await savedQues
+          .populate('answers.author', 'username')
+          .populate('answers.comments.author', 'username')
+          .execPopulate();
+
+        return populatedQues;
       } catch (err) {
         throw new UserInputError(errorHandler(err));
       }

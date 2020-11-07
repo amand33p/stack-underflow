@@ -11,6 +11,14 @@ module.exports = gql`
     DOWNVOTE
   }
 
+  enum SortByType {
+    HOT
+    VOTES
+    VIEWS
+    NEWEST
+    OLDEST
+  }
+
   scalar DateTime
 
   type QuestionRep {
@@ -21,6 +29,13 @@ module.exports = gql`
   type AnswerRep {
     ansId: ID!
     rep: Int!
+  }
+
+  type RecentActivity {
+    id: ID!
+    title: String!
+    points: Int!
+    createdAt: DateTime!
   }
 
   type LoggedUser {
@@ -38,6 +53,8 @@ module.exports = gql`
     answers: [AnswerRep]!
     createdAt: DateTime!
     reputation: Int!
+    recentQuestions: [RecentActivity]!
+    recentAnswers: [RecentActivity]!
   }
 
   type UserList {
@@ -79,7 +96,8 @@ module.exports = gql`
     tags: [String!]!
     points: Int!
     views: Int!
-    accepted: Boolean!
+    hotAlgo: Float!
+    acceptedAnswer: ID
     answers: [Answer]!
     answersCount: Int!
     createdAt: DateTime!
@@ -94,7 +112,8 @@ module.exports = gql`
     tags: [String!]!
     points: Int!
     views: Int!
-    accepted: Boolean!
+    hotAlgo: Float!
+    acceptedAnswer: ID
     comments: [Comment]!
     answers: [Answer]!
     upvotedBy: [ID]!
@@ -103,8 +122,19 @@ module.exports = gql`
     updatedAt: DateTime!
   }
 
+  type NextPrevPage {
+    page: Int!
+    limit: Int!
+  }
+
+  type PaginatedQuesList {
+    questions: [QuestionList]!
+    next: NextPrevPage
+    previous: NextPrevPage
+  }
+
   type Query {
-    getAllQues: [QuestionList]!
+    getAllQues(sortBy: SortByType!, page: Int!, limit: Int!): PaginatedQuesList!
     getUser(username: String!): User!
     getAllUsers: [UserList]!
   }
@@ -128,6 +158,7 @@ module.exports = gql`
     deleteAnswer(quesId: ID!, ansId: ID!): ID!
     editAnswer(quesId: ID!, ansId: ID!, body: String!): [Answer!]!
     voteAnswer(quesId: ID!, ansId: ID!, voteType: VoteType!): Answer!
+    acceptAnswer(quesId: ID!, ansId: ID!): Question!
 
     addQuesComment(quesId: ID!, body: String!): [Comment!]!
     deleteQuesComment(quesId: ID!, commentId: ID!): ID!
