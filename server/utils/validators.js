@@ -5,6 +5,10 @@ const registerValidator = (username, password) => {
     errors.username = 'Username must be in range of 3-20 characters length .';
   }
 
+  if (!/^[a-zA-Z0-9]*$/.test(username)) {
+    errors.username = 'Username must have alphanumeric characters only.';
+  }
+
   if (!password || password.length < 6) {
     errors.password = 'Password must be atleast 6 characters long.';
   }
@@ -45,6 +49,10 @@ const questionValidator = (title, body, tags) => {
 
   if (!Array.isArray(tags) || tags.length === 0 || tags.length > 5) {
     errors.tags = '1-5 tags must be added.';
+  }
+
+  if (tags.some((t) => !/^[a-zA-Z0-9]*$/.test(t))) {
+    errors.tags = 'Tags must have alphanumeric characters only.';
   }
 
   if (tags.filter((t, index) => tags.indexOf(t) !== index).length > 0) {

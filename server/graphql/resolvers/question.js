@@ -14,7 +14,7 @@ const {
 module.exports = {
   Query: {
     getAllQues: async (_, args) => {
-      const sortBy = args.sortBy;
+      const { sortBy, filterByTag } = args;
       const page = Number(args.page);
       const limit = Number(args.limit);
 
@@ -32,17 +32,19 @@ module.exports = {
         case 'oldest':
           sortQuery = { createdAt: 1 };
           break;
-        case 'hot':
-          sortQuery = { hotAlgo: -1 };
-          break;
         default:
           sortQuery = { hotAlgo: -1 };
       }
 
+      let findQuery = {};
+      if (filterByTag) {
+        findQuery = { tags: { $all: [filterByTag] } };
+      }
+
       try {
-        const quesCount = await Question.countDocuments();
+        const quesCount = await Question.find(findQuery).countDocuments();
         const paginated = paginateResults(page, limit, quesCount);
-        const questions = await Question.find({})
+        const questions = await Question.find(findQuery)
           .sort(sortQuery)
           .limit(limit)
           .skip(paginated.startIndex)
@@ -53,9 +55,10 @@ module.exports = {
           questions,
           next: paginated.results.next,
         };
+
         return paginatedQues;
       } catch (err) {
-        throw new UserInputError(err);
+        throw new UserInputError(errorHandler(err));
       }
     },
   },
@@ -110,7 +113,7 @@ module.exports = {
 
         return populatedQues;
       } catch (err) {
-        throw new UserInputError(err);
+        throw new UserInputError(errorHandler(err));
       }
     },
     deleteQuestion: async (_, args, context) => {

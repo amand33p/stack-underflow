@@ -133,10 +133,21 @@ module.exports = gql`
     previous: NextPrevPage
   }
 
+  type Tag {
+    tagName: String!
+    count: Int!
+  }
+
   type Query {
-    getAllQues(sortBy: SortByType!, page: Int!, limit: Int!): PaginatedQuesList!
+    getAllQues(
+      sortBy: SortByType!
+      page: Int!
+      limit: Int!
+      filterByTag: String
+    ): PaginatedQuesList!
     getUser(username: String!): User!
     getAllUsers: [UserList]!
+    getAllTags: [Tag]!
   }
 
   type Mutation {

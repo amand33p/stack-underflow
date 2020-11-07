@@ -3,12 +3,14 @@ const questionResolvers = require('./question');
 const answerResolvers = require('./answer');
 const quesCommentResolvers = require('./quesComment');
 const ansCommentResolvers = require('./ansComment');
+const tagResolvers = require('./tag');
 const { GraphQLDateTime } = require('graphql-iso-date');
 
 module.exports = {
   Query: {
     ...questionResolvers.Query,
     ...userResolvers.Query,
+    ...tagResolvers.Query,
   },
   Mutation: {
     ...userResolvers.Mutation,
