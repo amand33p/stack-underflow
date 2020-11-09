@@ -8,15 +8,8 @@ export const useNavStyles = makeStyles(
       alignItems: 'center',
     },
     logoWrapper: {
-      marginRight: theme.spacing(10),
+      display: 'flex',
       alignItems: 'center',
-      [theme.breakpoints.down('xs')]: {
-        marginRight: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-      },
     },
     logo: {
       fontFamily: 'Montserrat',
@@ -28,6 +21,9 @@ export const useNavStyles = makeStyles(
     contentContainer: {
       display: 'flex',
       alignItems: 'center',
+    },
+    appBar: {
+      borderTop: '4px solid #f4649f',
     },
   }),
   { index: 1 }
