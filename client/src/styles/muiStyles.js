@@ -93,6 +93,16 @@ export const useTagsPanelStyles = makeStyles(
       paddingTop: 0,
       marginTop: '1em',
     },
+    tagsWrapper: {
+      marginTop: '1em',
+      display: 'grid',
+      width: '100%',
+      gridTemplateColumns: '1fr 1fr',
+      gridGap: '12px',
+    },
+    tag: {
+      backgroundColor: '#f7ebff',
+    },
   }),
   { index: 1 }
 );

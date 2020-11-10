@@ -5,7 +5,7 @@ const customTheme = () =>
     palette: {
       type: 'light',
       primary: {
-        main: '#bb44f0',
+        main: '#9400ff',
       },
       secondary: {
         main: '#24124b',
@@ -29,6 +29,12 @@ const customTheme = () =>
         root: {
           borderRadius: 2,
           textTransform: 'none',
+        },
+      },
+      MuiChip: {
+        root: {
+          borderRadius: 3,
+          padding: '0px',
         },
       },
     },
