@@ -92,6 +92,7 @@ export const useQuesListStyles = makeStyles(
       display: 'flex',
       justifyContent: 'flex-end',
       marginTop: '1em',
+      marginBottom: '1em',
       [theme.breakpoints.down('xs')]: {
         justifyContent: 'center',
       },

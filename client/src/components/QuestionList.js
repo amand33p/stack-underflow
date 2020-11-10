@@ -2,6 +2,7 @@ import {
   Typography,
   Button,
   ButtonGroup,
+  Divider,
   useMediaQuery,
 } from '@material-ui/core';
 import { useQuesListStyles } from '../styles/muiStyles';
@@ -25,7 +26,12 @@ const QuestionList = () => {
         </Button>
       </div>
       <div className={classes.btnGroupWrapper}>
-        <ButtonGroup color="secondary" disableElevation>
+        <ButtonGroup
+          color="secondary"
+          disableElevation
+          size={isMobile ? 'small' : 'medium'}
+          fullWidth={isMobile}
+        >
           <Button variant={'contained'}>Hot</Button>
           <Button>Votes</Button>
           <Button>Views</Button>
@@ -33,6 +39,7 @@ const QuestionList = () => {
           <Button>Oldest</Button>
         </ButtonGroup>
       </div>
+      <Divider />
     </div>
   );
 };
