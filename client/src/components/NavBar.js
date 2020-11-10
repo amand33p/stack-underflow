@@ -1,5 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 import MobileNavMenu from './MobileNavMenu';
+import MobileUserMenu from './MobileUserMenu';
+import DesktopNavButtons from './DesktopNavButtons';
 import SofLogo from '../svg/stack-overflow.svg';
 
 import {
@@ -22,7 +24,12 @@ const NavBar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
-    <AppBar position="fixed" color="inherit" className={classes.appBar}>
+    <AppBar
+      position="sticky"
+      color="inherit"
+      elevation={1}
+      className={classes.appBar}
+    >
       <Toolbar variant="dense" disableGutters={isMobile}>
         <Container disableGutters className={classes.contentContainer}>
           <div className={classes.leftPortion}>
@@ -43,12 +50,17 @@ const NavBar = () => {
                   to="/"
                   size="large"
                 >
-                  <img src={SofLogo} width="28px" alt="sof-logo" />
+                  <img
+                    src={SofLogo}
+                    width="28px"
+                    alt="sof-logo"
+                    style={{ marginRight: '5px' }}
+                  />
                   stack<strong>overflow</strong>-clone
                 </Button>
               )}
               {!isMobile && (
-                <Typography variant="caption">
+                <Typography variant="caption" className={classes.myLink}>
                   | Made with <FavoriteIcon style={{ fontSize: 12 }} /> by
                   <Link
                     href={'https://github.com/amand33p'}
@@ -62,7 +74,7 @@ const NavBar = () => {
               )}
             </div>
           </div>
-          <Typography>Logout</Typography>
+          {isMobile ? <MobileUserMenu /> : <DesktopNavButtons />}
         </Container>
       </Toolbar>
     </AppBar>

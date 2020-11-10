@@ -20,6 +20,22 @@ const customTheme = () =>
           },
         },
       },
+      MuiPopover: {
+        paper: {
+          borderRadius: 2,
+        },
+      },
+      MuiButton: {
+        root: {
+          borderRadius: 2,
+          textTransform: 'none',
+        },
+      },
+    },
+    props: {
+      MuiButton: {
+        disableElevation: true,
+      },
     },
   });
 

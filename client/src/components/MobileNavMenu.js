@@ -1,13 +1,18 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link as RouterLink } from 'react-router-dom';
+
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
+import { useMenuStyles } from '../styles/muiStyles';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import PublicIcon from '@material-ui/icons/Public';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import PeopleIcon from '@material-ui/icons/People';
 
 const MobileNavMenu = () => {
   const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
+  const classes = useMenuStyles();
 
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,6 +31,7 @@ const MobileNavMenu = () => {
           <CloseIcon style={{ backgroundColor: '#E8E8E8' }} />
         )}
       </IconButton>
+
       <Menu
         anchorEl={anchorEl}
         getContentAnchorEl={null}
@@ -34,15 +40,37 @@ const MobileNavMenu = () => {
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
+        marginThreshold={0}
+        elevation={1}
       >
-        <MenuItem selected={pathname === '/'} dense>
-          Stack Overflow{' '}
-          <PublicIcon style={{ marginLeft: '6px', fontSize: '20px' }} />
+        <MenuItem
+          selected={pathname === '/'}
+          dense
+          component={RouterLink}
+          to="/"
+          onClick={handleCloseMenu}
+        >
+          <PublicIcon className={classes.menuIcon} />
+          Stack Overflow
         </MenuItem>
-        <MenuItem selected={pathname === '/tags'} dense>
+        <MenuItem
+          selected={pathname === '/tags'}
+          dense
+          component={RouterLink}
+          to="/tags"
+          onClick={handleCloseMenu}
+        >
+          <LocalOfferIcon className={classes.menuIcon} />
           Tags
         </MenuItem>
-        <MenuItem selected={pathname === '/users'} dense>
+        <MenuItem
+          selected={pathname === '/users'}
+          dense
+          component={RouterLink}
+          to="/users"
+          onClick={handleCloseMenu}
+        >
+          <PeopleIcon className={classes.menuIcon} />
           Users
         </MenuItem>
       </Menu>

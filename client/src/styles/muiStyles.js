@@ -1,5 +1,18 @@
 import { makeStyles } from '@material-ui/core/styles';
 
+export const useBodyStyles = makeStyles(
+  (theme) => ({
+    root: {
+      width: '100vW',
+      display: 'flex',
+      flexDirection: 'column',
+      flex: 1,
+      minHeight: '100vH',
+    },
+  }),
+  { index: 1 }
+);
+
 export const useNavStyles = makeStyles(
   (theme) => ({
     leftPortion: {
@@ -8,8 +21,10 @@ export const useNavStyles = makeStyles(
       alignItems: 'center',
     },
     logoWrapper: {
-      display: 'flex',
-      alignItems: 'center',
+      [theme.breakpoints.down('xs')]: {
+        display: 'flex',
+        alignItems: 'center',
+      },
     },
     logo: {
       fontFamily: 'Montserrat',
@@ -22,6 +37,7 @@ export const useNavStyles = makeStyles(
       display: 'flex',
       alignItems: 'center',
     },
+    myLink: {},
     appBar: {
       borderTop: '4px solid #f4649f',
     },
@@ -29,14 +45,53 @@ export const useNavStyles = makeStyles(
   { index: 1 }
 );
 
-export const useMainPaperStyles = makeStyles(
+export const useMainLayoutStyles = makeStyles(
   (theme) => ({
     root: {
-      width: '100vW',
       display: 'flex',
-      flexDirection: 'column',
-      flex: 1,
-      minHeight: '100vH',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useMenuStyles = makeStyles(
+  (theme) => ({
+    menuIcon: {
+      marginRight: '6px',
+      fontSize: '20px',
+    },
+    rootPanel: {
+      position: 'sticky',
+      display: 'flex',
+      minHeight: '94.5vh',
+    },
+    list: {
+      marginTop: '1em',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useQuesListStyles = makeStyles(
+  (theme) => ({
+    root: {
+      width: '60%',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useTagsPanelStyles = makeStyles(
+  (theme) => ({
+    rootPanel: {
+      position: 'sticky',
+      display: 'flex',
+      minHeight: '94.5vh',
+    },
+    content: {
+      padding: '0.8em',
+      paddingTop: 0,
+      marginTop: '1em',
     },
   }),
   { index: 1 }
