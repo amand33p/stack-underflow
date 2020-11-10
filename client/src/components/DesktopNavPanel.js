@@ -1,6 +1,6 @@
 import { useLocation, Link as RouterLink } from 'react-router-dom';
 
-import { List, MenuItem, useMediaQuery, Divider } from '@material-ui/core';
+import { MenuItem, useMediaQuery, Divider } from '@material-ui/core';
 import { useMenuStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 import PublicIcon from '@material-ui/icons/Public';
@@ -17,7 +17,7 @@ const DesktopNavPanel = () => {
 
   return (
     <div className={classes.rootPanel}>
-      <List component="nav" className={classes.list}>
+      <div className={classes.list}>
         <MenuItem selected={pathname === '/'} component={RouterLink} to="/">
           <PublicIcon className={classes.menuIcon} />
           Stack Overflow
@@ -38,7 +38,7 @@ const DesktopNavPanel = () => {
           <PeopleIcon className={classes.menuIcon} />
           Users
         </MenuItem>
-      </List>
+      </div>
       <Divider orientation="vertical" flexItem />
     </div>
   );

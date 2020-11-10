@@ -5,10 +5,10 @@ const customTheme = () =>
     palette: {
       type: 'light',
       primary: {
-        main: '#9400ff',
+        main: '#964ec2',
       },
       secondary: {
-        main: '#24124b',
+        main: '#562873',
       },
     },
     overrides: {
@@ -27,7 +27,7 @@ const customTheme = () =>
       },
       MuiButton: {
         root: {
-          borderRadius: 2,
+          borderRadius: 4,
           textTransform: 'none',
         },
       },

@@ -3,7 +3,6 @@ import DesktopNavPanel from './DesktopNavPanel';
 import QuestionList from './QuestionList';
 import PopularTagsPanel from './PopularTagsPanel';
 
-import {} from '@material-ui/core';
 import { useMainLayoutStyles } from '../styles/muiStyles';
 
 const Routes = () => {

@@ -76,6 +76,25 @@ export const useQuesListStyles = makeStyles(
   (theme) => ({
     root: {
       width: '60%',
+      marginTop: '1em',
+      padding: '0.4em 0.7em',
+      [theme.breakpoints.down('xs')]: {
+        width: '100%',
+      },
+    },
+    topBar: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+    },
+    btnGroupWrapper: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'flex-end',
+      marginTop: '1em',
+      [theme.breakpoints.down('xs')]: {
+        justifyContent: 'center',
+      },
     },
   }),
   { index: 1 }

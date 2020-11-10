@@ -30,8 +30,8 @@ const PopularTagsPanel = () => {
             <div key={t.tagName}>
               <Chip
                 label={
-                  t.tagName.length > 10
-                    ? t.tagName.slice(0, 10) + '...'
+                  t.tagName.length > 12
+                    ? t.tagName.slice(0, 12) + '...'
                     : t.tagName
                 }
                 variant="outlined"
