@@ -18,7 +18,13 @@ const DesktopNavPanel = () => {
   return (
     <div className={classes.rootPanel}>
       <div className={classes.list}>
-        <MenuItem selected={pathname === '/'} component={RouterLink} to="/">
+        <MenuItem
+          selected={
+            pathname === '/' || (pathname !== '/tags' && pathname !== '/users')
+          }
+          component={RouterLink}
+          to="/"
+        >
           <PublicIcon className={classes.menuIcon} />
           Stack Overflow
         </MenuItem>

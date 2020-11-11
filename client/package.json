@@ -13,6 +13,7 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
+    "react-time-ago": "^6.2.0",
     "typeface-montserrat": "^1.1.13",
     "web-vitals": "^0.2.4"
   },

@@ -37,7 +37,6 @@ export const useNavStyles = makeStyles(
       display: 'flex',
       alignItems: 'center',
     },
-    myLink: {},
     appBar: {
       borderTop: '4px solid #f4649f',
     },
@@ -62,6 +61,7 @@ export const useMenuStyles = makeStyles(
     },
     rootPanel: {
       position: 'sticky',
+      top: '52px',
       display: 'flex',
       minHeight: '94.5vh',
     },
@@ -107,6 +107,7 @@ export const useTagsPanelStyles = makeStyles(
       position: 'sticky',
       display: 'flex',
       minHeight: '94.5vh',
+      top: '52px',
     },
     content: {
       padding: '0.8em',
@@ -122,6 +123,66 @@ export const useTagsPanelStyles = makeStyles(
     },
     tag: {
       backgroundColor: '#f7ebff',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useQuesCardStyles = makeStyles(
+  (theme) => ({
+    root: {
+      borderBottom: '1px solid #dfdfdf',
+      display: 'flex',
+      padding: '0.5em 0',
+    },
+    infoWrapper: {
+      width: '10%',
+      padding: '0.4em',
+      display: 'flex',
+      flexDirection: 'column',
+      textAlign: 'center',
+      [theme.breakpoints.down('xs')]: {
+        width: '15%',
+      },
+    },
+    mainText: {
+      fontSize: '1.2em',
+      fontWeight: 500,
+    },
+    innerInfo: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    quesDetails: {
+      paddingLeft: '0.2em',
+      paddingBottom: '0.7em',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    },
+    tagsWrapper: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    tag: {
+      marginRight: '0.5em',
+      marginTop: '0.5em',
+      backgroundColor: '#f7ebff',
+    },
+    bottomWrapper: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+    },
+    byUserWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      marginTop: '0.7em',
+    },
+    avatar: {
+      width: 35,
+      marginRight: '0.6em',
+      borderRadius: 2,
     },
   }),
   { index: 1 }
