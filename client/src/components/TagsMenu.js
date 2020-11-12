@@ -6,7 +6,7 @@ import { Divider, Typography, Chip, useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import { useTagsPanelStyles } from '../styles/muiStyles';
 
-const PopularTagsPanel = () => {
+const TagsMenu = () => {
   const result = useQuery(GET_ALL_TAGS);
   const classes = useTagsPanelStyles();
   const theme = useTheme();
@@ -52,4 +52,4 @@ const PopularTagsPanel = () => {
   );
 };
 
-export default PopularTagsPanel;
+export default TagsMenu;

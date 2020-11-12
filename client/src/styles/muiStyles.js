@@ -57,7 +57,7 @@ export const useMenuStyles = makeStyles(
   (theme) => ({
     menuIcon: {
       marginRight: '6px',
-      fontSize: '20px',
+      fontSize: '1.3em',
     },
     rootPanel: {
       position: 'sticky',
@@ -187,6 +187,51 @@ export const useQuesCardStyles = makeStyles(
       width: 35,
       marginRight: '0.6em',
       borderRadius: 2,
+    },
+  }),
+  { index: 1 }
+);
+
+export const useDialogStyles = makeStyles(
+  (theme) => ({
+    dialogWrapper: {
+      padding: 0,
+      overflow: 'hidden',
+      [theme.breakpoints.down('xs')]: {
+        padding: 0,
+      },
+    },
+  }),
+  { index: 1 }
+);
+
+export const useAuthFormStyles = makeStyles(
+  (theme) => ({
+    root: {
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingBottom: 20,
+      [theme.breakpoints.down('xs')]: {
+        padding: '0 0 0 0',
+      },
+    },
+    inputField: {
+      marginBottom: '1.5em',
+    },
+    submitButton: {
+      marginTop: '1.8em',
+    },
+    titleLogo: {
+      display: 'block',
+      width: '5em',
+      margin: '0 auto 2em auto',
+    },
+    footerText: {
+      marginTop: '1em',
+      textAlign: 'center',
+    },
+    link: {
+      cursor: 'pointer',
     },
   }),
   { index: 1 }

@@ -1,7 +1,7 @@
 import { Switch, Route } from 'react-router-dom';
-import DesktopNavPanel from './DesktopNavPanel';
+import DesktopNavMenu from './DesktopNavMenu';
 import QuesListPage from './QuesListPage';
-import PopularTagsPanel from './PopularTagsPanel';
+import TagsMenu from './TagsMenu';
 
 import { Container, Grid } from '@material-ui/core';
 import { useMainLayoutStyles } from '../styles/muiStyles';
@@ -18,11 +18,11 @@ const Routes = () => {
         <Route exact>
           <Grid container direction="row" wrap="nowrap">
             <Grid item>
-              <DesktopNavPanel />
+              <DesktopNavMenu />
             </Grid>
             <QuesListPage />
             <Grid item>
-              <PopularTagsPanel />
+              <TagsMenu />
             </Grid>
           </Grid>
         </Route>

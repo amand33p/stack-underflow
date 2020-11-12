@@ -7,7 +7,7 @@ import PublicIcon from '@material-ui/icons/Public';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import PeopleIcon from '@material-ui/icons/People';
 
-const DesktopNavPanel = () => {
+const DesktopNavMenu = () => {
   const { pathname } = useLocation();
   const classes = useMenuStyles();
   const theme = useTheme();
@@ -50,4 +50,4 @@ const DesktopNavPanel = () => {
   );
 };
 
-export default DesktopNavPanel;
+export default DesktopNavMenu;

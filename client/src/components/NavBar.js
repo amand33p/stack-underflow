@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 import MobileNavMenu from './MobileNavMenu';
 import MobileUserMenu from './MobileUserMenu';
-import DesktopNavButtons from './DesktopNavButtons';
+import AuthButtons from './AuthButtons';
 import SofLogo from '../svg/stack-overflow.svg';
 
 import {
@@ -79,7 +79,7 @@ const NavBar = () => {
               )}
             </div>
           </div>
-          {isMobile ? <MobileUserMenu /> : <DesktopNavButtons />}
+          {isMobile ? <MobileUserMenu /> : <AuthButtons />}
         </Container>
       </Toolbar>
     </AppBar>
