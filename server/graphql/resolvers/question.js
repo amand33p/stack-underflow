@@ -13,7 +13,7 @@ const {
 
 module.exports = {
   Query: {
-    getAllQues: async (_, args) => {
+    getQuestions: async (_, args) => {
       const { sortBy, filterByTag } = args;
       const page = Number(args.page);
       const limit = Number(args.limit);

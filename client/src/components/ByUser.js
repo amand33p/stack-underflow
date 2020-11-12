@@ -20,7 +20,7 @@ const ByUser = ({ username, userId, createdAt }) => {
         </Typography>
 
         <Link component={RouterLink} to="/user/username">
-          <Typography variant="body2">username</Typography>
+          <Typography variant="body2">{username}</Typography>
         </Link>
       </div>
     </div>

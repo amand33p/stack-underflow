@@ -1,8 +1,12 @@
 import { ButtonGroup, Button } from '@material-ui/core';
 import { useQuesListStyles } from '../styles/muiStyles';
 
-const SortQuesBar = ({ isMobile }) => {
+const SortQuesBar = ({ isMobile, sortBy, setSortBy }) => {
   const classes = useQuesListStyles();
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.innerText.toUpperCase());
+  };
 
   return (
     <div className={classes.btnGroupWrapper}>
@@ -12,11 +16,36 @@ const SortQuesBar = ({ isMobile }) => {
         size={isMobile ? 'small' : 'medium'}
         fullWidth={isMobile}
       >
-        <Button variant={'contained'}>Hot</Button>
-        <Button>Votes</Button>
-        <Button>Views</Button>
-        <Button>Newest</Button>
-        <Button>Oldest</Button>
+        <Button
+          variant={sortBy === 'HOT' ? 'contained' : 'outlined'}
+          onClick={handleSortChange}
+        >
+          Hot
+        </Button>
+        <Button
+          variant={sortBy === 'VOTES' ? 'contained' : 'outlined'}
+          onClick={handleSortChange}
+        >
+          Votes
+        </Button>
+        <Button
+          variant={sortBy === 'VIEWS' ? 'contained' : 'outlined'}
+          onClick={handleSortChange}
+        >
+          Views
+        </Button>
+        <Button
+          variant={sortBy === 'NEWEST' ? 'contained' : 'outlined'}
+          onClick={handleSortChange}
+        >
+          Newest
+        </Button>
+        <Button
+          variant={sortBy === 'OLDEST' ? 'contained' : 'outlined'}
+          onClick={handleSortChange}
+        >
+          Oldest
+        </Button>
       </ButtonGroup>
     </div>
   );

@@ -96,10 +96,8 @@ module.exports = gql`
     tags: [String!]!
     points: Int!
     views: Int!
-    hotAlgo: Float!
-    acceptedAnswer: ID
     answers: [Answer]!
-    answersCount: Int!
+    answerCount: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
   }
@@ -112,7 +110,6 @@ module.exports = gql`
     tags: [String!]!
     points: Int!
     views: Int!
-    hotAlgo: Float!
     acceptedAnswer: ID
     comments: [Comment]!
     answers: [Answer]!
@@ -139,7 +136,7 @@ module.exports = gql`
   }
 
   type Query {
-    getAllQues(
+    getQuestions(
       sortBy: SortByType!
       page: Int!
       limit: Int!

@@ -15,7 +15,7 @@ const QuesCard = ({ question }) => {
     tags,
     points,
     views,
-    answersCount,
+    answerCount,
     createdAt,
     updatedAt,
   } = question;
@@ -31,7 +31,7 @@ const QuesCard = ({ question }) => {
         </div>
         <div className={classes.innerInfo}>
           <Typography variant="body2" className={classes.mainText}>
-            {answersCount}
+            {answerCount}
           </Typography>
           <Typography variant="caption">answers</Typography>
         </div>

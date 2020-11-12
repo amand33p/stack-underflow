@@ -1,3 +1,6 @@
+import { useState, useEffect } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import { GET_QUESTIONS } from '../graphql/queries';
 import SortQuesBar from './SortQuesBar';
 import QuesCard from './QuesCard';
 
@@ -6,140 +9,28 @@ import { useQuesListStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 
 const QuesListPage = () => {
+  const [fetchQuestions, result] = useLazyQuery(GET_QUESTIONS);
+  const [quesData, setQuesData] = useState(null);
+  const [sortBy, setSortBy] = useState('HOT');
+  const [page, setPage] = useState(1);
   const classes = useQuesListStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const questions = [
-    {
-      id: '1',
-      author: {
-        username: 'aman',
-      },
-      title: 'ques title loooooooooglll',
-      body:
-        'Lorem ipsum dolor si lobortiunc efficitur eleifend. Nunc tempor semper orci, quis pharetra turpis tristique eget. Donec ornare efficitur metus, id porta lacus commodo vitae. Fusce ullamcorper et ex sit amet dapibus. Cras efficitur, tellus quis dignissim dignissim, lacus ex volutpat metus, a aliquet tel ',
-      tags: ['java', 'jssssssss', 'jaaaaaaaaaava', 'nice', 'okay'],
-      points: 12,
-      views: 18,
-      acceptedAnswer: '10',
-      answersCount: 4,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '1',
-      author: {
-        username: 'aman',
-      },
-      title: 'ques title loooooooooglll',
-      body:
-        'Lorem ipsum dolor si lobortiunc efficitur eleifend. Nunc tempor semper orci, quis pharetra turpis tristique eget. Donec ornare efficitur metus, id porta lacus commodo vitae. Fusce ullamcorper et ex sit amet dapibus. Cras efficitur, tellus quis dignissim dignissim, lacus ex volutpat metus, a aliquet tel ',
-      tags: ['java', 'jssssssss', 'jaaaaaaaaaava', 'nice', 'okay'],
-      points: 12,
-      views: 18,
-      acceptedAnswer: '10',
-      answersCount: 4,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '1',
-      author: {
-        username: 'aman',
-      },
-      title: 'ques title loooooooooglll',
-      body:
-        'Lorem ipsum dolor si lobortiunc efficitur eleifend. Nunc tempor semper orci, quis pharetra turpis tristique eget. Donec ornare efficitur metus, id porta lacus commodo vitae. Fusce ullamcorper et ex sit amet dapibus. Cras efficitur, tellus quis dignissim dignissim, lacus ex volutpat metus, a aliquet tel ',
-      tags: ['java', 'jssssssss', 'jaaaaaaaaaava', 'nice', 'okay'],
-      points: 12,
-      views: 18,
-      acceptedAnswer: '10',
-      answersCount: 4,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '1',
-      author: {
-        username: 'aman',
-      },
-      title: 'ques title loooooooooglll',
-      body:
-        'Lorem ipsum dolor si lobortiunc efficitur eleifend. Nunc tempor semper orci, quis pharetra turpis tristique eget. Donec ornare efficitur metus, id porta lacus commodo vitae. Fusce ullamcorper et ex sit amet dapibus. Cras efficitur, tellus quis dignissim dignissim, lacus ex volutpat metus, a aliquet tel ',
-      tags: ['java', 'jssssssss', 'jaaaaaaaaaava', 'nice', 'okay'],
-      points: 12,
-      views: 18,
-      acceptedAnswer: '10',
-      answersCount: 4,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '1',
-      author: {
-        username: 'aman',
-      },
-      title: 'ques title loooooooooglll',
-      body:
-        'Lorem ipsum dolor si lobortiunc efficitur eleifend. Nunc tempor semper orci, quis pharetra turpis tristique eget. Donec ornare efficitur metus, id porta lacus commodo vitae. Fusce ullamcorper et ex sit amet dapibus. Cras efficitur, tellus quis dignissim dignissim, lacus ex volutpat metus, a aliquet tel ',
-      tags: ['java', 'jssssssss', 'jaaaaaaaaaava', 'nice', 'okay'],
-      points: 12,
-      views: 18,
-      acceptedAnswer: '10',
-      answersCount: 4,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '1',
-      author: {
-        username: 'aman',
-      },
-      title: 'ques title loooooooooglll',
-      body:
-        'Lorem ipsum dolor si lobortiunc efficitur eleifend. Nunc tempor semper orci, quis pharetra turpis tristique eget. Donec ornare efficitur metus, id porta lacus commodo vitae. Fusce ullamcorper et ex sit amet dapibus. Cras efficitur, tellus quis dignissim dignissim, lacus ex volutpat metus, a aliquet tel ',
-      tags: ['java', 'jssssssss', 'jaaaaaaaaaava', 'nice', 'okay'],
-      points: 12,
-      views: 18,
-      acceptedAnswer: '10',
-      answersCount: 4,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '1',
-      author: {
-        username: 'aman',
-      },
-      title: 'ques title loooooooooglll',
-      body:
-        'Lorem ipsum dolor si lobortiunc efficitur eleifend. Nunc tempor semper orci, quis pharetra turpis tristique eget. Donec ornare efficitur metus, id porta lacus commodo vitae. Fusce ullamcorper et ex sit amet dapibus. Cras efficitur, tellus quis dignissim dignissim, lacus ex volutpat metus, a aliquet tel ',
-      tags: ['java', 'jssssssss', 'jaaaaaaaaaava', 'nice', 'okay'],
-      points: 12,
-      views: 18,
-      acceptedAnswer: '10',
-      answersCount: 4,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '1',
-      author: {
-        username: 'aman',
-      },
-      title: 'ques title loooooooooglll',
-      body:
-        'Lorem ipsum dolor si lobortiunc efficitur eleifend. Nunc tempor semper orci, quis pharetra turpis tristique eget. Donec ornare efficitur metus, id porta lacus commodo vitae. Fusce ullamcorper et ex sit amet dapibus. Cras efficitur, tellus quis dignissim dignissim, lacus ex volutpat metus, a aliquet tel ',
-      tags: ['java', 'jssssssss', 'jaaaaaaaaaava', 'nice', 'okay'],
-      points: 12,
-      views: 18,
-      acceptedAnswer: '10',
-      answersCount: 4,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
+  const getQues = (sortBy, page, limit, filterByTag) => {
+    fetchQuestions({ variables: { sortBy, page, limit, filterByTag } });
+  };
+
+  useEffect(() => {
+    getQues(sortBy, page, 15);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortBy]);
+
+  useEffect(() => {
+    if (result.data) {
+      setQuesData(result.data.getQuestions);
+    }
+  }, [result]);
 
   return (
     <div className={classes.root}>
@@ -153,11 +44,10 @@ const QuesListPage = () => {
           Ask Question
         </Button>
       </div>
-      <SortQuesBar isMobile={isMobile} />
+      <SortQuesBar isMobile={isMobile} sortBy={sortBy} setSortBy={setSortBy} />
       <Divider />
-      {questions.map((q) => (
-        <QuesCard key={q.id} question={q} />
-      ))}
+      {quesData &&
+        quesData.questions.map((q) => <QuesCard key={q.id} question={q} />)}
     </div>
   );
 };

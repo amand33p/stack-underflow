@@ -20,7 +20,7 @@ module.exports = {
     ...ansCommentResolvers.Mutation,
   },
   QuestionList: {
-    answersCount: (parent) => parent.answers.length,
+    answerCount: (parent) => parent.answers.length,
   },
   User: {
     reputation: (parent) => {

@@ -60,8 +60,13 @@ const NavBar = () => {
                 </Button>
               )}
               {!isMobile && (
-                <Typography variant="caption" className={classes.myLink}>
-                  | Made with <FavoriteIcon style={{ fontSize: 12 }} /> by
+                <Typography
+                  variant="caption"
+                  className={classes.myLink}
+                  color="secondary"
+                >
+                  | Made with{' '}
+                  <FavoriteIcon style={{ fontSize: 10, color: '#f4649f' }} /> by
                   <Link
                     href={'https://github.com/amand33p'}
                     color="inherit"

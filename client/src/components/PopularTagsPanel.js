@@ -1,3 +1,5 @@
+import { useQuery } from '@apollo/client';
+import { GET_ALL_TAGS } from '../graphql/queries';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { Divider, Typography, Chip, useMediaQuery } from '@material-ui/core';
@@ -5,20 +7,16 @@ import { useTheme } from '@material-ui/core/styles';
 import { useTagsPanelStyles } from '../styles/muiStyles';
 
 const PopularTagsPanel = () => {
+  const result = useQuery(GET_ALL_TAGS);
   const classes = useTagsPanelStyles();
   const theme = useTheme();
   const isNotDesktop = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (isNotDesktop) return null;
 
-  const tags = [
-    { tagName: 'wowoow', count: 4 },
-    { tagName: 'random', count: 2 },
-    { tagName: 'nice', count: 1 },
-    { tagName: 'verylooooong', count: 1 },
-    { tagName: 'verylooooaaaaaaaaaooong', count: 1 },
-    { tagName: 'verooaaaaaaaaaaooong', count: 1 },
-  ];
+  if (result.loading) {
+    return <div>loading...</div>;
+  }
 
   return (
     <div className={classes.rootPanel}>
@@ -26,7 +24,7 @@ const PopularTagsPanel = () => {
       <div className={classes.content}>
         <Typography variant="h6">Popular Tags</Typography>
         <div className={classes.tagsWrapper}>
-          {tags.map((t) => (
+          {result.data.getAllTags.map((t) => (
             <div key={t.tagName}>
               <Chip
                 label={

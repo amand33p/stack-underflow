@@ -61,12 +61,15 @@ export const useMenuStyles = makeStyles(
     },
     rootPanel: {
       position: 'sticky',
-      top: '52px',
+      top: '5.5vH',
       display: 'flex',
       minHeight: '94.5vh',
     },
     list: {
       marginTop: '1em',
+    },
+    madeByItem: {
+      padding: '0.4em 0.8em 0.2em 0.8em',
     },
   }),
   { index: 1 }
@@ -107,7 +110,7 @@ export const useTagsPanelStyles = makeStyles(
       position: 'sticky',
       display: 'flex',
       minHeight: '94.5vh',
-      top: '52px',
+      top: '5.5vH',
     },
     content: {
       padding: '0.8em',
@@ -159,6 +162,7 @@ export const useQuesCardStyles = makeStyles(
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
+      width: '100%',
     },
     tagsWrapper: {
       display: 'flex',
