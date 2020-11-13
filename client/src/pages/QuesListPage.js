@@ -9,7 +9,7 @@ import { useQuesListStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 
 const QuesListPage = () => {
-  const [fetchQuestions, result] = useLazyQuery(GET_QUESTIONS);
+  const [fetchQuestions, { data, loading }] = useLazyQuery(GET_QUESTIONS);
   const [quesData, setQuesData] = useState(null);
   const [sortBy, setSortBy] = useState('HOT');
   const [page, setPage] = useState(1);
@@ -27,10 +27,10 @@ const QuesListPage = () => {
   }, [sortBy]);
 
   useEffect(() => {
-    if (result.data) {
-      setQuesData(result.data.getQuestions);
+    if (data) {
+      setQuesData(data.getQuestions);
     }
-  }, [result]);
+  }, [data]);
 
   return (
     <div className={classes.root}>
@@ -46,6 +46,7 @@ const QuesListPage = () => {
       </div>
       <SortQuesBar isMobile={isMobile} sortBy={sortBy} setSortBy={setSortBy} />
       <Divider />
+      {loading && <div>loading...</div>}
       {quesData &&
         quesData.questions.map((q) => <QuesCard key={q.id} question={q} />)}
     </div>

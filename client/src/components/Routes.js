@@ -3,6 +3,7 @@ import NavMenuDesktop from './NavMenuDesktop';
 import TagsMenu from './TagsMenu';
 import QuesListPage from '../pages/QuesListPage';
 import AllTagsPage from '../pages/AllTagsPage';
+import AllUsersPage from '../pages/AllUsersPage';
 
 import { Container, Grid } from '@material-ui/core';
 import { useMainLayoutStyles } from '../styles/muiStyles';
@@ -27,6 +28,10 @@ const Routes = () => {
               <Route exact path="/tags">
                 <NavMenuDesktop />
                 <AllTagsPage />
+              </Route>
+              <Route exact path="/users">
+                <NavMenuDesktop />
+                <AllUsersPage />
               </Route>
             </Switch>
           </Grid>
