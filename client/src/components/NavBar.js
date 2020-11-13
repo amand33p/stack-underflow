@@ -1,7 +1,8 @@
 import { Link as RouterLink } from 'react-router-dom';
-import MobileNavMenu from './MobileNavMenu';
-import MobileUserMenu from './MobileUserMenu';
-import AuthButtons from './AuthButtons';
+import NavMenuMobile from './NavMenuMobile';
+import UserMenuMobile from './UserMenuMobile';
+import UserMenuDesktop from './UserMenuDesktop';
+import { useAuthContext } from '../context/auth';
 import SofLogo from '../svg/stack-overflow.svg';
 
 import {
@@ -19,9 +20,14 @@ import { useTheme } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const NavBar = () => {
+  const { user, logoutUser } = useAuthContext();
   const classes = useNavStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
+
+  const handleLogout = () => {
+    logoutUser();
+  };
 
   return (
     <AppBar
@@ -34,7 +40,7 @@ const NavBar = () => {
         <Container disableGutters className={classes.contentContainer}>
           <div className={classes.leftPortion}>
             <div className={classes.logoWrapper}>
-              {isMobile && <MobileNavMenu />}
+              {isMobile && <NavMenuMobile />}
               {isMobile ? (
                 <IconButton
                   className={classes.logo}
@@ -79,7 +85,11 @@ const NavBar = () => {
               )}
             </div>
           </div>
-          {isMobile ? <MobileUserMenu /> : <AuthButtons />}
+          {isMobile ? (
+            <UserMenuMobile user={user} logoutUser={handleLogout} />
+          ) : (
+            <UserMenuDesktop user={user} logoutUser={handleLogout} />
+          )}
         </Container>
       </Toolbar>
     </AppBar>

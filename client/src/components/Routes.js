@@ -1,5 +1,5 @@
 import { Switch, Route } from 'react-router-dom';
-import DesktopNavMenu from './DesktopNavMenu';
+import NavMenuDesktop from './NavMenuDesktop';
 import QuesListPage from './QuesListPage';
 import TagsMenu from './TagsMenu';
 
@@ -18,7 +18,7 @@ const Routes = () => {
         <Route exact>
           <Grid container direction="row" wrap="nowrap">
             <Grid item>
-              <DesktopNavMenu />
+              <NavMenuDesktop />
             </Grid>
             <QuesListPage />
             <Grid item>

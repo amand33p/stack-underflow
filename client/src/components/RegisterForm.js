@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from '../graphql/mutations';
+import { REGISTER_USER } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
 import SofLogo from '../svg/stack-overflow.svg';
 
@@ -16,19 +16,21 @@ import {
 import { useAuthFormStyles } from '../styles/muiStyles';
 import PersonIcon from '@material-ui/icons/Person';
 import LockIcon from '@material-ui/icons/Lock';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import EnhancedEncryptionIcon from '@material-ui/icons/EnhancedEncryption';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
-const LoginForm = ({ setAuthType, closeModal }) => {
+const RegisterForm = ({ setAuthType, closeModal }) => {
   const { register, handleSubmit, reset } = useForm();
   const [showPass, setShowPass] = useState(false);
+  const [showConfPass, setShowConfPass] = useState(false);
   const classes = useAuthFormStyles();
   const { setUser } = useAuthContext();
 
-  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     update: (_, { data }) => {
-      setUser(data.login);
+      setUser(data.register);
       reset();
       closeModal();
     },
@@ -37,14 +39,17 @@ const LoginForm = ({ setAuthType, closeModal }) => {
     },
   });
 
-  const onLogin = ({ username, password }) => {
-    loginUser({ variables: { username, password } });
+  const onRegister = ({ username, password, confirmPassword }) => {
+    if (password !== confirmPassword)
+      return console.log('confirm password failed');
+
+    registerUser({ variables: { username, password } });
   };
 
   return (
     <div className={classes.root}>
       <img src={SofLogo} alt="sof-logo" className={classes.titleLogo} />
-      <form onSubmit={handleSubmit(onLogin)}>
+      <form onSubmit={handleSubmit(onRegister)}>
         <div className={classes.inputField}>
           <TextField
             required
@@ -97,26 +102,59 @@ const LoginForm = ({ setAuthType, closeModal }) => {
             }}
           />
         </div>
+        <div className={classes.inputField}>
+          <TextField
+            required
+            fullWidth
+            inputRef={register}
+            name="confirmPassword"
+            type={showConfPass ? 'text' : 'password'}
+            label="Confirm Password"
+            variant="outlined"
+            size="small"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowConfPass((prevState) => !prevState)}
+                    size="small"
+                  >
+                    {showConfPass ? (
+                      <VisibilityOffIcon color="secondary" />
+                    ) : (
+                      <VisibilityIcon color="secondary" />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+              startAdornment: (
+                <InputAdornment position="start">
+                  <EnhancedEncryptionIcon color="primary" />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
         <Button
           color="primary"
           variant="contained"
           size="large"
           fullWidth
-          startIcon={<ExitToAppIcon />}
+          startIcon={<PersonAddIcon />}
           type="submit"
           disabled={loading}
         >
-          Log In
+          Sign Up
         </Button>
       </form>
       <Typography variant="body1" className={classes.footerText}>
-        Don’t have an account?{' '}
-        <Link onClick={() => setAuthType('signup')} className={classes.link}>
-          Sign Up
+        Already have an account?{' '}
+        <Link onClick={() => setAuthType('login')} className={classes.link}>
+          Log In
         </Link>
       </Typography>
     </div>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

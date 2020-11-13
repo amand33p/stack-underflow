@@ -71,6 +71,19 @@ export const useMenuStyles = makeStyles(
     madeByItem: {
       padding: '0.4em 0.8em 0.2em 0.8em',
     },
+    userBtn: {
+      textTransform: 'none',
+      display: 'flex',
+    },
+    avatar: {
+      width: theme.spacing(3.5),
+      height: theme.spacing(3.5),
+      marginRight: '0.4em',
+      [theme.breakpoints.down('xs')]: {
+        width: theme.spacing(3),
+        height: theme.spacing(3),
+      },
+    },
   }),
   { index: 1 }
 );
@@ -200,6 +213,10 @@ export const useDialogStyles = makeStyles(
       [theme.breakpoints.down('xs')]: {
         padding: 0,
       },
+    },
+    menuIcon: {
+      marginRight: '6px',
+      fontSize: '1.3em',
     },
   }),
   { index: 1 }
