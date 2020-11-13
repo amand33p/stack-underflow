@@ -142,6 +142,7 @@ module.exports = gql`
       limit: Int!
       filterByTag: String
     ): PaginatedQuesList!
+    viewQuestion(quesId: ID!): Question
     getUser(username: String!): User!
     getAllUsers: [UserList]!
     getAllTags: [Tag]!
@@ -151,7 +152,6 @@ module.exports = gql`
     register(username: String!, password: String!): LoggedUser!
     login(username: String!, password: String!): LoggedUser!
 
-    viewQuestion(quesId: ID!): Question
     postQuestion(title: String!, body: String!, tags: [String!]!): Question!
     deleteQuestion(quesId: ID!): ID!
     editQuestion(

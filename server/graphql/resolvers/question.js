@@ -61,8 +61,6 @@ module.exports = {
         throw new UserInputError(errorHandler(err));
       }
     },
-  },
-  Mutation: {
     viewQuestion: async (_, args) => {
       const { quesId } = args;
 
@@ -86,6 +84,8 @@ module.exports = {
         throw new UserInputError(errorHandler(err));
       }
     },
+  },
+  Mutation: {
     postQuestion: async (_, args, context) => {
       const loggedUser = authChecker(context);
       const { title, body, tags } = args;

@@ -71,7 +71,7 @@ const MobileUserMenu = ({ user, logoutUser }) => {
             </MenuItem>
             <MenuItem onClick={handleLogoutClick}>
               <PowerSettingsNewIcon className={classes.menuIcon} />
-              Logout
+              Logout: {user.username}
             </MenuItem>
           </div>
         ) : (

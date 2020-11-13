@@ -1,7 +1,8 @@
 import { Switch, Route } from 'react-router-dom';
 import NavMenuDesktop from './NavMenuDesktop';
-import QuesListPage from './QuesListPage';
 import TagsMenu from './TagsMenu';
+import QuesListPage from '../pages/QuesListPage';
+import AllTagsPage from '../pages/AllTagsPage';
 
 import { Container, Grid } from '@material-ui/core';
 import { useMainLayoutStyles } from '../styles/muiStyles';
@@ -17,13 +18,17 @@ const Routes = () => {
         </Route>
         <Route exact>
           <Grid container direction="row" wrap="nowrap">
-            <Grid item>
-              <NavMenuDesktop />
-            </Grid>
-            <QuesListPage />
-            <Grid item>
-              <TagsMenu />
-            </Grid>
+            <Switch>
+              <Route exact path="/">
+                <NavMenuDesktop />
+                <QuesListPage />
+                <TagsMenu />
+              </Route>
+              <Route exact path="/tags">
+                <NavMenuDesktop />
+                <AllTagsPage />
+              </Route>
+            </Switch>
           </Grid>
         </Route>
       </Switch>

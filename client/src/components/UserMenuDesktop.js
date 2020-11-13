@@ -6,6 +6,7 @@ import { Button, Menu, MenuItem, Avatar, Typography } from '@material-ui/core';
 import { useMenuStyles } from '../styles/muiStyles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 const UserMenuDesktop = ({ user, logoutUser }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -28,7 +29,11 @@ const UserMenuDesktop = ({ user, logoutUser }) => {
     <div>
       {user ? (
         <div>
-          <Button className={classes.userBtn} onClick={handleOpenMenu}>
+          <Button
+            className={classes.userBtn}
+            onClick={handleOpenMenu}
+            endIcon={<KeyboardArrowDownIcon />}
+          >
             <Avatar
               alt={user.username}
               src={`https://secure.gravatar.com/avatar/${user.id}?s=164&d=identicon`}

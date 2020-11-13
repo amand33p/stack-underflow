@@ -80,6 +80,7 @@ export const useMenuStyles = makeStyles(
       height: theme.spacing(3.5),
       marginRight: '0.4em',
       [theme.breakpoints.down('xs')]: {
+        marginRight: '0.2em',
         width: theme.spacing(3),
         height: theme.spacing(3),
       },
@@ -249,6 +250,44 @@ export const useAuthFormStyles = makeStyles(
     },
     link: {
       cursor: 'pointer',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useTagsPageStyles = makeStyles(
+  (theme) => ({
+    root: {
+      marginTop: '1em',
+      padding: '0.4em 0.7em',
+      width: '100%',
+    },
+    titleText: {
+      marginBottom: '0.9em',
+    },
+    filterInput: {
+      marginTop: '1.2em',
+      [theme.breakpoints.down('xs')]: {
+        width: '100%',
+      },
+    },
+    tagsWrapper: {
+      marginTop: '1em',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(157px, 1fr))',
+      gridGap: '12px',
+    },
+    tagBox: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      padding: '0.8em',
+      border: '1px solid #d3d3d3',
+      borderRadius: 4,
+    },
+    tag: {
+      marginBottom: '0.9em',
+      backgroundColor: '#f7ebff',
     },
   }),
   { index: 1 }

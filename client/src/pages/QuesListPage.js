@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { GET_QUESTIONS } from '../graphql/queries';
-import SortQuesBar from './SortQuesBar';
-import QuesCard from './QuesCard';
+import SortQuesBar from '../components/SortQuesBar';
+import QuesCard from '../components/QuesCard';
 
 import { Typography, Button, Divider, useMediaQuery } from '@material-ui/core';
 import { useQuesListStyles } from '../styles/muiStyles';
