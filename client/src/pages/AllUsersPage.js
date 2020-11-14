@@ -49,8 +49,9 @@ const AllUsersPage = () => {
               <Avatar
                 src={`https://secure.gravatar.com/avatar/${u.id}?s=164&d=identicon`}
                 alt={u.username}
-                variant="rounded"
                 className={classes.avatar}
+                component={RouterLink}
+                to={`/user/${u.username}`}
               />
               <div>
                 <Link component={RouterLink} to={`/user/${u.username}`}>

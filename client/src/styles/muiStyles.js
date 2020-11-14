@@ -59,6 +59,11 @@ export const useMenuStyles = makeStyles(
       marginRight: '6px',
       fontSize: '1.3em',
     },
+    closeIcon: {
+      boxSizing: 'border-box',
+      border: `0.5px solid ${theme.palette.primary.main}60`,
+      borderRadius: 3,
+    },
     rootPanel: {
       position: 'sticky',
       top: '5.5vH',
@@ -79,6 +84,7 @@ export const useMenuStyles = makeStyles(
       width: theme.spacing(3.5),
       height: theme.spacing(3.5),
       marginRight: '0.4em',
+      borderRadius: 2,
       [theme.breakpoints.down('xs')]: {
         marginRight: '0.2em',
         width: theme.spacing(3),
@@ -114,6 +120,16 @@ export const useQuesListStyles = makeStyles(
         justifyContent: 'center',
       },
     },
+    loadBtnWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    loadBtn: {
+      marginTop: '0.8em',
+      marginBottom: '0.4em',
+      width: '50%',
+      display: 'flex',
+    },
   }),
   { index: 1 }
 );
@@ -135,8 +151,8 @@ export const useTagsPanelStyles = makeStyles(
       marginTop: '1em',
       display: 'grid',
       width: '100%',
-      gridTemplateColumns: '1fr 1fr',
-      gridGap: '12px',
+      gridTemplateColumns: 'repeat(2, minmax(130px, 1fr))',
+      gridGap: '8px',
     },
     tag: {
       backgroundColor: '#f7ebff',
@@ -198,7 +214,8 @@ export const useQuesCardStyles = makeStyles(
       marginTop: '0.7em',
     },
     avatar: {
-      width: 35,
+      width: theme.spacing(4),
+      height: theme.spacing(4),
       marginRight: '0.6em',
       borderRadius: 2,
     },
@@ -312,7 +329,7 @@ export const useUsersPageStyles = makeStyles(
       marginTop: '1.4em',
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-      gridGap: '12px',
+      gridGap: '14px',
     },
     userBox: {
       display: 'flex',
@@ -321,6 +338,7 @@ export const useUsersPageStyles = makeStyles(
       width: theme.spacing(6),
       height: theme.spacing(6),
       marginRight: '0.6em',
+      borderRadius: 2,
     },
   }),
   { index: 1 }

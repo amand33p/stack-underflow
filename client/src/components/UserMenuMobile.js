@@ -32,7 +32,6 @@ const MobileUserMenu = ({ user, logoutUser }) => {
           <Avatar
             alt={user.username}
             src={`https://secure.gravatar.com/avatar/${user.id}?s=164&d=identicon`}
-            variant="rounded"
             className={classes.avatar}
           />
           <MoreVertIcon color="primary" />

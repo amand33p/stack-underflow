@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago';
 
-import { Typography, Link } from '@material-ui/core';
+import { Typography, Link, Avatar } from '@material-ui/core';
 import { useQuesCardStyles } from '../styles/muiStyles';
 
 const ByUser = ({ username, userId, createdAt }) => {
@@ -9,10 +9,12 @@ const ByUser = ({ username, userId, createdAt }) => {
 
   return (
     <div className={classes.byUserWrapper}>
-      <img
+      <Avatar
         src={`https://secure.gravatar.com/avatar/${userId}?s=164&d=identicon`}
         alt={username}
         className={classes.avatar}
+        component={RouterLink}
+        to={`/user/${username}`}
       />
       <div>
         <Typography variant="caption" color="secondary">

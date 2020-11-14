@@ -1,5 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
-import ByUser from './ByUser';
+import PostedByUser from './PostedByUser';
 
 import { Paper, Typography, Chip } from '@material-ui/core';
 import { useQuesCardStyles } from '../styles/muiStyles';
@@ -66,7 +66,7 @@ const QuesCard = ({ question }) => {
               />
             ))}
           </div>
-          <ByUser
+          <PostedByUser
             username={author.username}
             userId={author.id}
             createdAt={createdAt}

@@ -3,6 +3,8 @@ import { useLazyQuery } from '@apollo/client';
 import { GET_QUESTIONS } from '../graphql/queries';
 import SortQuesBar from '../components/SortQuesBar';
 import QuesCard from '../components/QuesCard';
+import LoadMoreButton from '../components/LoadMoreButton';
+import { filterDuplicates } from '../utils/helperFuncs';
 
 import { Typography, Button, Divider, useMediaQuery } from '@material-ui/core';
 import { useQuesListStyles } from '../styles/muiStyles';
@@ -17,20 +19,38 @@ const QuesListPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const getQues = (sortBy, page, limit, filterByTag) => {
-    fetchQuestions({ variables: { sortBy, page, limit, filterByTag } });
+  const getQues = (sortBy, page, limit) => {
+    fetchQuestions({ variables: { sortBy, page, limit } });
   };
 
   useEffect(() => {
-    getQues(sortBy, page, 15);
+    if (data && page === 1) {
+      setQuesData(data.getQuestions);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  useEffect(() => {
+    getQues(sortBy, 1, 12);
+    setPage(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy]);
 
   useEffect(() => {
-    if (data) {
-      setQuesData(data.getQuestions);
+    if (data && page !== 1) {
+      setQuesData((prevState) => ({
+        ...data.getQuestions,
+        questions: prevState.questions.concat(
+          filterDuplicates(prevState.questions, data.getQuestions.questions)
+        ),
+      }));
     }
-  }, [data]);
+  }, [data, page]);
+
+  const handleLoadPosts = () => {
+    setPage(page + 1);
+    getQues(sortBy, page + 1, 12);
+  };
 
   return (
     <div className={classes.root}>
@@ -46,9 +66,12 @@ const QuesListPage = () => {
       </div>
       <SortQuesBar isMobile={isMobile} sortBy={sortBy} setSortBy={setSortBy} />
       <Divider />
-      {loading && <div>loading...</div>}
+      {loading && page === 1 && <div>loading...</div>}
       {quesData &&
         quesData.questions.map((q) => <QuesCard key={q.id} question={q} />)}
+      {quesData && quesData.next && (
+        <LoadMoreButton loading={loading} handleLoadPosts={handleLoadPosts} />
+      )}
     </div>
   );
 };

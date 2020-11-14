@@ -33,11 +33,7 @@ const MobileNavMenu = () => {
   return (
     <div>
       <IconButton color="primary" onClick={handleOpenMenu}>
-        {!anchorEl ? (
-          <MenuIcon />
-        ) : (
-          <CloseIcon style={{ backgroundColor: '#E8E8E8' }} />
-        )}
+        {!anchorEl ? <MenuIcon /> : <CloseIcon className={classes.closeIcon} />}
       </IconButton>
 
       <Menu
