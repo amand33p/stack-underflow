@@ -370,10 +370,7 @@ export const useQuesPageStyles = makeStyles(
       width: '100%',
     },
     content: {
-      width: '60%',
-      [theme.breakpoints.down('xs')]: {
-        width: '100%',
-      },
+      width: '100%',
     },
   }),
   { index: 1 }

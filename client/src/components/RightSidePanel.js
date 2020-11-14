@@ -23,7 +23,9 @@ const RightSidePanel = () => {
       <div className={classes.rootPanel}>
         <div className={classes.content}>
           <div className={classes.tagsColumn}>
-            <Typography variant="h6">Top Tags</Typography>
+            <Typography variant="h6" color="secondary">
+              Top Tags
+            </Typography>
             <div className={classes.tagsWrapper}>
               {data.getAllTags.slice(0, 26).map((t) => (
                 <div key={t.tagName}>

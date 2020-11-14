@@ -1,11 +1,17 @@
 import { gql } from '@apollo/client';
 
+const AUTHOR_DETAILS = gql`
+  fragment AuthorDetails on Author {
+    id
+    username
+  }
+`;
+
 const QUES_DETAILS = gql`
   fragment QuesDetails on QuestionList {
     id
     author {
-      id
-      username
+      ...AuthorDetails
     }
     title
     body
@@ -15,6 +21,40 @@ const QUES_DETAILS = gql`
     createdAt
     updatedAt
   }
+  ${AUTHOR_DETAILS}
+`;
+
+const COMMENT_DETAILS = gql`
+  fragment CommentDetails on Comment {
+    id
+    author {
+      ...AuthorDetails
+    }
+    body
+    createdAt
+    updatedAt
+  }
+  ${AUTHOR_DETAILS}
+`;
+
+const ANS_DETAILS = gql`
+  fragment AnsDetails on Answer {
+    id
+    author {
+      ...AuthorDetails
+    }
+    body
+    comments {
+      ...CommentDetails
+    }
+    points
+    upvotedBy
+    downvotedBy
+    createdAt
+    updatedAt
+  }
+  ${COMMENT_DETAILS}
+  ${AUTHOR_DETAILS}
 `;
 
 export const GET_QUESTIONS = gql`
@@ -43,6 +83,40 @@ export const GET_QUESTIONS = gql`
     }
   }
   ${QUES_DETAILS}
+`;
+
+export const VIEW_QUESTION = gql`
+  query fetchQuestion($quesId: ID!) {
+    viewQuestion(quesId: $quesId) {
+      id
+      author {
+        ...AuthorDetails
+      }
+      title
+      body
+      tags
+      points
+      views
+      createdAt
+      updatedAt
+      answers {
+        ...AnsDetails
+      }
+      author {
+        ...AuthorDetails
+      }
+      comments {
+        ...CommentDetails
+      }
+      acceptedAnswer
+      upvotedBy
+      downvotedBy
+    }
+  }
+
+  ${ANS_DETAILS}
+  ${COMMENT_DETAILS}
+  ${AUTHOR_DETAILS}
 `;
 
 export const GET_ALL_TAGS = gql`

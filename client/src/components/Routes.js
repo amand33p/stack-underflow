@@ -19,7 +19,7 @@ const Routes = () => {
           <h1>ask here</h1>
         </Route>
         <Route exact>
-          <Grid container direction="row" wrap="nowrap">
+          <Grid container direction="row" wrap="nowrap" justify="space-between">
             <Switch>
               <Route exact path="/">
                 <NavMenuDesktop />
