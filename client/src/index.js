@@ -6,10 +6,6 @@ import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import apolloClient from './apolloClient';
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en';
-
-TimeAgo.addDefaultLocale(en);
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>

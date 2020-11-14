@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_USERS } from '../graphql/queries';
 import { Link as RouterLink } from 'react-router-dom';
-import ReactTimeAgo from 'react-time-ago';
+import { formatDistanceToNow } from 'date-fns';
 
 import {
   Typography,
@@ -58,7 +58,9 @@ const AllUsersPage = () => {
                   <Typography variant="body2">{u.username}</Typography>
                 </Link>
                 <Typography variant="caption">
-                  created <ReactTimeAgo date={new Date(u.createdAt)} />
+                  {`created ${formatDistanceToNow(new Date(u.createdAt), {
+                    includeSeconds: true,
+                  })} ago`}
                 </Typography>
               </div>
             </div>

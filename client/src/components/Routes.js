@@ -1,9 +1,10 @@
 import { Switch, Route } from 'react-router-dom';
 import NavMenuDesktop from './NavMenuDesktop';
-import TagsMenu from './TagsMenu';
+import RightSidePanel from './RightSidePanel';
 import QuesListPage from '../pages/QuesListPage';
 import AllTagsPage from '../pages/AllTagsPage';
 import AllUsersPage from '../pages/AllUsersPage';
+import QuestionPage from '../pages/QuestionPage';
 
 import { Container, Grid } from '@material-ui/core';
 import { useMainLayoutStyles } from '../styles/muiStyles';
@@ -23,7 +24,7 @@ const Routes = () => {
               <Route exact path="/">
                 <NavMenuDesktop />
                 <QuesListPage />
-                <TagsMenu />
+                <RightSidePanel />
               </Route>
               <Route exact path="/tags">
                 <NavMenuDesktop />
@@ -32,6 +33,10 @@ const Routes = () => {
               <Route exact path="/users">
                 <NavMenuDesktop />
                 <AllUsersPage />
+              </Route>
+              <Route exact path="/questions/:quesId">
+                <NavMenuDesktop />
+                <QuestionPage />
               </Route>
             </Switch>
           </Grid>

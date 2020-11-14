@@ -68,7 +68,10 @@ const QuesListPage = () => {
       {quesData &&
         quesData.questions.map((q) => <QuesCard key={q.id} question={q} />)}
       {quesData && quesData.next && (
-        <LoadMoreButton loading={loading} handleLoadPosts={handleLoadPosts} />
+        <LoadMoreButton
+          loading={page !== 1 && loading}
+          handleLoadPosts={handleLoadPosts}
+        />
       )}
     </div>
   );

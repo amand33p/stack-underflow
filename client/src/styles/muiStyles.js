@@ -143,9 +143,14 @@ export const useTagsPanelStyles = makeStyles(
       top: '5.5vH',
     },
     content: {
-      padding: '0.8em',
       paddingTop: 0,
       marginTop: '1em',
+    },
+    tagsColumn: {
+      border: `1px solid ${theme.palette.primary.main}50`,
+      borderRadius: 4,
+      padding: '0.8em',
+      backgroundColor: `${theme.palette.primary.main}08`,
     },
     tagsWrapper: {
       marginTop: '1em',
@@ -182,6 +187,15 @@ export const useQuesCardStyles = makeStyles(
       fontSize: '1.2em',
       fontWeight: 500,
     },
+    title: {
+      fontSize: '1.2em',
+      fontWeight: 500,
+      textDecoration: 'none',
+      '&:hover': {
+        filter: 'brightness(200%)',
+      },
+      transition: 'all 0.4s ease',
+    },
     innerInfo: {
       display: 'flex',
       flexDirection: 'column',
@@ -216,7 +230,7 @@ export const useQuesCardStyles = makeStyles(
     avatar: {
       width: theme.spacing(4),
       height: theme.spacing(4),
-      marginRight: '0.6em',
+      marginRight: '0.4em',
       borderRadius: 2,
     },
   }),
@@ -339,6 +353,27 @@ export const useUsersPageStyles = makeStyles(
       height: theme.spacing(6),
       marginRight: '0.6em',
       borderRadius: 2,
+    },
+  }),
+  { index: 1 }
+);
+
+export const useQuesPageStyles = makeStyles(
+  (theme) => ({
+    root: {
+      width: '100%',
+      padding: '0.4em 0.7em',
+    },
+    titleWrapper: {
+      marginTop: '1em',
+      padding: '0.4em 0.7em',
+      width: '100%',
+    },
+    content: {
+      width: '60%',
+      [theme.breakpoints.down('xs')]: {
+        width: '100%',
+      },
     },
   }),
   { index: 1 }

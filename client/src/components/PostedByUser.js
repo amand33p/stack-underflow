@@ -1,5 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
-import ReactTimeAgo from 'react-time-ago';
+import { formatDistanceToNow } from 'date-fns';
 
 import { Typography, Link, Avatar } from '@material-ui/core';
 import { useQuesCardStyles } from '../styles/muiStyles';
@@ -18,7 +18,9 @@ const ByUser = ({ username, userId, createdAt }) => {
       />
       <div>
         <Typography variant="caption" color="secondary">
-          asked <ReactTimeAgo date={new Date(createdAt)} locale="en" />
+          {`asked ${formatDistanceToNow(new Date(createdAt), {
+            includeSeconds: true,
+          })} ago`}
         </Typography>
 
         <Link component={RouterLink} to="/user/username">

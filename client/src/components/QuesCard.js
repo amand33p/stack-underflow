@@ -17,7 +17,6 @@ const QuesCard = ({ question }) => {
     views,
     answerCount,
     createdAt,
-    updatedAt,
   } = question;
 
   return (
@@ -43,7 +42,9 @@ const QuesCard = ({ question }) => {
         <Typography
           variant="body2"
           color="secondary"
-          className={classes.mainText}
+          className={classes.title}
+          component={RouterLink}
+          to={`/questions/${id}`}
         >
           {title}
         </Typography>
