@@ -27,6 +27,15 @@ const QuesListPage = () => {
     if (data && page === 1) {
       setQuesData(data.getQuestions);
     }
+
+    if (data && page !== 1) {
+      setQuesData((prevState) => ({
+        ...data.getQuestions,
+        questions: prevState.questions.concat(
+          filterDuplicates(prevState.questions, data.getQuestions.questions)
+        ),
+      }));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
@@ -36,20 +45,9 @@ const QuesListPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy]);
 
-  useEffect(() => {
-    if (data && page !== 1) {
-      setQuesData((prevState) => ({
-        ...data.getQuestions,
-        questions: prevState.questions.concat(
-          filterDuplicates(prevState.questions, data.getQuestions.questions)
-        ),
-      }));
-    }
-  }, [data, page]);
-
   const handleLoadPosts = () => {
-    setPage(page + 1);
     getQues(sortBy, page + 1, 12);
+    setPage(page + 1);
   };
 
   return (
