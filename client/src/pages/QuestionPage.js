@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import { VIEW_QUESTION } from '../graphql/queries';
-import QuestionContent from '../components/QuestionContent';
+import QuesPageContent from '../components/QuesPageContent';
 import RightSidePanel from '../components/RightSidePanel';
 import { formatDateAgo } from '../utils/helperFuncs';
 
@@ -39,7 +39,7 @@ const QuestionPage = () => {
     return <div>loading...</div>;
   }
 
-  const { title, views, createdAt } = question;
+  const { title, views, createdAt, updatedAt } = question;
 
   return (
     <div className={classes.root}>
@@ -57,17 +57,22 @@ const QuestionPage = () => {
           </Button>
         </div>
         <div className={classes.quesInfo}>
-          <Typography variant="body2" style={{ marginRight: 12 }}>
+          <Typography variant="caption" style={{ marginRight: 10 }}>
             Asked <strong>{formatDateAgo(createdAt)} ago</strong>
           </Typography>
-          <Typography variant="body2">
+          {createdAt !== updatedAt && (
+            <Typography variant="caption" style={{ marginRight: 10 }}>
+              Edited <strong>{formatDateAgo(createdAt)} ago</strong>
+            </Typography>
+          )}
+          <Typography variant="caption">
             Viewed <strong>{views} times</strong>
           </Typography>
         </div>
       </div>
       <Divider />
       <Grid container direction="row" wrap="nowrap" justify="space-between">
-        <QuestionContent question={question} />
+        <QuesPageContent question={question} />
         <RightSidePanel />
       </Grid>
     </div>

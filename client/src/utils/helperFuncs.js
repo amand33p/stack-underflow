@@ -11,5 +11,5 @@ export const formatDateAgo = (date) => {
 };
 
 export const formatDayTime = (date) => {
-  return format(new Date(date), "MMM d 'at' H':'m");
+  return format(new Date(date), "MMM d', ' yy 'at' H':'m");
 };

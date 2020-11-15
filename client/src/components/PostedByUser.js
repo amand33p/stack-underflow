@@ -23,7 +23,7 @@ const ByUser = ({ username, userId, createdAt, filledVariant }) => {
             ? `asked ${formatDayTime(createdAt)}`
             : `asked ${formatDateAgo(createdAt)} ago`}
         </Typography>
-        <Link component={RouterLink} to="/user/username">
+        <Link component={RouterLink} to={`/user/${username}`}>
           <Typography variant="body2">{username}</Typography>
         </Link>
       </div>

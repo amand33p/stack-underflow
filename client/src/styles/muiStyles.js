@@ -399,6 +399,7 @@ export const useQuesPageStyles = makeStyles(
     },
     quesBody: {
       padding: '0.6em 1em',
+      paddingBottom: 0,
       width: '100%',
       [theme.breakpoints.down('xs')]: {
         paddingRight: '0',
@@ -412,19 +413,22 @@ export const useQuesPageStyles = makeStyles(
     tagsWrapper: {
       display: 'flex',
       flexWrap: 'wrap',
-      marginTop: '1.2em',
+      marginTop: '1em',
     },
     bottomWrapper: {
       display: 'flex',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
-      marginTop: '1.1em',
+      marginTop: '1.4em',
       marginBottom: '0.8em',
     },
     bottomBtns: {
       backgroundColor: `${theme.palette.primary.main}20`,
       border: `1px solid ${theme.palette.primary.main}30`,
       padding: '0 0.5em',
+    },
+    comment: {
+      padding: '0.5em 0.2em',
     },
   }),
   { index: 1 }

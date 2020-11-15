@@ -2,18 +2,24 @@ import { Link as RouterLink } from 'react-router-dom';
 import { UpvoteButton, DownvoteButton } from './VoteButtons';
 import { useAuthContext } from '../context/auth';
 import PostedByUser from './PostedByUser';
+import CommentSection from './CommentSection';
 
 import { Typography, Chip, Button, Divider } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 
-const QuesDetails = ({ question }) => {
+const QuesAnsDetails = ({
+  quesAns,
+  handleUpvote,
+  handleDownvote,
+  handleEditQues,
+  handleDeleteQues,
+}) => {
   const { user } = useAuthContext();
   const classes = useQuesPageStyles();
 
   const {
-    id,
     author,
     body,
     tags,
@@ -22,12 +28,7 @@ const QuesDetails = ({ question }) => {
     upvotedBy,
     downvotedBy,
     createdAt,
-    updatedAt,
-  } = question;
-
-  const handleUpvote = () => {};
-
-  const handleDownvote = () => {};
+  } = quesAns;
 
   return (
     <div className={classes.quesWrapper}>
@@ -48,21 +49,23 @@ const QuesDetails = ({ question }) => {
       </div>
       <div className={classes.quesBody}>
         <Typography variant="body1">{body}</Typography>
-        <div className={classes.tagsWrapper}>
-          {tags.map((t) => (
-            <Chip
-              key={t}
-              label={t}
-              variant="outlined"
-              color="primary"
-              size="small"
-              component={RouterLink}
-              to={`/tags/${t}`}
-              className={classes.tag}
-              clickable
-            />
-          ))}
-        </div>
+        {tags && (
+          <div className={classes.tagsWrapper}>
+            {tags.map((t) => (
+              <Chip
+                key={t}
+                label={t}
+                variant="outlined"
+                color="primary"
+                size="small"
+                component={RouterLink}
+                to={`/tags/${t}`}
+                className={classes.tag}
+                clickable
+              />
+            ))}
+          </div>
+        )}
         <div className={classes.bottomWrapper}>
           <div className={classes.btnsWrapper}>
             {user && user.id === author.id && (
@@ -72,6 +75,7 @@ const QuesDetails = ({ question }) => {
                 startIcon={<EditTwoToneIcon />}
                 style={{ marginRight: 9 }}
                 className={classes.bottomBtns}
+                onClick={handleEditQues}
               >
                 Edit
               </Button>
@@ -82,6 +86,7 @@ const QuesDetails = ({ question }) => {
                 color="secondary"
                 startIcon={<DeleteTwoToneIcon />}
                 className={classes.bottomBtns}
+                onClick={handleDeleteQues}
               >
                 Delete
               </Button>
@@ -95,9 +100,10 @@ const QuesDetails = ({ question }) => {
           />
         </div>
         <Divider />
+        {<CommentSection user={user} comments={comments} />}
       </div>
     </div>
   );
 };
 
-export default QuesDetails;
+export default QuesAnsDetails;
