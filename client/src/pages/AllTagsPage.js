@@ -18,7 +18,7 @@ const AllTagsPage = () => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h5" className={classes.titleText}>
+      <Typography variant="h5" className={classes.titleText} color="secondary">
         Tags
       </Typography>
       <Typography variant="body1">

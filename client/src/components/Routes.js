@@ -38,6 +38,11 @@ const Routes = () => {
                 <NavMenuDesktop />
                 <QuestionPage />
               </Route>
+              <Route exact path="/tags/:tagName">
+                <NavMenuDesktop />
+                <QuesListPage tagFilterActive={true} />
+                <RightSidePanel />
+              </Route>
             </Switch>
           </Grid>
         </Route>

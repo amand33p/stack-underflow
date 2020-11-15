@@ -98,12 +98,9 @@ export const useMenuStyles = makeStyles(
 export const useQuesListStyles = makeStyles(
   (theme) => ({
     root: {
-      width: '60%',
+      width: '100%',
       marginTop: '1em',
       padding: '0.4em 0.7em',
-      [theme.breakpoints.down('xs')]: {
-        width: '100%',
-      },
     },
     topBar: {
       display: 'flex',
@@ -362,7 +359,6 @@ export const useQuesPageStyles = makeStyles(
   (theme) => ({
     root: {
       width: '100%',
-      padding: '0.4em 0.7em',
     },
     titleWrapper: {
       marginTop: '1em',

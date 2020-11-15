@@ -25,7 +25,9 @@ const AllUsersPage = () => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h5">Users</Typography>
+      <Typography variant="h5" color="secondary">
+        Users
+      </Typography>
       <TextField
         className={classes.filterInput}
         value={filterInput}
