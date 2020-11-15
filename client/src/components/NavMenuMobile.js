@@ -48,7 +48,9 @@ const MobileNavMenu = () => {
         elevation={1}
       >
         <MenuItem
-          selected={pathname === '/'}
+          selected={
+            pathname === '/' || (pathname !== '/tags' && pathname !== '/users')
+          }
           dense
           component={RouterLink}
           to="/"

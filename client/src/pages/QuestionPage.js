@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import { VIEW_QUESTION } from '../graphql/queries';
+import QuestionContent from '../components/QuestionContent';
 import RightSidePanel from '../components/RightSidePanel';
+import { formatDateAgo } from '../utils/helperFuncs';
 
 import {
   Typography,
@@ -12,12 +14,15 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
+import { useTheme } from '@material-ui/core/styles';
 
 const QuestionPage = () => {
   const { quesId } = useParams();
-  const [fetchQuestion, { data, loading }] = useLazyQuery(VIEW_QUESTION);
+  const [fetchQuestion, { data }] = useLazyQuery(VIEW_QUESTION);
   const [question, setQuestion] = useState(null);
   const classes = useQuesPageStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   useEffect(() => {
     fetchQuestion({ variables: { quesId } });
@@ -30,20 +35,39 @@ const QuestionPage = () => {
     }
   }, [data]);
 
-  console.log(question);
+  if (!question) {
+    return <div>loading...</div>;
+  }
+
+  const { title, views, createdAt } = question;
 
   return (
     <div className={classes.root}>
-      <div className={classes.titleWrapper}>
-        <Typography variant="h4">This is title</Typography>
+      <div className={classes.topBar}>
+        <div className={classes.titleWrapper}>
+          <Typography variant={isMobile ? 'h6' : 'h5'} color="secondary">
+            {title}
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            size={isMobile ? 'small' : 'medium'}
+          >
+            Ask Question
+          </Button>
+        </div>
+        <div className={classes.quesInfo}>
+          <Typography variant="body2" style={{ marginRight: 12 }}>
+            Asked <strong>{formatDateAgo(createdAt)} ago</strong>
+          </Typography>
+          <Typography variant="body2">
+            Viewed <strong>{views} times</strong>
+          </Typography>
+        </div>
       </div>
-      {loading && <div>loading...</div>}
+      <Divider />
       <Grid container direction="row" wrap="nowrap" justify="space-between">
-        {!loading && (
-          <div className={classes.content}>
-            This is title This is titleThis is title
-          </div>
-        )}
+        <QuestionContent question={question} />
         <RightSidePanel />
       </Grid>
     </div>

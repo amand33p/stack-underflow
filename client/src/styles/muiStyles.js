@@ -106,6 +106,7 @@ export const useQuesListStyles = makeStyles(
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
+      flexWrap: 'wrap',
     },
     btnGroupWrapper: {
       width: '100%',
@@ -224,6 +225,15 @@ export const useQuesCardStyles = makeStyles(
       alignItems: 'center',
       marginTop: '0.7em',
     },
+    filledByUser: {
+      display: 'flex',
+      alignItems: 'center',
+      marginTop: '0.7em',
+      backgroundColor: `${theme.palette.primary.main}10`,
+      padding: '0.5em',
+      borderRadius: 3,
+      border: `1px solid ${theme.palette.primary.main}40`,
+    },
     avatar: {
       width: theme.spacing(4),
       height: theme.spacing(4),
@@ -329,7 +339,6 @@ export const useUsersPageStyles = makeStyles(
       padding: '0.4em 0.7em',
       width: '100%',
     },
-
     filterInput: {
       marginTop: '1.2em',
       [theme.breakpoints.down('xs')]: {
@@ -359,14 +368,77 @@ export const useQuesPageStyles = makeStyles(
   (theme) => ({
     root: {
       width: '100%',
+      paddingLeft: '0.7em',
+      marginTop: '1em',
+      [theme.breakpoints.down('xs')]: {
+        paddingRight: '0.7em',
+      },
     },
     titleWrapper: {
-      marginTop: '1em',
-      padding: '0.4em 0.7em',
-      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      paddingBottom: '0.4em',
+    },
+    quesInfo: {
+      display: 'flex',
+      paddingBottom: '0.8em',
     },
     content: {
+      paddingTop: '0.5em',
       width: '100%',
+    },
+    quesWrapper: {
+      display: 'flex',
+    },
+    voteColumn: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: 30,
+      alignItems: 'center',
+    },
+    quesBody: {
+      padding: '0.6em 1em',
+      width: '100%',
+      [theme.breakpoints.down('xs')]: {
+        paddingRight: '0',
+      },
+    },
+    tag: {
+      marginRight: '0.5em',
+      marginTop: '0.5em',
+      backgroundColor: '#f7ebff',
+    },
+    tagsWrapper: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      marginTop: '1.2em',
+    },
+    bottomWrapper: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      marginTop: '1.1em',
+      marginBottom: '0.8em',
+    },
+    bottomBtns: {
+      backgroundColor: `${theme.palette.primary.main}20`,
+      border: `1px solid ${theme.palette.primary.main}30`,
+      padding: '0 0.5em',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useVoteBtnsStyles = makeStyles(
+  (theme) => ({
+    icon: {
+      color: '#aa9aaa',
+      fontSize: 32,
+    },
+    checkedIcon: {
+      color: '#964ec2',
+      fontSize: 32,
     },
   }),
   { index: 1 }

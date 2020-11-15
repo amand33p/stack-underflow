@@ -30,6 +30,7 @@ const QuesListPage = ({ tagFilterActive }) => {
   useEffect(() => {
     getQues(sortBy, 1, 12, tagName);
     setPage(1);
+    window.scrollTo(0, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy, tagName]);
 

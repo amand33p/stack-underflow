@@ -62,7 +62,7 @@ const NavBar = () => {
                     alt="sof-logo"
                     style={{ marginRight: '5px' }}
                   />
-                  stack<strong>overflow</strong>-clone
+                  my-stack<strong>overflow</strong>
                 </Button>
               )}
               {!isMobile && (
