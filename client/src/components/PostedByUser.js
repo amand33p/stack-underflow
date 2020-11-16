@@ -3,7 +3,7 @@ import { formatDateAgo, formatDayTime } from '../utils/helperFuncs';
 import { Typography, Link, Avatar } from '@material-ui/core';
 import { useQuesCardStyles } from '../styles/muiStyles';
 
-const ByUser = ({ username, userId, createdAt, filledVariant }) => {
+const ByUser = ({ username, userId, createdAt, filledVariant, isAnswer }) => {
   const classes = useQuesCardStyles();
 
   return (
@@ -20,7 +20,7 @@ const ByUser = ({ username, userId, createdAt, filledVariant }) => {
       <div>
         <Typography variant="caption" color="secondary">
           {filledVariant
-            ? `asked ${formatDayTime(createdAt)}`
+            ? `${isAnswer ? 'answered' : 'asked'} ${formatDayTime(createdAt)}`
             : `asked ${formatDateAgo(createdAt)} ago`}
         </Typography>
         <Link component={RouterLink} to={`/user/${username}`}>

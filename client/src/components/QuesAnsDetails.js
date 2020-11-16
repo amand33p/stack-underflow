@@ -11,10 +11,14 @@ import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 
 const QuesAnsDetails = ({
   quesAns,
-  handleUpvote,
-  handleDownvote,
-  handleEditQues,
-  handleDeleteQues,
+  upvoteQuesAns,
+  downvoteQuesAns,
+  editQuesAns,
+  deleteQuesAns,
+  addComment,
+  editComment,
+  deleteComment,
+  isAnswer,
 }) => {
   const { user } = useAuthContext();
   const classes = useQuesPageStyles();
@@ -36,7 +40,7 @@ const QuesAnsDetails = ({
         <UpvoteButton
           user={user}
           upvotedBy={upvotedBy}
-          handleUpvote={handleUpvote}
+          handleUpvote={upvoteQuesAns}
         />
         <Typography variant="h6" color="secondary">
           {points}
@@ -44,7 +48,7 @@ const QuesAnsDetails = ({
         <DownvoteButton
           user={user}
           downvotedBy={downvotedBy}
-          handleDownvote={handleDownvote}
+          handleDownvote={downvoteQuesAns}
         />
       </div>
       <div className={classes.quesBody}>
@@ -75,7 +79,7 @@ const QuesAnsDetails = ({
                 startIcon={<EditTwoToneIcon />}
                 style={{ marginRight: 9 }}
                 className={classes.bottomBtns}
-                onClick={handleEditQues}
+                onClick={editQuesAns}
               >
                 Edit
               </Button>
@@ -86,7 +90,7 @@ const QuesAnsDetails = ({
                 color="secondary"
                 startIcon={<DeleteTwoToneIcon />}
                 className={classes.bottomBtns}
-                onClick={handleDeleteQues}
+                onClick={deleteQuesAns}
               >
                 Delete
               </Button>
@@ -97,10 +101,17 @@ const QuesAnsDetails = ({
             userId={author.id}
             createdAt={createdAt}
             filledVariant={true}
+            isAnswer={isAnswer}
           />
         </div>
         <Divider />
-        {<CommentSection user={user} comments={comments} />}
+        <CommentSection
+          user={user}
+          comments={comments}
+          addComment={addComment}
+          editComment={editComment}
+          deleteComment={deleteComment}
+        />
       </div>
     </div>
   );

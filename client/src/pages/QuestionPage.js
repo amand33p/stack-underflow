@@ -18,7 +18,9 @@ import { useTheme } from '@material-ui/core/styles';
 
 const QuestionPage = () => {
   const { quesId } = useParams();
-  const [fetchQuestion, { data }] = useLazyQuery(VIEW_QUESTION);
+  const [fetchQuestion, { data }] = useLazyQuery(VIEW_QUESTION, {
+    fetchPolicy: 'network-only',
+  });
   const [question, setQuestion] = useState(null);
   const classes = useQuesPageStyles();
   const theme = useTheme();

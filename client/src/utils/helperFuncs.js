@@ -11,5 +11,19 @@ export const formatDateAgo = (date) => {
 };
 
 export const formatDayTime = (date) => {
-  return format(new Date(date), "MMM d', ' yy 'at' H':'m");
+  return format(new Date(date), "MMM d', ' yy 'at' H':'mm");
+};
+
+export const sortAnswers = (answers, sortBy) => {
+  if (sortBy === 'OLDEST') {
+    return answers.sort(
+      (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+    );
+  } else if (sortBy === 'NEWEST') {
+    return answers.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+  } else {
+    return answers.sort((a, b) => b.points - a.points);
+  }
 };

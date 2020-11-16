@@ -137,7 +137,7 @@ export const useTagsPanelStyles = makeStyles(
     rootPanel: {
       position: 'sticky',
       display: 'flex',
-      minHeight: '94.5vh',
+      minHeight: '10vh',
       top: '5.5vH',
     },
     content: {
@@ -387,6 +387,7 @@ export const useQuesPageStyles = makeStyles(
     content: {
       paddingTop: '0.5em',
       width: '100%',
+      paddingBottom: '1em',
     },
     quesWrapper: {
       display: 'flex',
@@ -423,12 +424,33 @@ export const useQuesPageStyles = makeStyles(
       marginBottom: '0.8em',
     },
     bottomBtns: {
-      backgroundColor: `${theme.palette.primary.main}20`,
-      border: `1px solid ${theme.palette.primary.main}30`,
       padding: '0 0.5em',
     },
-    comment: {
+    commentSection: {
+      marginBottom: '1em',
+    },
+    commentWrapper: {
       padding: '0.5em 0.2em',
+    },
+    commentBtns: {
+      padding: '0 0.1em',
+      minWidth: '3em',
+    },
+    commentForm: {
+      marginTop: '1em',
+    },
+    addCommentBtns: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      marginTop: '0.3em',
+    },
+    answersWrapper: {
+      marginTop: '1em',
+    },
+    answerHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
     },
   }),
   { index: 1 }
