@@ -1,5 +1,6 @@
 import QuesAnsDetails from './QuesAnsDetails';
 import AnswerList from './AnswerList';
+import AnswerForm from './AnswerForm';
 
 import { Divider } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
@@ -7,7 +8,7 @@ import { useQuesPageStyles } from '../styles/muiStyles';
 const QuesPageContent = ({ question }) => {
   const classes = useQuesPageStyles();
 
-  const { id: quesId, answers, acceptedAnswer } = question;
+  const { id: quesId, answers, acceptedAnswer, tags } = question;
 
   const upvoteQues = () => {};
 
@@ -32,8 +33,8 @@ const QuesPageContent = ({ question }) => {
         editQuesAns={editQues}
         deleteQuesAns={deleteQues}
         addComment={addQuesComment}
-        editComment={addQuesComment}
-        deleteComment={addQuesComment}
+        editComment={editQuesComment}
+        deleteComment={deleteQuesComment}
       />
       <Divider />
       <AnswerList
@@ -41,6 +42,7 @@ const QuesPageContent = ({ question }) => {
         answers={answers}
         acceptedAnswer={acceptedAnswer}
       />
+      <AnswerForm quesId={quesId} tags={tags} />
     </div>
   );
 };

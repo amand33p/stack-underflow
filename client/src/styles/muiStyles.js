@@ -450,6 +450,7 @@ export const useQuesPageStyles = makeStyles(
       justifyContent: 'space-between',
       alignItems: 'center',
       marginBottom: '0.5em',
+      padding: '0 0.5em',
     },
     acceptIcon: {
       color: '#aa9aaa',
@@ -461,6 +462,18 @@ export const useQuesPageStyles = makeStyles(
     },
     answerWrapper: {
       marginBottom: '0.5em',
+    },
+    answerForm: {
+      marginTop: '2em',
+    },
+    footerText: {
+      marginTop: '1em',
+      marginBottom: '1em',
+      display: 'flex',
+      alignItems: 'flex-start',
+    },
+    footerTag: {
+      backgroundColor: '#f7ebff',
     },
   }),
   { index: 1 }
