@@ -3,8 +3,9 @@ import { UpvoteButton, DownvoteButton } from './VoteButtons';
 import { useAuthContext } from '../context/auth';
 import PostedByUser from './PostedByUser';
 import CommentSection from './CommentSection';
+import AcceptAnswerButton from './AcceptAnswerButton';
 
-import { Typography, Chip, Button, Divider } from '@material-ui/core';
+import { Typography, Chip, Button } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
@@ -18,12 +19,15 @@ const QuesAnsDetails = ({
   addComment,
   editComment,
   deleteComment,
+  acceptAnswer,
   isAnswer,
+  acceptedAnswer,
 }) => {
   const { user } = useAuthContext();
   const classes = useQuesPageStyles();
 
   const {
+    id,
     author,
     body,
     tags,
@@ -35,7 +39,7 @@ const QuesAnsDetails = ({
   } = quesAns;
 
   return (
-    <div className={classes.quesWrapper}>
+    <div className={classes.quesAnsWrapper}>
       <div className={classes.voteColumn}>
         <UpvoteButton
           user={user}
@@ -50,6 +54,12 @@ const QuesAnsDetails = ({
           downvotedBy={downvotedBy}
           handleDownvote={downvoteQuesAns}
         />
+        {isAnswer && user && user.id === author.id && (
+          <AcceptAnswerButton
+            checked={acceptedAnswer && acceptedAnswer === id}
+            handleAcceptAns={acceptAnswer}
+          />
+        )}
       </div>
       <div className={classes.quesBody}>
         <Typography variant="body1">{body}</Typography>
@@ -104,13 +114,13 @@ const QuesAnsDetails = ({
             isAnswer={isAnswer}
           />
         </div>
-        <Divider />
         <CommentSection
           user={user}
           comments={comments}
           addComment={addComment}
           editComment={editComment}
           deleteComment={deleteComment}
+          quesAnsId={id}
         />
       </div>
     </div>

@@ -16,14 +16,14 @@ export const formatDayTime = (date) => {
 
 export const sortAnswers = (answers, sortBy) => {
   if (sortBy === 'OLDEST') {
-    return answers.sort(
+    return [...answers].sort(
       (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
     );
   } else if (sortBy === 'NEWEST') {
-    return answers.sort(
+    return [...answers].sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
   } else {
-    return answers.sort((a, b) => b.points - a.points);
+    return [...answers].sort((a, b) => b.points - a.points);
   }
 };

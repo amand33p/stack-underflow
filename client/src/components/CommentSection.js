@@ -19,6 +19,7 @@ const CommentSection = ({
   addComment,
   editComment,
   deleteComment,
+  quesAnsId,
 }) => {
   const [visibleComments, setVisibleComments] = useState(comments.slice(0, 3));
   const [inputOpen, setInputOpen] = useState(false);
@@ -31,6 +32,7 @@ const CommentSection = ({
 
   return (
     <div className={classes.commentSection}>
+      {comments.length !== 0 && <Divider />}
       {visibleComments.map((c) => (
         <div key={c.id}>
           <div className={classes.commentWrapper}>
@@ -51,7 +53,7 @@ const CommentSection = ({
                 size="small"
                 color="primary"
                 className={classes.commentBtns}
-                onClick={() => editComment(c.id)}
+                onClick={() => editComment(c.id, quesAnsId)}
               >
                 edit
               </Button>
@@ -61,7 +63,7 @@ const CommentSection = ({
                 size="small"
                 color="primary"
                 className={classes.commentBtns}
-                onClick={() => deleteComment(c.id)}
+                onClick={() => deleteComment(c.id, quesAnsId)}
               >
                 delete
               </Button>
@@ -93,7 +95,9 @@ const CommentSection = ({
       {inputOpen && (
         <form
           className={classes.commentForm}
-          onSubmit={handleSubmit((data) => addComment(data, reset, closeInput))}
+          onSubmit={handleSubmit((data) =>
+            addComment(data, reset, closeInput, quesAnsId)
+          )}
         >
           <TextField
             inputRef={register}

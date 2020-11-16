@@ -389,8 +389,9 @@ export const useQuesPageStyles = makeStyles(
       width: '100%',
       paddingBottom: '1em',
     },
-    quesWrapper: {
+    quesAnsWrapper: {
       display: 'flex',
+      marginBottom: '1em',
     },
     voteColumn: {
       display: 'flex',
@@ -426,9 +427,6 @@ export const useQuesPageStyles = makeStyles(
     bottomBtns: {
       padding: '0 0.5em',
     },
-    commentSection: {
-      marginBottom: '1em',
-    },
     commentWrapper: {
       padding: '0.5em 0.2em',
     },
@@ -451,6 +449,18 @@ export const useQuesPageStyles = makeStyles(
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
+      marginBottom: '0.5em',
+    },
+    acceptIcon: {
+      color: '#aa9aaa',
+      fontSize: 32,
+    },
+    checkedAcceptIcon: {
+      color: '#2e8b57',
+      fontSize: 32,
+    },
+    answerWrapper: {
+      marginBottom: '0.5em',
     },
   }),
   { index: 1 }
