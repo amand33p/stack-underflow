@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import { VIEW_QUESTION } from '../graphql/queries';
 import QuesPageContent from '../components/QuesPageContent';
@@ -54,6 +54,8 @@ const QuestionPage = () => {
             variant="contained"
             color="primary"
             size={isMobile ? 'small' : 'medium'}
+            component={RouterLink}
+            to="/ask"
           >
             Ask Question
           </Button>

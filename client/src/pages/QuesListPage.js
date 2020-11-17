@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { GET_QUESTIONS } from '../graphql/queries';
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 import SortQuesBar from '../components/SortQuesBar';
 import QuesCard from '../components/QuesCard';
 import LoadMoreButton from '../components/LoadMoreButton';
@@ -65,6 +65,8 @@ const QuesListPage = ({ tagFilterActive }) => {
           variant="contained"
           color="primary"
           size={isMobile ? 'small' : 'medium'}
+          component={RouterLink}
+          to="/ask"
         >
           Ask Question
         </Button>

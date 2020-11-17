@@ -44,15 +44,6 @@ export const useNavStyles = makeStyles(
   { index: 1 }
 );
 
-export const useMainLayoutStyles = makeStyles(
-  (theme) => ({
-    root: {
-      display: 'flex',
-    },
-  }),
-  { index: 1 }
-);
-
 export const useMenuStyles = makeStyles(
   (theme) => ({
     menuIcon: {
@@ -473,6 +464,35 @@ export const useQuesPageStyles = makeStyles(
       alignItems: 'flex-start',
     },
     footerTag: {
+      backgroundColor: '#f7ebff',
+      marginRight: '0.5em',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useAskQuesPageStyles = makeStyles(
+  (theme) => ({
+    root: {
+      width: '100%',
+      marginTop: '1em',
+      padding: '0.4em 1em',
+    },
+    quesForm: {
+      paddingTop: '2em',
+    },
+    inputWrapper: {
+      marginBottom: '2em',
+    },
+    inputField: {
+      marginTop: '0.4em',
+    },
+    submitBtn: {
+      [theme.breakpoints.down('xs')]: {
+        width: '100%',
+      },
+    },
+    tag: {
       backgroundColor: '#f7ebff',
       marginRight: '0.5em',
     },
