@@ -25,15 +25,15 @@ const AskQuestionPage = () => {
       return console.log('only 5 tags pls');
     }
 
-    setTagInput(e.target.value.toLowerCase());
+    const value = e.target.value.toLowerCase().trim();
+    setTagInput(value);
 
-    if (tags.find((t) => t === setTagInput)) {
-      setTagInput('');
-      return console.log('duplicate');
-    }
+    if (e.keyCode === 32 && value.trim() !== '') {
+      if (tags.includes(value)) {
+        return console.log('dup');
+      }
 
-    if (e.keyCode === 32 && setTagInput.trim() !== '') {
-      setTags((prevTags) => [...prevTags, setTagInput]);
+      setTags((prevTags) => [...prevTags, value]);
       setTagInput('');
     }
   };
@@ -59,6 +59,11 @@ const AskQuestionPage = () => {
             variant="outlined"
             size="small"
             className={classes.inputField}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start"></InputAdornment>
+              ),
+            }}
           />
         </div>
         <div className={classes.inputWrapper}>
@@ -79,6 +84,11 @@ const AskQuestionPage = () => {
             variant="outlined"
             size="small"
             className={classes.inputField}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start"></InputAdornment>
+              ),
+            }}
           />
         </div>
         <div className={classes.inputWrapper}>
@@ -94,6 +104,7 @@ const AskQuestionPage = () => {
             label="Tags"
             variant="outlined"
             size="small"
+            placeholder="Enter space button to add tags"
             className={classes.inputField}
             onChange={handleTags}
             onKeyDown={handleTags}
