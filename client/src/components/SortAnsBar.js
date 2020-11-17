@@ -3,13 +3,13 @@ import { sortAnswers } from '../utils/helperFuncs';
 
 import { ButtonGroup, Button } from '@material-ui/core';
 
-const SortAnsBar = ({ isMobile, setAnswerList }) => {
+const SortAnsBar = ({ isMobile, setAnswerList, acceptedAnswer }) => {
   const [sortBy, setSortBy] = useState('VOTES');
 
   const handleSortChange = (e) => {
     setSortBy(e.target.innerText.toUpperCase());
     setAnswerList((prevState) =>
-      sortAnswers(prevState, e.target.innerText.toUpperCase())
+      sortAnswers(e.target.innerText.toUpperCase(), prevState, acceptedAnswer)
     );
   };
 

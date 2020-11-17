@@ -474,6 +474,7 @@ export const useQuesPageStyles = makeStyles(
     },
     footerTag: {
       backgroundColor: '#f7ebff',
+      marginRight: '0.5em',
     },
   }),
   { index: 1 }

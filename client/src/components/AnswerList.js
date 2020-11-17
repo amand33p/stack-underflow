@@ -8,7 +8,9 @@ import { useQuesPageStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 
 const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
-  const [answerList, setAnswerList] = useState(sortAnswers(answers, 'VOTES'));
+  const [answerList, setAnswerList] = useState(
+    sortAnswers('VOTES', answers, acceptedAnswer)
+  );
   const classes = useQuesPageStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
@@ -36,7 +38,11 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           <Typography color="secondary" variant="h6">
             {answerList.length} {answerList.length === 1 ? 'Answer' : 'Answers'}
           </Typography>
-          <SortAnsBar setAnswerList={setAnswerList} isMobile={isMobile} />
+          <SortAnsBar
+            setAnswerList={setAnswerList}
+            acceptedAnswer={acceptedAnswer}
+            isMobile={isMobile}
+          />
         </div>
       )}
       <div>
