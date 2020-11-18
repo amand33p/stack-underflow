@@ -4,11 +4,11 @@ import { useAuthContext } from '../context/auth';
 import PostedByUser from './PostedByUser';
 import CommentSection from './CommentSection';
 import AcceptAnswerButton from './AcceptAnswerButton';
+import DeleteDialog from './DeleteDialog';
 
 import { Typography, Chip, Button } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 
 const QuesAnsDetails = ({
   quesAns,
@@ -95,15 +95,7 @@ const QuesAnsDetails = ({
               </Button>
             )}
             {user && (user.id === author.id || user.role === 'admin') && (
-              <Button
-                size="small"
-                color="secondary"
-                startIcon={<DeleteTwoToneIcon />}
-                className={classes.bottomBtns}
-                onClick={deleteQuesAns}
-              >
-                Delete
-              </Button>
+              <DeleteDialog handleDelete={deleteQuesAns} />
             )}
           </div>
           <PostedByUser
