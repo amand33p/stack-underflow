@@ -1,6 +1,7 @@
 import NavBar from './components/NavBar';
 import Routes from './components/Routes';
 import { AuthProvider } from './context/auth';
+import { StateProvider } from './context/state';
 
 import customTheme from './styles/customTheme';
 import { useBodyStyles } from './styles/muiStyles';
@@ -12,12 +13,14 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <ThemeProvider theme={customTheme()}>
-        <Paper className={classes.root} elevation={0}>
-          <NavBar />
-          <Routes />
-        </Paper>
-      </ThemeProvider>
+      <StateProvider>
+        <ThemeProvider theme={customTheme()}>
+          <Paper className={classes.root} elevation={0}>
+            <NavBar />
+            <Routes />
+          </Paper>
+        </ThemeProvider>
+      </StateProvider>
     </AuthProvider>
   );
 };

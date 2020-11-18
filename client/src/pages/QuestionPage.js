@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import { VIEW_QUESTION } from '../graphql/queries';
+import { useStateContext } from '../context/state';
 import QuesPageContent from '../components/QuesPageContent';
 import RightSidePanel from '../components/RightSidePanel';
 import { formatDateAgo } from '../utils/helperFuncs';
@@ -18,7 +19,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 const QuestionPage = () => {
   const [fetchQuestion, { data }] = useLazyQuery(VIEW_QUESTION);
-
+  const { clearEdit } = useStateContext();
   const { quesId } = useParams();
   const [question, setQuestion] = useState(null);
   const classes = useQuesPageStyles();
@@ -55,6 +56,7 @@ const QuestionPage = () => {
             size={isMobile ? 'small' : 'medium'}
             component={RouterLink}
             to="/ask"
+            onClick={() => clearEdit()}
           >
             Ask Question
           </Button>
@@ -65,7 +67,7 @@ const QuestionPage = () => {
           </Typography>
           {createdAt !== updatedAt && (
             <Typography variant="caption" style={{ marginRight: 10 }}>
-              Edited <strong>{formatDateAgo(createdAt)} ago</strong>
+              Edited <strong>{formatDateAgo(updatedAt)} ago</strong>
             </Typography>
           )}
           <Typography variant="caption">

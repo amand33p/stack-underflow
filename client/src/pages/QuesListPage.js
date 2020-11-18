@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { GET_QUESTIONS } from '../graphql/queries';
 import { useParams, Link as RouterLink } from 'react-router-dom';
+import { useStateContext } from '../context/state';
 import SortQuesBar from '../components/SortQuesBar';
 import QuesCard from '../components/QuesCard';
 import LoadMoreButton from '../components/LoadMoreButton';
@@ -16,6 +17,7 @@ const QuesListPage = ({ tagFilterActive }) => {
     fetchPolicy: 'network-only',
   });
 
+  const { clearEdit } = useStateContext();
   const [quesData, setQuesData] = useState(null);
   const [sortBy, setSortBy] = useState('HOT');
   const [page, setPage] = useState(1);
@@ -70,6 +72,7 @@ const QuesListPage = ({ tagFilterActive }) => {
           size={isMobile ? 'small' : 'medium'}
           component={RouterLink}
           to="/ask"
+          onClick={() => clearEdit()}
         >
           Ask Question
         </Button>

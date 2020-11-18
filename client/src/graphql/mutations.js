@@ -28,6 +28,20 @@ export const POST_QUESTION = gql`
   ${QUESTION_DETAILS}
 `;
 
+export const EDIT_QUESTION = gql`
+  mutation updateQuestion(
+    $quesId: ID!
+    $title: String!
+    $body: String!
+    $tags: [String!]!
+  ) {
+    editQuestion(quesId: $quesId, title: $title, body: $body, tags: $tags) {
+      ...QuestionDetails
+    }
+  }
+  ${QUESTION_DETAILS}
+`;
+
 export const VOTE_QUESTION = gql`
   mutation submitVote($quesId: ID!, $voteType: VoteType!) {
     voteQuestion(quesId: $quesId, voteType: $voteType) {

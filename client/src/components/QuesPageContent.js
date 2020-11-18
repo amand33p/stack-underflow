@@ -1,6 +1,8 @@
+import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { VOTE_QUESTION } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
+import { useStateContext } from '../context/state';
 import QuesAnsDetails from './QuesAnsDetails';
 import AnswerList from './AnswerList';
 import AnswerForm from './AnswerForm';
@@ -9,16 +11,21 @@ import { Divider } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
 
 const QuesPageContent = ({ question }) => {
-  const { user } = useAuthContext();
-  const classes = useQuesPageStyles();
   const {
     id: quesId,
     answers,
     acceptedAnswer,
-    tags,
     upvotedBy,
     downvotedBy,
+    title,
+    body,
+    tags,
   } = question;
+
+  const { user } = useAuthContext();
+  const { setEditValues } = useStateContext();
+  const history = useHistory();
+  const classes = useQuesPageStyles();
 
   const [submitVote] = useMutation(VOTE_QUESTION, {
     onError: (err) => {
@@ -82,7 +89,10 @@ const QuesPageContent = ({ question }) => {
     });
   };
 
-  const editQues = () => {};
+  const editQues = () => {
+    setEditValues({ quesId, title, body, tags });
+    history.push('/ask');
+  };
 
   const deleteQues = () => {};
 

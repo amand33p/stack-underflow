@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
-import { POST_QUESTION } from '../graphql/mutations';
+import { POST_QUESTION, EDIT_QUESTION } from '../graphql/mutations';
+import { useStateContext } from '../context/state';
 
 import {
   Typography,
@@ -16,13 +17,31 @@ import { useAskQuesPageStyles } from '../styles/muiStyles';
 const AskQuestionPage = () => {
   const classes = useAskQuesPageStyles();
   const history = useHistory();
-  const { register, handleSubmit, reset } = useForm();
-  const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState([]);
+  const { editValues, clearEdit } = useStateContext();
 
-  const [addQuestion, { loading }] = useMutation(POST_QUESTION, {
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      title: editValues ? editValues.title : '',
+      body: editValues ? editValues.body : '',
+    },
+  });
+  const [tagInput, setTagInput] = useState('');
+  const [tags, setTags] = useState(editValues ? editValues.tags : []);
+
+  const [addQuestion, { addQuesLoading }] = useMutation(POST_QUESTION, {
     update: (_, { data }) => {
       history.push(`/questions/${data.postQuestion.id}`);
+      reset();
+    },
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+
+  const [updateQuestion, { editQuesLoading }] = useMutation(EDIT_QUESTION, {
+    update: (_, { data }) => {
+      history.push(`/questions/${data.editQuestion.id}`);
+      clearEdit();
       reset();
     },
     onError: (err) => {
@@ -33,6 +52,13 @@ const AskQuestionPage = () => {
   const postQuestion = ({ title, body }) => {
     if (tags.length === 0) return console.log('tags needed');
     addQuestion({ variables: { title, body, tags } });
+  };
+
+  const editQuestion = ({ title, body }) => {
+    if (tags.length === 0) return console.log('tags needed');
+    updateQuestion({
+      variables: { quesId: editValues.quesId, title, body, tags },
+    });
   };
 
   const handleTags = (e) => {
@@ -54,9 +80,14 @@ const AskQuestionPage = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h5" color="secondary">
-        Ask A Question
+        {editValues ? 'Edit Your Question' : 'Ask A Question'}
       </Typography>
-      <form className={classes.quesForm} onSubmit={handleSubmit(postQuestion)}>
+      <form
+        className={classes.quesForm}
+        onSubmit={
+          editValues ? handleSubmit(editQuestion) : handleSubmit(postQuestion)
+        }
+      >
         <div className={classes.inputWrapper}>
           <Typography variant="caption" color="secondary">
             Be specific and imagine you’re asking a question to another person
@@ -151,9 +182,9 @@ const AskQuestionPage = () => {
           variant="contained"
           size="large"
           className={classes.submitBtn}
-          disabled={loading}
+          disabled={addQuesLoading || editQuesLoading}
         >
-          Post Your Question
+          {editValues ? 'Update Your Question' : 'Post Your Question'}
         </Button>
       </form>
     </div>

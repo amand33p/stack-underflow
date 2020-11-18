@@ -92,21 +92,29 @@ export const useQuesListStyles = makeStyles(
       width: '100%',
       marginTop: '1em',
       padding: '0.4em 0.7em',
+      [theme.breakpoints.down('xs')]: {
+        paddingLeft: '0.3em',
+        paddingRight: '0.3em',
+      },
     },
     topBar: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
       flexWrap: 'wrap',
+      [theme.breakpoints.down('xs')]: {
+        paddingLeft: '0.4em',
+        paddingRight: '0.4em',
+      },
     },
     btnGroupWrapper: {
       width: '100%',
       display: 'flex',
       justifyContent: 'flex-end',
-      marginTop: '1em',
-      marginBottom: '1em',
+      margin: '1em 0',
       [theme.breakpoints.down('xs')]: {
-        justifyContent: 'center',
+        width: '97%',
+        margin: '1em auto',
       },
     },
     loadBtnWrapper: {
@@ -169,7 +177,8 @@ export const useQuesCardStyles = makeStyles(
       flexDirection: 'column',
       textAlign: 'center',
       [theme.breakpoints.down('xs')]: {
-        width: '15%',
+        width: '22%',
+        paddingRight: '0.2em',
       },
     },
     mainText: {
