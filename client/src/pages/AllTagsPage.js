@@ -12,7 +12,7 @@ const AllTagsPage = () => {
   const [filterInput, setFilterInput] = useState('');
   const classes = useTagsPageStyles();
 
-  if (loading) {
+  if (loading || !data) {
     return <div>loading...</div>;
   }
 

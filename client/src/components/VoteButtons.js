@@ -4,12 +4,12 @@ import { ReactComponent as DownvoteIcon } from '../svg/downvote.svg';
 import { Checkbox, SvgIcon } from '@material-ui/core';
 import { useVoteBtnsStyles } from '../styles/muiStyles';
 
-export const UpvoteButton = ({ user, upvotedBy, handleUpvote }) => {
+export const UpvoteButton = ({ checked, handleUpvote, user }) => {
   const classes = useVoteBtnsStyles();
 
   return (
     <Checkbox
-      checked={user && upvotedBy.includes(user.id)}
+      checked={checked}
       icon={
         <SvgIcon className={classes.icon}>
           <UpvoteIcon />
@@ -25,12 +25,12 @@ export const UpvoteButton = ({ user, upvotedBy, handleUpvote }) => {
   );
 };
 
-export const DownvoteButton = ({ user, downvotedBy, handleDownvote }) => {
+export const DownvoteButton = ({ checked, handleDownvote, user }) => {
   const classes = useVoteBtnsStyles();
 
   return (
     <Checkbox
-      checked={user && downvotedBy.includes(user.id)}
+      checked={checked}
       icon={
         <SvgIcon className={classes.icon}>
           <DownvoteIcon />

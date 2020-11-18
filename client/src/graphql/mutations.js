@@ -1,23 +1,38 @@
 import { gql } from '@apollo/client';
+import { QUESTION_DETAILS, LOGGED_USER_DETAILS } from './fragments';
 
 export const REGISTER_USER = gql`
   mutation registerUser($username: String!, $password: String!) {
     register(username: $username, password: $password) {
-      id
-      username
-      role
-      token
+      ...LoggedUserDetails
     }
   }
+  ${LOGGED_USER_DETAILS}
 `;
 
 export const LOGIN_USER = gql`
   mutation loginUser($username: String!, $password: String!) {
     login(username: $username, password: $password) {
-      id
-      username
-      role
-      token
+      ...LoggedUserDetails
     }
   }
+  ${LOGGED_USER_DETAILS}
+`;
+
+export const POST_QUESTION = gql`
+  mutation addQuestion($title: String!, $body: String!, $tags: [String!]!) {
+    postQuestion(title: $title, body: $body, tags: $tags) {
+      ...QuestionDetails
+    }
+  }
+  ${QUESTION_DETAILS}
+`;
+
+export const VOTE_QUESTION = gql`
+  mutation submitVote($quesId: ID!, $voteType: VoteType!) {
+    voteQuestion(quesId: $quesId, voteType: $voteType) {
+      ...QuestionDetails
+    }
+  }
+  ${QUESTION_DETAILS}
 `;

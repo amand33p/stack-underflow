@@ -42,16 +42,16 @@ const QuesAnsDetails = ({
     <div className={classes.quesAnsWrapper}>
       <div className={classes.voteColumn}>
         <UpvoteButton
+          checked={user ? upvotedBy.includes(user.id) : false}
           user={user}
-          upvotedBy={upvotedBy}
           handleUpvote={upvoteQuesAns}
         />
         <Typography variant="h6" color="secondary">
           {points}
         </Typography>
         <DownvoteButton
+          checked={user ? downvotedBy.includes(user.id) : false}
           user={user}
-          downvotedBy={downvotedBy}
           handleDownvote={downvoteQuesAns}
         />
         {isAnswer && user && user.id === author.id && (
@@ -87,7 +87,7 @@ const QuesAnsDetails = ({
                 size="small"
                 color="secondary"
                 startIcon={<EditTwoToneIcon />}
-                style={{ marginRight: 9 }}
+                style={{ marginRight: 6 }}
                 className={classes.bottomBtns}
                 onClick={editQuesAns}
               >

@@ -14,7 +14,7 @@ const RightSidePanel = () => {
 
   if (isNotDesktop) return null;
 
-  if (loading) {
+  if (loading || !data) {
     return <div>loading...</div>;
   }
 

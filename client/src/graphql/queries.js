@@ -1,61 +1,5 @@
 import { gql } from '@apollo/client';
-
-const AUTHOR_DETAILS = gql`
-  fragment AuthorDetails on Author {
-    id
-    username
-  }
-`;
-
-const QUES_DETAILS = gql`
-  fragment QuesDetails on QuestionList {
-    id
-    author {
-      ...AuthorDetails
-    }
-    title
-    body
-    tags
-    points
-    views
-    createdAt
-    updatedAt
-  }
-  ${AUTHOR_DETAILS}
-`;
-
-const COMMENT_DETAILS = gql`
-  fragment CommentDetails on Comment {
-    id
-    author {
-      ...AuthorDetails
-    }
-    body
-    createdAt
-    updatedAt
-  }
-  ${AUTHOR_DETAILS}
-`;
-
-const ANS_DETAILS = gql`
-  fragment AnsDetails on Answer {
-    id
-    author {
-      ...AuthorDetails
-    }
-    body
-    comments {
-      ...CommentDetails
-    }
-    points
-    upvotedBy
-    downvotedBy
-    createdAt
-    updatedAt
-  }
-  ${COMMENT_DETAILS}
-  ${AUTHOR_DETAILS}
-`;
+import { AUTHOR_DETAILS, COMMENT_DETAILS, ANSWER_DETAILS } from './fragments';
 
 export const GET_QUESTIONS = gql`
   query fetchQuestions(
@@ -77,12 +21,22 @@ export const GET_QUESTIONS = gql`
         page
       }
       questions {
-        ...QuesDetails
+        id
+        author {
+          ...AuthorDetails
+        }
+        title
+        body
+        tags
+        points
+        views
+        createdAt
+        updatedAt
         answerCount
       }
     }
   }
-  ${QUES_DETAILS}
+  ${AUTHOR_DETAILS}
 `;
 
 export const VIEW_QUESTION = gql`
@@ -100,7 +54,7 @@ export const VIEW_QUESTION = gql`
       createdAt
       updatedAt
       answers {
-        ...AnsDetails
+        ...AnswerDetails
       }
       author {
         ...AuthorDetails
@@ -114,7 +68,7 @@ export const VIEW_QUESTION = gql`
     }
   }
 
-  ${ANS_DETAILS}
+  ${ANSWER_DETAILS}
   ${COMMENT_DETAILS}
   ${AUTHOR_DETAILS}
 `;

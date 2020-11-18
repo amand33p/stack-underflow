@@ -12,7 +12,10 @@ import { useQuesListStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 
 const QuesListPage = ({ tagFilterActive }) => {
-  const [fetchQuestions, { data, loading }] = useLazyQuery(GET_QUESTIONS);
+  const [fetchQuestions, { data, loading }] = useLazyQuery(GET_QUESTIONS, {
+    fetchPolicy: 'network-only',
+  });
+
   const [quesData, setQuesData] = useState(null);
   const [sortBy, setSortBy] = useState('HOT');
   const [page, setPage] = useState(1);

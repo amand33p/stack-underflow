@@ -19,7 +19,7 @@ const AllUsersPage = () => {
   const [filterInput, setFilterInput] = useState('');
   const classes = useUsersPageStyles();
 
-  if (loading) {
+  if (loading || !data) {
     return <div>loading...</div>;
   }
 

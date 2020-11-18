@@ -1,5 +1,8 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useMutation } from '@apollo/client';
+import { POST_QUESTION } from '../graphql/mutations';
 
 import {
   Typography,
@@ -11,13 +14,25 @@ import {
 import { useAskQuesPageStyles } from '../styles/muiStyles';
 
 const AskQuestionPage = () => {
+  const classes = useAskQuesPageStyles();
+  const history = useHistory();
   const { register, handleSubmit, reset } = useForm();
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState([]);
-  const classes = useAskQuesPageStyles();
+
+  const [addQuestion, { loading }] = useMutation(POST_QUESTION, {
+    update: (_, { data }) => {
+      history.push(`/questions/${data.postQuestion.id}`);
+      reset();
+    },
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
 
   const postQuestion = ({ title, body }) => {
-    console.log(title, body, tags);
+    if (tags.length === 0) return console.log('tags needed');
+    addQuestion({ variables: { title, body, tags } });
   };
 
   const handleTags = (e) => {
@@ -29,9 +44,7 @@ const AskQuestionPage = () => {
     setTagInput(value);
 
     if (e.keyCode === 32 && value.trim() !== '') {
-      if (tags.includes(value)) {
-        return console.log('dup');
-      }
+      if (tags.includes(value)) return console.log('dup');
 
       setTags((prevTags) => [...prevTags, value]);
       setTagInput('');
@@ -61,7 +74,9 @@ const AskQuestionPage = () => {
             className={classes.inputField}
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start"></InputAdornment>
+                <InputAdornment position="start">
+                  <div></div>
+                </InputAdornment>
               ),
             }}
           />
@@ -86,7 +101,9 @@ const AskQuestionPage = () => {
             className={classes.inputField}
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start"></InputAdornment>
+                <InputAdornment position="start">
+                  <div></div>
+                </InputAdornment>
               ),
             }}
           />
@@ -96,7 +113,6 @@ const AskQuestionPage = () => {
             Add up to 5 tags to describe what your question is about
           </Typography>
           <TextField
-            required
             fullWidth
             value={tagInput}
             name="tags"
@@ -135,6 +151,7 @@ const AskQuestionPage = () => {
           variant="contained"
           size="large"
           className={classes.submitBtn}
+          disabled={loading}
         >
           Post Your Question
         </Button>

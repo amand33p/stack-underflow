@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const loggedUser = storage.loadUser();
+
     if (loggedUser) {
       dispatch({
         type: 'LOGIN',
