@@ -78,3 +78,9 @@ export const EDIT_QUES_COMMENT = gql`
   }
   ${COMMENT_DETAILS}
 `;
+
+export const DELETE_QUES_COMMENT = gql`
+  mutation removeQuesComment($quesId: ID!, $commentId: ID!) {
+    deleteQuesComment(quesId: $quesId, commentId: $commentId)
+  }
+`;

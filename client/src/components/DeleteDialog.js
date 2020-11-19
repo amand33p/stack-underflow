@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
 
-const DeleteDialog = ({ handleDelete }) => {
+const DeleteDialog = ({ handleDelete, bodyType }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const classes = useQuesPageStyles();
 
@@ -29,20 +29,33 @@ const DeleteDialog = ({ handleDelete }) => {
 
   return (
     <div style={{ display: 'inline' }}>
-      <Button
-        size="small"
-        color="primary"
-        variant="contained"
-        className={classes.bottomBtns}
-        onClick={handleModalOpen}
-      >
-        Delete
-      </Button>
+      {bodyType === 'comment' ? (
+        <Button
+          size="small"
+          color="primary"
+          className={classes.commentBtns}
+          onClick={handleModalOpen}
+        >
+          delete
+        </Button>
+      ) : (
+        <Button
+          size="small"
+          color="primary"
+          variant="contained"
+          className={classes.bottomBtns}
+          onClick={handleModalOpen}
+        >
+          Delete
+        </Button>
+      )}
       <Dialog open={modalOpen} onClose={handleModalClose}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete your question?
+            {`Are you sure you want to delete your ${
+              bodyType ? bodyType : 'question'
+            }?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import DeleteDialog from './DeleteDialog';
 import { formatDayTime } from '../utils/helperFuncs';
 
 import { Typography, Link, Button, TextField } from '@material-ui/core';
@@ -56,14 +57,10 @@ const Comment = ({ comment, user, quesAnsId, editComment, deleteComment }) => {
             </Button>
           )}
           {user && (user.id === comment.author.id || user.role === 'admin') && (
-            <Button
-              size="small"
-              color="primary"
-              className={classes.commentBtns}
-              onClick={() => deleteComment(comment.id, quesAnsId)}
-            >
-              delete
-            </Button>
+            <DeleteDialog
+              bodyType="comment"
+              handleDelete={() => deleteComment(comment.id, quesAnsId)}
+            />
           )}
         </div>
       ) : (

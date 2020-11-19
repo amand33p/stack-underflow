@@ -5,6 +5,7 @@ import {
   DELETE_QUESTION,
   ADD_QUES_COMMENT,
   EDIT_QUES_COMMENT,
+  DELETE_QUES_COMMENT,
 } from '../graphql/mutations';
 import { VIEW_QUESTION } from '../graphql/queries';
 import { useAuthContext } from '../context/auth';
@@ -72,6 +73,36 @@ const QuesPageContent = ({ question }) => {
   });
 
   const [updateQuesComment] = useMutation(EDIT_QUES_COMMENT, {
+    update: (_, { data }) => {
+      console.log(data);
+    },
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+
+  const [removeQuesComment] = useMutation(DELETE_QUES_COMMENT, {
+    update: (proxy, { data }) => {
+      const dataInCache = proxy.readQuery({
+        query: VIEW_QUESTION,
+        variables: { quesId },
+      });
+
+      const filteredComments = dataInCache.viewQuestion.comments.filter(
+        (c) => c.id !== data.deleteQuesComment
+      );
+
+      const updatedData = {
+        ...dataInCache.viewQuestion,
+        comments: filteredComments,
+      };
+
+      proxy.writeQuery({
+        query: VIEW_QUESTION,
+        variables: { quesId },
+        data: { viewQuestion: updatedData },
+      });
+    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
@@ -152,7 +183,11 @@ const QuesPageContent = ({ question }) => {
     });
   };
 
-  const deleteQuesComment = (commentId) => {};
+  const deleteQuesComment = (commentId) => {
+    removeQuesComment({
+      variables: { quesId, commentId },
+    });
+  };
 
   return (
     <div className={classes.content}>
