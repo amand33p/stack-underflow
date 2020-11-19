@@ -1,16 +1,8 @@
-import { useState } from 'react';
-import { sortAnswers } from '../utils/helperFuncs';
-
 import { ButtonGroup, Button } from '@material-ui/core';
 
-const SortAnsBar = ({ isMobile, setAnswerList, acceptedAnswer }) => {
-  const [sortBy, setSortBy] = useState('VOTES');
-
+const SortAnsBar = ({ isMobile, sortBy, setSortBy }) => {
   const handleSortChange = (e) => {
     setSortBy(e.target.innerText.toUpperCase());
-    setAnswerList((prevState) =>
-      sortAnswers(e.target.innerText.toUpperCase(), prevState, acceptedAnswer)
-    );
   };
 
   return (

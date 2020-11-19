@@ -5,8 +5,9 @@ import PostedByUser from './PostedByUser';
 import CommentSection from './CommentSection';
 import AcceptAnswerButton from './AcceptAnswerButton';
 import DeleteDialog from './DeleteDialog';
+import { ReactComponent as AcceptedIcon } from '../svg/accepted.svg';
 
-import { Typography, Chip, Button } from '@material-ui/core';
+import { Typography, Chip, Button, SvgIcon } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
 
 const QuesAnsDetails = ({
@@ -58,6 +59,11 @@ const QuesAnsDetails = ({
             checked={acceptedAnswer && acceptedAnswer === id}
             handleAcceptAns={acceptAnswer}
           />
+        )}
+        {isAnswer && acceptedAnswer === id && (
+          <SvgIcon className={classes.checkedAcceptIcon}>
+            <AcceptedIcon />
+          </SvgIcon>
         )}
       </div>
       <div className={classes.quesBody}>

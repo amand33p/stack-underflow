@@ -1,5 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { POST_ANSWER } from '../graphql/mutations';
+import { VIEW_QUESTION } from '../graphql/queries';
 import { useAuthContext } from '../context/auth';
 
 import { Typography, Button, TextField, Chip, Link } from '@material-ui/core';
@@ -10,8 +13,32 @@ const AnswerForm = ({ quesId, tags }) => {
   const { user } = useAuthContext();
   const classes = useQuesPageStyles();
 
+  const [addAnswer] = useMutation(POST_ANSWER, {
+    update: (proxy, { data }) => {
+      const dataInCache = proxy.readQuery({
+        query: VIEW_QUESTION,
+        variables: { quesId },
+      });
+
+      const updatedData = {
+        ...dataInCache.viewQuestion,
+        answers: data.postAnswer,
+      };
+
+      proxy.writeQuery({
+        query: VIEW_QUESTION,
+        variables: { quesId },
+        data: { viewQuestion: updatedData },
+      });
+    },
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+
   const postAnswer = ({ answerBody }) => {
-    console.log(answerBody);
+    addAnswer({ variables: { quesId, body: answerBody } });
+    reset();
   };
 
   return (

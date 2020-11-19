@@ -38,6 +38,20 @@ const client = new ApolloClient({
           },
         },
       },
+      Answer: {
+        fields: {
+          upvotedBy: {
+            merge(existing, incoming) {
+              return incoming;
+            },
+          },
+          downvotedBy: {
+            merge(existing, incoming) {
+              return incoming;
+            },
+          },
+        },
+      },
     },
   }),
   link: authLink.concat(httpLink),

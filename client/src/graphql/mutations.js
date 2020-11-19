@@ -3,6 +3,7 @@ import {
   QUESTION_DETAILS,
   LOGGED_USER_DETAILS,
   COMMENT_DETAILS,
+  ANSWER_DETAILS,
 } from './fragments';
 
 export const REGISTER_USER = gql`
@@ -83,4 +84,22 @@ export const DELETE_QUES_COMMENT = gql`
   mutation removeQuesComment($quesId: ID!, $commentId: ID!) {
     deleteQuesComment(quesId: $quesId, commentId: $commentId)
   }
+`;
+
+export const POST_ANSWER = gql`
+  mutation addAnswer($quesId: ID!, $body: String!) {
+    postAnswer(quesId: $quesId, body: $body) {
+      ...AnswerDetails
+    }
+  }
+  ${ANSWER_DETAILS}
+`;
+
+export const VOTE_ANSWER = gql`
+  mutation submitVote($quesId: ID!, $ansId: ID!, $voteType: VoteType!) {
+    voteAnswer(quesId: $quesId, ansId: $ansId, voteType: $voteType) {
+      ...AnswerDetails
+    }
+  }
+  ${ANSWER_DETAILS}
 `;
