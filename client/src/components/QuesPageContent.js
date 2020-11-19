@@ -13,6 +13,7 @@ import { useStateContext } from '../context/state';
 import QuesAnsDetails from './QuesAnsDetails';
 import AnswerList from './AnswerList';
 import AnswerForm from './AnswerForm';
+import { upvote, downvote } from '../utils/voteQuesAns';
 
 import { Divider } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
@@ -109,17 +110,11 @@ const QuesPageContent = ({ question }) => {
   });
 
   const upvoteQues = () => {
-    let updatedUpvotedArr;
-    let updatedDownvotedArr;
-
-    if (upvotedBy.includes(user.id)) {
-      updatedUpvotedArr = upvotedBy.filter((u) => u !== user.id);
-      updatedDownvotedArr = downvotedBy;
-    } else {
-      updatedUpvotedArr = [...upvotedBy, user.id];
-      updatedDownvotedArr = downvotedBy.filter((d) => d !== user.id);
-    }
-    const updatedPoints = updatedUpvotedArr.length - updatedDownvotedArr.length;
+    const { updatedUpvotedArr, updatedDownvotedArr, updatedPoints } = upvote(
+      upvotedBy,
+      downvotedBy,
+      user
+    );
 
     submitVote({
       variables: { quesId, voteType: 'UPVOTE' },
@@ -137,17 +132,11 @@ const QuesPageContent = ({ question }) => {
   };
 
   const downvoteQues = () => {
-    let updatedUpvotedArr;
-    let updatedDownvotedArr;
-
-    if (downvotedBy.includes(user.id)) {
-      updatedDownvotedArr = downvotedBy.filter((d) => d !== user.id);
-      updatedUpvotedArr = upvotedBy;
-    } else {
-      updatedDownvotedArr = [...downvotedBy, user.id];
-      updatedUpvotedArr = upvotedBy.filter((u) => u !== user.id);
-    }
-    const updatedPoints = updatedUpvotedArr.length - updatedDownvotedArr.length;
+    const { updatedUpvotedArr, updatedDownvotedArr, updatedPoints } = downvote(
+      upvotedBy,
+      downvotedBy,
+      user
+    );
 
     submitVote({
       variables: { quesId, voteType: 'DOWNVOTE' },

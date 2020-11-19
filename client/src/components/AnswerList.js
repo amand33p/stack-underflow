@@ -4,7 +4,8 @@ import { VOTE_ANSWER } from '../graphql/mutations';
 import QuesAnsDetails from './QuesAnsDetails';
 import SortAnsBar from './SortAnsBar';
 import { useAuthContext } from '../context/auth';
-import { sortAnswers } from '../utils/helperFuncs';
+import sortAnswers from '../utils/sortAnswers';
+import { upvote, downvote } from '../utils/voteQuesAns';
 
 import { Typography, useMediaQuery, Divider } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
@@ -23,22 +24,12 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
     },
   });
 
-  /*useEffect(() => {
-    setAnswerList(sortAnswers('VOTES', answers, acceptedAnswer));
-  }, [answers, acceptedAnswer]);*/
-
   const upvoteAns = (ansId, upvotedBy, downvotedBy, answer) => {
-    let updatedUpvotedArr;
-    let updatedDownvotedArr;
-
-    if (upvotedBy.includes(user.id)) {
-      updatedUpvotedArr = upvotedBy.filter((u) => u !== user.id);
-      updatedDownvotedArr = downvotedBy;
-    } else {
-      updatedUpvotedArr = [...upvotedBy, user.id];
-      updatedDownvotedArr = downvotedBy.filter((d) => d !== user.id);
-    }
-    const updatedPoints = updatedUpvotedArr.length - updatedDownvotedArr.length;
+    const { updatedUpvotedArr, updatedDownvotedArr, updatedPoints } = upvote(
+      upvotedBy,
+      downvotedBy,
+      user
+    );
 
     submitVote({
       variables: { quesId, ansId, voteType: 'UPVOTE' },
@@ -56,17 +47,11 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
   };
 
   const downvoteAns = (ansId, upvotedBy, downvotedBy, answer) => {
-    let updatedUpvotedArr;
-    let updatedDownvotedArr;
-
-    if (downvotedBy.includes(user.id)) {
-      updatedDownvotedArr = downvotedBy.filter((d) => d !== user.id);
-      updatedUpvotedArr = upvotedBy;
-    } else {
-      updatedDownvotedArr = [...downvotedBy, user.id];
-      updatedUpvotedArr = upvotedBy.filter((u) => u !== user.id);
-    }
-    const updatedPoints = updatedUpvotedArr.length - updatedDownvotedArr.length;
+    const { updatedUpvotedArr, updatedDownvotedArr, updatedPoints } = downvote(
+      upvotedBy,
+      downvotedBy,
+      user
+    );
 
     submitVote({
       variables: { quesId, ansId, voteType: 'DOWNVOTE' },
