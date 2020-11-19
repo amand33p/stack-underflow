@@ -14,7 +14,7 @@ export const formatDayTime = (date) => {
   return format(new Date(date), "MMM d', ' yy 'at' H':'mm");
 };
 
-export const sortAnswers = (sortBy, answers) => {
+export const sortAnswers = (sortBy, answers, acceptedAnswer) => {
   if (sortBy === 'OLDEST') {
     return [...answers].sort(
       (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
@@ -24,6 +24,15 @@ export const sortAnswers = (sortBy, answers) => {
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
   } else {
-    return [...answers].sort((a, b) => b.points - a.points);
+    const accepted = answers.find((a) => a.id === acceptedAnswer);
+    const restSorted = answers
+      .filter((a) => a.id !== acceptedAnswer)
+      .sort((a, b) => b.points - a.points);
+
+    if (accepted) {
+      return [accepted, ...restSorted];
+    } else {
+      return restSorted;
+    }
   }
 };

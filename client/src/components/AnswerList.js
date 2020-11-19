@@ -95,7 +95,7 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
 
   const deleteAnsComment = (commentId, ansId) => {};
 
-  const answerList = sortAnswers(sortBy, answers);
+  const answerList = sortAnswers(sortBy, answers, acceptedAnswer);
 
   return (
     <div className={classes.answersWrapper}>
