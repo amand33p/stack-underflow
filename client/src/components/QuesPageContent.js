@@ -1,6 +1,11 @@
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { VOTE_QUESTION } from '../graphql/mutations';
+import {
+  VOTE_QUESTION,
+  DELETE_QUESTION,
+  ADD_QUES_COMMENT,
+} from '../graphql/mutations';
+import { VIEW_QUESTION } from '../graphql/queries';
 import { useAuthContext } from '../context/auth';
 import { useStateContext } from '../context/state';
 import QuesAnsDetails from './QuesAnsDetails';
@@ -30,6 +35,42 @@ const QuesPageContent = ({ question }) => {
   const [submitVote] = useMutation(VOTE_QUESTION, {
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
+    },
+  });
+
+  const [removeQuestion] = useMutation(DELETE_QUESTION, {
+    update: () => {
+      history.push('/');
+    },
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+
+  const [postQuesComment] = useMutation(ADD_QUES_COMMENT, {
+    update: (proxy, { data }) => {
+      const dataInCache = proxy.readQuery({
+        query: VIEW_QUESTION,
+        variables: { quesId },
+      });
+
+      const updatedData = {
+        ...dataInCache.viewQuestion,
+        comments: data.addQuesComment,
+      };
+
+      proxy.writeQuery({
+        query: VIEW_QUESTION,
+        variables: { quesId },
+        data: { viewQuestion: updatedData },
+      });
+    },
+    onError: (err) => {
+      if (err.graphQLErrors[0]) {
+        console.log(err.graphQLErrors[0].message);
+      } else {
+        console.log(err);
+      }
     },
   });
 
@@ -94,9 +135,13 @@ const QuesPageContent = ({ question }) => {
     history.push('/ask');
   };
 
-  const deleteQues = () => {};
+  const deleteQues = () => {
+    removeQuestion({ variables: { quesId } });
+  };
 
-  const addQuesComment = ({ commentBody }, reset, closeInput) => {};
+  const addQuesComment = ({ commentBody }) => {
+    postQuesComment({ variables: { quesId, body: commentBody } });
+  };
 
   const editQuesComment = (commentId) => {};
 

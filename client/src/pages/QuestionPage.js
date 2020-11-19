@@ -18,7 +18,11 @@ import { useQuesPageStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 
 const QuestionPage = () => {
-  const [fetchQuestion, { data }] = useLazyQuery(VIEW_QUESTION);
+  const [fetchQuestion, { data }] = useLazyQuery(VIEW_QUESTION, {
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
   const { clearEdit } = useStateContext();
   const { quesId } = useParams();
   const [question, setQuestion] = useState(null);

@@ -21,7 +21,7 @@ const CommentSection = ({
   deleteComment,
   quesAnsId,
 }) => {
-  const [visibleComments, setVisibleComments] = useState(comments.slice(0, 3));
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [inputOpen, setInputOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
   const classes = useQuesPageStyles();
@@ -29,6 +29,19 @@ const CommentSection = ({
   const closeInput = () => {
     setInputOpen(false);
   };
+
+  const showComments = () => {
+    setIsCollapsed(false);
+  };
+
+  const handleCommentAdd = (data) => {
+    addComment(data, quesAnsId);
+    showComments();
+    closeInput();
+    reset();
+  };
+
+  const visibleComments = isCollapsed ? comments.slice(0, 3) : comments;
 
   return (
     <div className={classes.commentSection}>
@@ -73,11 +86,7 @@ const CommentSection = ({
         </div>
       ))}
       {visibleComments.length !== comments.length ? (
-        <Button
-          size="small"
-          color="primary"
-          onClick={() => setVisibleComments(comments)}
-        >
+        <Button size="small" color="primary" onClick={showComments}>
           show {comments.length - visibleComments.length} more comments
         </Button>
       ) : (
@@ -95,9 +104,7 @@ const CommentSection = ({
       {inputOpen && (
         <form
           className={classes.commentForm}
-          onSubmit={handleSubmit((data) =>
-            addComment(data, reset, closeInput, quesAnsId)
-          )}
+          onSubmit={handleSubmit(handleCommentAdd)}
         >
           <TextField
             inputRef={register}

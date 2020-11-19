@@ -425,7 +425,7 @@ export const useQuesPageStyles = makeStyles(
       marginBottom: '0.8em',
     },
     bottomBtns: {
-      padding: '0 0.5em',
+      padding: '0.15em',
     },
     commentWrapper: {
       padding: '0.5em 0.2em',

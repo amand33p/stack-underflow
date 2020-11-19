@@ -8,7 +8,6 @@ import DeleteDialog from './DeleteDialog';
 
 import { Typography, Chip, Button } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
-import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
 
 const QuesAnsDetails = ({
   quesAns,
@@ -85,8 +84,8 @@ const QuesAnsDetails = ({
             {user && user.id === author.id && (
               <Button
                 size="small"
-                color="secondary"
-                startIcon={<EditTwoToneIcon />}
+                color="primary"
+                variant="contained"
                 style={{ marginRight: 6 }}
                 className={classes.bottomBtns}
                 onClick={editQuesAns}

@@ -9,7 +9,6 @@ import {
   DialogActions,
 } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 
 const DeleteDialog = ({ handleDelete }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -24,6 +23,7 @@ const DeleteDialog = ({ handleDelete }) => {
   };
 
   const handleDeleteClick = () => {
+    handleDelete();
     handleModalClose();
   };
 
@@ -31,8 +31,8 @@ const DeleteDialog = ({ handleDelete }) => {
     <div style={{ display: 'inline' }}>
       <Button
         size="small"
-        color="secondary"
-        startIcon={<DeleteTwoToneIcon />}
+        color="primary"
+        variant="contained"
         className={classes.bottomBtns}
         onClick={handleModalOpen}
       >

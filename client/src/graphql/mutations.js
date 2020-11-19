@@ -1,5 +1,9 @@
 import { gql } from '@apollo/client';
-import { QUESTION_DETAILS, LOGGED_USER_DETAILS } from './fragments';
+import {
+  QUESTION_DETAILS,
+  LOGGED_USER_DETAILS,
+  COMMENT_DETAILS,
+} from './fragments';
 
 export const REGISTER_USER = gql`
   mutation registerUser($username: String!, $password: String!) {
@@ -42,6 +46,12 @@ export const EDIT_QUESTION = gql`
   ${QUESTION_DETAILS}
 `;
 
+export const DELETE_QUESTION = gql`
+  mutation removeQuestion($quesId: ID!) {
+    deleteQuestion(quesId: $quesId)
+  }
+`;
+
 export const VOTE_QUESTION = gql`
   mutation submitVote($quesId: ID!, $voteType: VoteType!) {
     voteQuestion(quesId: $quesId, voteType: $voteType) {
@@ -49,4 +59,13 @@ export const VOTE_QUESTION = gql`
     }
   }
   ${QUESTION_DETAILS}
+`;
+
+export const ADD_QUES_COMMENT = gql`
+  mutation postQuesComment($quesId: ID!, $body: String!) {
+    addQuesComment(quesId: $quesId, body: $body) {
+      ...CommentDetails
+    }
+  }
+  ${COMMENT_DETAILS}
 `;

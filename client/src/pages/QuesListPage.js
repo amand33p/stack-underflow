@@ -15,6 +15,9 @@ import { useTheme } from '@material-ui/core/styles';
 const QuesListPage = ({ tagFilterActive }) => {
   const [fetchQuestions, { data, loading }] = useLazyQuery(GET_QUESTIONS, {
     fetchPolicy: 'network-only',
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
   });
 
   const { clearEdit } = useStateContext();

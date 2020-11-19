@@ -8,7 +8,12 @@ import { useTagsPageStyles } from '../styles/muiStyles';
 import SearchIcon from '@material-ui/icons/Search';
 
 const AllTagsPage = () => {
-  const { data, loading } = useQuery(GET_ALL_TAGS);
+  const { data, loading } = useQuery(GET_ALL_TAGS, {
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+
   const [filterInput, setFilterInput] = useState('');
   const classes = useTagsPageStyles();
 

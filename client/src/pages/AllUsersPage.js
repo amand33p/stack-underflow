@@ -15,7 +15,12 @@ import { useUsersPageStyles } from '../styles/muiStyles';
 import SearchIcon from '@material-ui/icons/Search';
 
 const AllUsersPage = () => {
-  const { data, loading } = useQuery(GET_ALL_USERS);
+  const { data, loading } = useQuery(GET_ALL_USERS, {
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+
   const [filterInput, setFilterInput] = useState('');
   const classes = useUsersPageStyles();
 
