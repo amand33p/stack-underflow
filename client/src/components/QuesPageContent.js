@@ -4,6 +4,7 @@ import {
   VOTE_QUESTION,
   DELETE_QUESTION,
   ADD_QUES_COMMENT,
+  EDIT_QUES_COMMENT,
 } from '../graphql/mutations';
 import { VIEW_QUESTION } from '../graphql/queries';
 import { useAuthContext } from '../context/auth';
@@ -66,11 +67,13 @@ const QuesPageContent = ({ question }) => {
       });
     },
     onError: (err) => {
-      if (err.graphQLErrors[0]) {
-        console.log(err.graphQLErrors[0].message);
-      } else {
-        console.log(err);
-      }
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+
+  const [updateQuesComment] = useMutation(EDIT_QUES_COMMENT, {
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
     },
   });
 
@@ -139,11 +142,15 @@ const QuesPageContent = ({ question }) => {
     removeQuestion({ variables: { quesId } });
   };
 
-  const addQuesComment = ({ commentBody }) => {
+  const addQuesComment = (commentBody) => {
     postQuesComment({ variables: { quesId, body: commentBody } });
   };
 
-  const editQuesComment = (commentId) => {};
+  const editQuesComment = (editedCommentBody, commentId) => {
+    updateQuesComment({
+      variables: { quesId, commentId, body: editedCommentBody },
+    });
+  };
 
   const deleteQuesComment = (commentId) => {};
 

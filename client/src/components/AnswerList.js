@@ -25,7 +25,7 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
 
   const acceptAns = (ansId) => {};
 
-  const addAnsComment = ({ commentBody }, reset, closeInput, ansId) => {};
+  const addAnsComment = ({ commentBody }, ansId) => {};
 
   const editAnsComment = (commentId, ansId) => {};
 

@@ -69,3 +69,12 @@ export const ADD_QUES_COMMENT = gql`
   }
   ${COMMENT_DETAILS}
 `;
+
+export const EDIT_QUES_COMMENT = gql`
+  mutation updateQuesComment($quesId: ID!, $commentId: ID!, $body: String!) {
+    editQuesComment(quesId: $quesId, commentId: $commentId, body: $body) {
+      ...CommentDetails
+    }
+  }
+  ${COMMENT_DETAILS}
+`;

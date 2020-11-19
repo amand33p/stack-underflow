@@ -1,17 +1,9 @@
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { formatDayTime } from '../utils/helperFuncs';
+import Comment from './Comment';
 
-import {
-  Typography,
-  Link,
-  Divider,
-  Button,
-  TextField,
-} from '@material-ui/core';
+import { Divider, Button, TextField } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
-import EditIcon from '@material-ui/icons/Edit';
 
 const CommentSection = ({
   user,
@@ -23,6 +15,7 @@ const CommentSection = ({
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [inputOpen, setInputOpen] = useState(false);
+  //const [editOpen, setEditOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
   const classes = useQuesPageStyles();
 
@@ -34,8 +27,8 @@ const CommentSection = ({
     setIsCollapsed(false);
   };
 
-  const handleCommentAdd = (data) => {
-    addComment(data, quesAnsId);
+  const handleCommentAdd = ({ commentBody }) => {
+    addComment(commentBody, quesAnsId);
     showComments();
     closeInput();
     reset();
@@ -48,40 +41,13 @@ const CommentSection = ({
       {comments.length !== 0 && <Divider />}
       {visibleComments.map((c) => (
         <div key={c.id}>
-          <div className={classes.commentWrapper}>
-            <Typography variant="caption">
-              {c.body} –{' '}
-              <Link component={RouterLink} to={`/user/${c.author.username}`}>
-                {c.author.username}
-              </Link>
-              <Typography variant="caption" color="secondary">
-                {` ${formatDayTime(c.createdAt)} `}
-              </Typography>
-              {c.createdAt !== c.updatedAt && (
-                <EditIcon fontSize="inherit" color="secondary" />
-              )}
-            </Typography>
-            {user && user.id === c.author.id && (
-              <Button
-                size="small"
-                color="primary"
-                className={classes.commentBtns}
-                onClick={() => editComment(c.id, quesAnsId)}
-              >
-                edit
-              </Button>
-            )}
-            {user && (user.id === c.author.id || user.role === 'admin') && (
-              <Button
-                size="small"
-                color="primary"
-                className={classes.commentBtns}
-                onClick={() => deleteComment(c.id, quesAnsId)}
-              >
-                delete
-              </Button>
-            )}
-          </div>
+          <Comment
+            comment={c}
+            user={user}
+            quesAnsId={quesAnsId}
+            editComment={editComment}
+            deleteComment={deleteComment}
+          />
           <Divider />
         </div>
       ))}
