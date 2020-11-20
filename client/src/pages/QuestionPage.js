@@ -61,6 +61,7 @@ const QuestionPage = () => {
             component={RouterLink}
             to="/ask"
             onClick={() => clearEdit()}
+            style={{ minWidth: '9em' }}
           >
             Ask Question
           </Button>

@@ -5,7 +5,7 @@ const registerValidator = (username, password) => {
     errors.username = 'Username must be in range of 3-20 characters length .';
   }
 
-  if (!/^[a-zA-Z0-9]*$/.test(username)) {
+  if (!/^[a-zA-Z0-9-_]*$/.test(username)) {
     errors.username = 'Username must have alphanumeric characters only.';
   }
 
@@ -51,12 +51,16 @@ const questionValidator = (title, body, tags) => {
     errors.tags = '1-5 tags must be added.';
   }
 
-  if (tags.some((t) => !/^[a-zA-Z0-9]*$/.test(t))) {
+  if (tags.some((t) => !/^[a-zA-Z0-9-]*$/.test(t))) {
     errors.tags = 'Tags must have alphanumeric characters only.';
   }
 
   if (tags.filter((t, index) => tags.indexOf(t) !== index).length > 0) {
     errors.tags = 'Duplicate tags cannot be added.';
+  }
+
+  if (tags.some((t) => t.length > 15)) {
+    errors.tags = "A single tag can't have more than 15 characters.";
   }
 
   return {

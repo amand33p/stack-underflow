@@ -70,7 +70,7 @@ const AskQuestionPage = () => {
       return console.log('only 5 tags pls');
     }
 
-    const value = e.target.value.toLowerCase().trim();
+    const value = e.target.value.toLowerCase().trim() || '';
     setTagInput(value);
 
     if (e.keyCode === 32 && value.trim() !== '') {

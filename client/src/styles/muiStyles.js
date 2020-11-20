@@ -377,8 +377,11 @@ export const useQuesPageStyles = makeStyles(
     titleWrapper: {
       display: 'flex',
       justifyContent: 'space-between',
-      flexWrap: 'wrap',
+      alignItems: 'flex-start',
       paddingBottom: '0.4em',
+      [theme.breakpoints.down('xs')]: {
+        flexWrap: 'wrap',
+      },
     },
     quesInfo: {
       display: 'flex',
