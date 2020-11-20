@@ -36,77 +36,30 @@ const QuesPageContent = ({ question }) => {
   const classes = useQuesPageStyles();
 
   const [submitVote] = useMutation(VOTE_QUESTION, {
-    update: (_, { data }) => {
-      console.log(data);
-    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
   });
 
   const [removeQuestion] = useMutation(DELETE_QUESTION, {
-    update: () => {
-      history.push('/');
-    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
   });
 
   const [postQuesComment] = useMutation(ADD_QUES_COMMENT, {
-    update: (proxy, { data }) => {
-      const dataInCache = proxy.readQuery({
-        query: VIEW_QUESTION,
-        variables: { quesId },
-      });
-
-      const updatedData = {
-        ...dataInCache.viewQuestion,
-        comments: data.addQuesComment,
-      };
-
-      proxy.writeQuery({
-        query: VIEW_QUESTION,
-        variables: { quesId },
-        data: { viewQuestion: updatedData },
-      });
-    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
   });
 
   const [updateQuesComment] = useMutation(EDIT_QUES_COMMENT, {
-    update: (_, { data }) => {
-      console.log(data);
-    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
   });
 
   const [removeQuesComment] = useMutation(DELETE_QUES_COMMENT, {
-    update: (proxy, { data }) => {
-      const dataInCache = proxy.readQuery({
-        query: VIEW_QUESTION,
-        variables: { quesId },
-      });
-
-      const filteredComments = dataInCache.viewQuestion.comments.filter(
-        (c) => c.id !== data.deleteQuesComment
-      );
-
-      const updatedData = {
-        ...dataInCache.viewQuestion,
-        comments: filteredComments,
-      };
-
-      proxy.writeQuery({
-        query: VIEW_QUESTION,
-        variables: { quesId },
-        data: { viewQuestion: updatedData },
-      });
-    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
@@ -131,6 +84,9 @@ const QuesPageContent = ({ question }) => {
           points: updatedPoints,
         },
       },
+      update: (_, { data }) => {
+        console.log(data);
+      },
     });
   };
 
@@ -153,6 +109,9 @@ const QuesPageContent = ({ question }) => {
           points: updatedPoints,
         },
       },
+      update: (_, { data }) => {
+        console.log(data);
+      },
     });
   };
 
@@ -162,22 +121,70 @@ const QuesPageContent = ({ question }) => {
   };
 
   const deleteQues = () => {
-    removeQuestion({ variables: { quesId } });
+    removeQuestion({
+      variables: { quesId },
+      update: () => {
+        history.push('/');
+      },
+    });
   };
 
   const addQuesComment = (commentBody) => {
-    postQuesComment({ variables: { quesId, body: commentBody } });
+    postQuesComment({
+      variables: { quesId, body: commentBody },
+      update: (proxy, { data }) => {
+        const dataInCache = proxy.readQuery({
+          query: VIEW_QUESTION,
+          variables: { quesId },
+        });
+
+        const updatedData = {
+          ...dataInCache.viewQuestion,
+          comments: data.addQuesComment,
+        };
+
+        proxy.writeQuery({
+          query: VIEW_QUESTION,
+          variables: { quesId },
+          data: { viewQuestion: updatedData },
+        });
+      },
+    });
   };
 
   const editQuesComment = (editedCommentBody, commentId) => {
     updateQuesComment({
       variables: { quesId, commentId, body: editedCommentBody },
+      update: (_, { data }) => {
+        console.log(data);
+      },
     });
   };
 
   const deleteQuesComment = (commentId) => {
     removeQuesComment({
       variables: { quesId, commentId },
+      update: (proxy, { data }) => {
+        const dataInCache = proxy.readQuery({
+          query: VIEW_QUESTION,
+          variables: { quesId },
+        });
+
+        const filteredComments = dataInCache.viewQuestion.comments.filter(
+          (c) => c.id !== data.deleteQuesComment
+        );
+
+        const updatedData = {
+          ...dataInCache.viewQuestion,
+          comments: filteredComments,
+        };
+
+        proxy.writeQuery({
+          query: VIEW_QUESTION,
+          variables: { quesId },
+          data: { viewQuestion: updatedData },
+        });
+      },
     });
   };
 

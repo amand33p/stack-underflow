@@ -29,21 +29,12 @@ const AskQuestionPage = () => {
   const [tags, setTags] = useState(editValues ? editValues.tags : []);
 
   const [addQuestion, { addQuesLoading }] = useMutation(POST_QUESTION, {
-    update: (_, { data }) => {
-      history.push(`/questions/${data.postQuestion.id}`);
-      reset();
-    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
   });
 
   const [updateQuestion, { editQuesLoading }] = useMutation(EDIT_QUESTION, {
-    update: (_, { data }) => {
-      history.push(`/questions/${data.editQuestion.id}`);
-      clearEdit();
-      reset();
-    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
@@ -51,13 +42,26 @@ const AskQuestionPage = () => {
 
   const postQuestion = ({ title, body }) => {
     if (tags.length === 0) return console.log('tags needed');
-    addQuestion({ variables: { title, body, tags } });
+
+    addQuestion({
+      variables: { title, body, tags },
+      update: (_, { data }) => {
+        history.push(`/questions/${data.postQuestion.id}`);
+        reset();
+      },
+    });
   };
 
   const editQuestion = ({ title, body }) => {
     if (tags.length === 0) return console.log('tags needed');
+
     updateQuestion({
       variables: { quesId: editValues.quesId, title, body, tags },
+      update: (_, { data }) => {
+        history.push(`/questions/${data.editQuestion.id}`);
+        clearEdit();
+        reset();
+      },
     });
   };
 

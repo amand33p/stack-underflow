@@ -131,3 +131,37 @@ export const ACCEPT_ANSWER = gql`
     }
   }
 `;
+
+export const ADD_ANS_COMMENT = gql`
+  mutation postAnsComment($quesId: ID!, $ansId: ID!, $body: String!) {
+    addAnsComment(quesId: $quesId, ansId: $ansId, body: $body) {
+      ...CommentDetails
+    }
+  }
+  ${COMMENT_DETAILS}
+`;
+
+export const EDIT_ANS_COMMENT = gql`
+  mutation updateAnsComment(
+    $quesId: ID!
+    $ansId: ID!
+    $commentId: ID!
+    $body: String!
+  ) {
+    editAnsComment(
+      quesId: $quesId
+      ansId: $ansId
+      commentId: $commentId
+      body: $body
+    ) {
+      ...CommentDetails
+    }
+  }
+  ${COMMENT_DETAILS}
+`;
+
+export const DELETE_ANS_COMMENT = gql`
+  mutation removeAnsComment($quesId: ID!, $ansId: ID!, $commentId: ID!) {
+    deleteAnsComment(quesId: $quesId, ansId: $ansId, commentId: $commentId)
+  }
+`;

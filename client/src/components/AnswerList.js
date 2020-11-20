@@ -5,6 +5,9 @@ import {
   ACCEPT_ANSWER,
   EDIT_ANSWER,
   DELETE_ANSWER,
+  ADD_ANS_COMMENT,
+  EDIT_ANS_COMMENT,
+  DELETE_ANS_COMMENT,
 } from '../graphql/mutations';
 import { VIEW_QUESTION } from '../graphql/queries';
 import QuesAnsDetails from './QuesAnsDetails';
@@ -25,54 +28,38 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
   const [sortBy, setSortBy] = useState('VOTES');
 
   const [updateAnswer] = useMutation(EDIT_ANSWER, {
-    update: (_, { data }) => {
-      console.log(data);
-    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
   });
 
   const [removeAnswer] = useMutation(DELETE_ANSWER, {
-    update: (proxy, { data }) => {
-      const dataInCache = proxy.readQuery({
-        query: VIEW_QUESTION,
-        variables: { quesId },
-      });
-
-      const filteredAnswers = dataInCache.viewQuestion.answers.filter(
-        (c) => c.id !== data.deleteAnswer
-      );
-
-      const updatedData = {
-        ...dataInCache.viewQuestion,
-        answers: filteredAnswers,
-      };
-
-      proxy.writeQuery({
-        query: VIEW_QUESTION,
-        variables: { quesId },
-        data: { viewQuestion: updatedData },
-      });
-    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
   });
 
   const [submitVote] = useMutation(VOTE_ANSWER, {
-    update: (_, { data }) => {
-      console.log(data);
-    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
   });
-
   const [submitAcceptAns] = useMutation(ACCEPT_ANSWER, {
-    update: (_, { data }) => {
-      console.log(data);
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
     },
+  });
+  const [postAnsComment] = useMutation(ADD_ANS_COMMENT, {
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+  const [updateAnsComment] = useMutation(EDIT_ANS_COMMENT, {
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+  const [removeAnsComment] = useMutation(DELETE_ANS_COMMENT, {
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
@@ -96,6 +83,9 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           points: updatedPoints,
         },
       },
+      update: (_, { data }) => {
+        console.log(data);
+      },
     });
   };
 
@@ -117,15 +107,46 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           points: updatedPoints,
         },
       },
+      update: (_, { data }) => {
+        console.log(data);
+      },
     });
   };
 
   const editAns = (editedAnswerBody, ansId) => {
-    updateAnswer({ variables: { quesId, ansId, body: editedAnswerBody } });
+    updateAnswer({
+      variables: { quesId, ansId, body: editedAnswerBody },
+      update: (_, { data }) => {
+        console.log(data);
+      },
+    });
   };
 
   const deleteAns = (ansId) => {
-    removeAnswer({ variables: { quesId, ansId } });
+    removeAnswer({
+      variables: { quesId, ansId },
+      update: (proxy, { data }) => {
+        const dataInCache = proxy.readQuery({
+          query: VIEW_QUESTION,
+          variables: { quesId },
+        });
+
+        const filteredAnswers = dataInCache.viewQuestion.answers.filter(
+          (c) => c.id !== data.deleteAnswer
+        );
+
+        const updatedData = {
+          ...dataInCache.viewQuestion,
+          answers: filteredAnswers,
+        };
+
+        proxy.writeQuery({
+          query: VIEW_QUESTION,
+          variables: { quesId },
+          data: { viewQuestion: updatedData },
+        });
+      },
+    });
   };
 
   const acceptAns = (ansId) => {
@@ -138,14 +159,81 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           __typename: 'Question',
         },
       },
+      update: (_, { data }) => {
+        console.log(data);
+      },
     });
   };
 
-  const addAnsComment = (commentBody, ansId) => {};
+  const addAnsComment = (commentBody, ansId) => {
+    postAnsComment({
+      variables: { quesId, ansId, body: commentBody },
+      update: (proxy, { data }) => {
+        const dataInCache = proxy.readQuery({
+          query: VIEW_QUESTION,
+          variables: { quesId },
+        });
 
-  const editAnsComment = (editedCommentBody, commentId, ansId) => {};
+        const updatedAnswers = dataInCache.viewQuestion.answers.map((a) =>
+          a.id === ansId ? { ...a, comments: data.addAnsComment } : a
+        );
 
-  const deleteAnsComment = (commentId, ansId) => {};
+        const updatedData = {
+          ...dataInCache.viewQuestion,
+          answers: updatedAnswers,
+        };
+
+        proxy.writeQuery({
+          query: VIEW_QUESTION,
+          variables: { quesId },
+          data: { viewQuestion: updatedData },
+        });
+      },
+    });
+  };
+
+  const editAnsComment = (editedCommentBody, commentId, ansId) => {
+    updateAnsComment({
+      variables: { quesId, ansId, commentId, body: editedCommentBody },
+      update: (_, { data }) => {
+        console.log(data);
+      },
+    });
+  };
+
+  const deleteAnsComment = (commentId, ansId) => {
+    removeAnsComment({
+      variables: { quesId, ansId, commentId },
+      update: (proxy, { data }) => {
+        const dataInCache = proxy.readQuery({
+          query: VIEW_QUESTION,
+          variables: { quesId },
+        });
+
+        const targetAnswer = dataInCache.viewQuestion.answers.find(
+          (a) => a.id === ansId
+        );
+        const updatedComments = targetAnswer.comments.filter(
+          (c) => c.id !== data.deleteAnsComment
+        );
+
+        const updatedAnswers = dataInCache.viewQuestion.answers.map((a) =>
+          a.id === ansId ? { ...a, comments: updatedComments } : a
+        );
+
+        const updatedData = {
+          ...dataInCache.viewQuestion,
+          answers: updatedAnswers,
+        };
+
+        proxy.writeQuery({
+          query: VIEW_QUESTION,
+          variables: { quesId },
+          data: { viewQuestion: updatedData },
+        });
+      },
+    });
+  };
 
   const answerList = sortAnswers(sortBy, answers, acceptedAnswer);
 
