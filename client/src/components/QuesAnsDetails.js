@@ -41,6 +41,7 @@ const QuesAnsDetails = ({
     upvotedBy,
     downvotedBy,
     createdAt,
+    updatedAt,
   } = quesAns;
 
   const classes = useQuesPageStyles();
@@ -179,6 +180,7 @@ const QuesAnsDetails = ({
             username={author.username}
             userId={author.id}
             createdAt={createdAt}
+            updatedAt={updatedAt}
             filledVariant={true}
             isAnswer={isAnswer}
           />

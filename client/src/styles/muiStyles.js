@@ -230,13 +230,19 @@ export const useQuesCardStyles = makeStyles(
       alignItems: 'center',
       marginTop: '0.7em',
       backgroundColor: `${theme.palette.primary.main}10`,
-      padding: '0.5em',
+      padding: '0.4em',
       borderRadius: 3,
       border: `1px solid ${theme.palette.primary.main}40`,
     },
-    avatar: {
+    homeAvatar: {
       width: theme.spacing(4),
       height: theme.spacing(4),
+      marginRight: '0.4em',
+      borderRadius: 2,
+    },
+    quesAnsAvatar: {
+      width: theme.spacing(5),
+      height: theme.spacing(5),
       marginRight: '0.4em',
       borderRadius: 2,
     },
