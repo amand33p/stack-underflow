@@ -28,6 +28,8 @@ module.exports = {
       const answerRep = parent.answers.reduce((sum, a) => sum + a.rep, 0);
       return 1 + questionRep + answerRep;
     },
+    totalQuestions: (parent) => parent.questions.length,
+    totalAnswers: (parent) => parent.answers.length,
   },
   RoleType: {
     USER: 'user',

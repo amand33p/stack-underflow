@@ -1,5 +1,5 @@
 import NavBar from './components/NavBar';
-import Routes from './components/Routes';
+import Routes from './pages/Routes';
 import { AuthProvider } from './context/auth';
 import { StateProvider } from './context/state';
 

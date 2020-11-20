@@ -73,6 +73,32 @@ export const VIEW_QUESTION = gql`
   ${AUTHOR_DETAILS}
 `;
 
+export const GET_USER = gql`
+  query fetchUser($username: String!) {
+    getUser(username: $username) {
+      id
+      username
+      role
+      createdAt
+      reputation
+      totalQuestions
+      totalAnswers
+      recentQuestions {
+        id
+        title
+        points
+        createdAt
+      }
+      recentAnswers {
+        id
+        title
+        points
+        createdAt
+      }
+    }
+  }
+`;
+
 export const GET_ALL_TAGS = gql`
   query {
     getAllTags {

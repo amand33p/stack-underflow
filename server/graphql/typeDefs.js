@@ -55,6 +55,8 @@ module.exports = gql`
     reputation: Int!
     recentQuestions: [RecentActivity]!
     recentAnswers: [RecentActivity]!
+    totalQuestions: Int!
+    totalAnswers: Int!
   }
 
   type UserList {

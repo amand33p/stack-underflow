@@ -1,11 +1,12 @@
 import { Switch, Route } from 'react-router-dom';
-import NavMenuDesktop from './NavMenuDesktop';
-import RightSidePanel from './RightSidePanel';
-import QuesListPage from '../pages/QuesListPage';
-import AllTagsPage from '../pages/AllTagsPage';
-import AllUsersPage from '../pages/AllUsersPage';
-import QuestionPage from '../pages/QuestionPage';
-import AskQuestionPage from '../pages/AskQuestionPage';
+import NavMenuDesktop from '../components/NavMenuDesktop';
+import RightSidePanel from '../components/RightSidePanel';
+import QuesListPage from './QuesListPage';
+import AllTagsPage from './AllTagsPage';
+import AllUsersPage from './AllUsersPage';
+import QuestionPage from './QuestionPage';
+import AskQuestionPage from './AskQuestionPage';
+import UserPage from './UserPage';
 
 import { Container, Grid } from '@material-ui/core';
 
@@ -31,6 +32,10 @@ const Routes = () => {
           <Route exact path="/users">
             <NavMenuDesktop />
             <AllUsersPage />
+          </Route>
+          <Route exact path="/user/:username">
+            <NavMenuDesktop />
+            <UserPage />
           </Route>
           <Route exact path="/questions/:quesId">
             <NavMenuDesktop />

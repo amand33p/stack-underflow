@@ -489,6 +489,48 @@ export const useQuesPageStyles = makeStyles(
   { index: 1 }
 );
 
+export const useUserPageStyles = makeStyles(
+  (theme) => ({
+    root: {
+      marginTop: '1em',
+      padding: '0em 1.4em',
+      width: '100%',
+      display: 'flex',
+    },
+    userCard: {
+      backgroundColor: `${theme.palette.primary.main}15`,
+      padding: '1.6em',
+      height: '14.5em',
+      textAlign: 'center',
+    },
+    avatar: {
+      width: theme.spacing(21),
+      height: theme.spacing(21),
+      borderRadius: 3,
+    },
+    cardText: {
+      marginTop: '0.5em',
+    },
+    infoCard: {
+      paddingLeft: '2em',
+      paddingRight: '2em',
+      width: '100%',
+    },
+    userInfo: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '0.7em',
+    },
+    statsBar: {
+      textAlign: 'center',
+      display: 'flex',
+      alignItems: 'center',
+    },
+  }),
+  { index: 1 }
+);
+
 export const useAskQuesPageStyles = makeStyles(
   (theme) => ({
     root: {
