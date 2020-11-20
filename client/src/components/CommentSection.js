@@ -69,7 +69,7 @@ const CommentSection = ({
       )}
       {inputOpen && (
         <form
-          className={classes.commentForm}
+          className={classes.smallForm}
           onSubmit={handleSubmit(handleCommentAdd)}
         >
           <TextField
@@ -84,23 +84,23 @@ const CommentSection = ({
             multiline
             rows={3}
           />
-          <div className={classes.addCommentBtns}>
-            <Button
-              size="small"
-              variant="outlined"
-              color="primary"
-              style={{ marginRight: 9 }}
-              onClick={() => setInputOpen(false)}
-            >
-              Cancel
-            </Button>
+          <div className={classes.submitCancelBtns}>
             <Button
               type="submit"
               size="small"
               variant="contained"
               color="primary"
+              style={{ marginRight: 9 }}
             >
               Add Comment
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              color="primary"
+              onClick={() => setInputOpen(false)}
+            >
+              Cancel
             </Button>
           </div>
         </form>

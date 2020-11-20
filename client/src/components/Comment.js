@@ -65,7 +65,7 @@ const Comment = ({ comment, user, quesAnsId, editComment, deleteComment }) => {
         </div>
       ) : (
         <form
-          className={classes.commentForm}
+          className={classes.smallForm}
           onSubmit={handleSubmit(handleCommentEdit)}
         >
           <TextField
@@ -80,23 +80,23 @@ const Comment = ({ comment, user, quesAnsId, editComment, deleteComment }) => {
             multiline
             rows={2}
           />
-          <div className={classes.addCommentBtns}>
-            <Button
-              size="small"
-              variant="outlined"
-              color="primary"
-              style={{ marginRight: 9 }}
-              onClick={() => setEditOpen(false)}
-            >
-              Cancel
-            </Button>
+          <div className={classes.submitCancelBtns}>
             <Button
               type="submit"
               size="small"
               variant="contained"
               color="primary"
+              style={{ marginRight: 9 }}
             >
               Update Comment
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              color="primary"
+              onClick={() => setEditOpen(false)}
+            >
+              Cancel
             </Button>
           </div>
         </form>

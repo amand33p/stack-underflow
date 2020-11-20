@@ -434,12 +434,12 @@ export const useQuesPageStyles = makeStyles(
       padding: '0 0.1em',
       minWidth: '3em',
     },
-    commentForm: {
+    smallForm: {
       marginTop: '1em',
     },
-    addCommentBtns: {
+    submitCancelBtns: {
       display: 'flex',
-      justifyContent: 'flex-end',
+      justifyContent: 'flex-start',
       marginTop: '0.3em',
     },
     answersWrapper: {

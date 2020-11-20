@@ -36,6 +36,9 @@ const QuesPageContent = ({ question }) => {
   const classes = useQuesPageStyles();
 
   const [submitVote] = useMutation(VOTE_QUESTION, {
+    update: (_, { data }) => {
+      console.log(data);
+    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
@@ -121,8 +124,8 @@ const QuesPageContent = ({ question }) => {
       optimisticResponse: {
         __typename: 'Mutation',
         voteQuestion: {
-          ...question,
           __typename: 'Question',
+          id: quesId,
           upvotedBy: updatedUpvotedArr,
           downvotedBy: updatedDownvotedArr,
           points: updatedPoints,
@@ -143,8 +146,8 @@ const QuesPageContent = ({ question }) => {
       optimisticResponse: {
         __typename: 'Mutation',
         voteQuestion: {
-          ...question,
           __typename: 'Question',
+          id: quesId,
           upvotedBy: updatedUpvotedArr,
           downvotedBy: updatedDownvotedArr,
           points: updatedPoints,

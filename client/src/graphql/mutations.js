@@ -56,10 +56,12 @@ export const DELETE_QUESTION = gql`
 export const VOTE_QUESTION = gql`
   mutation submitVote($quesId: ID!, $voteType: VoteType!) {
     voteQuestion(quesId: $quesId, voteType: $voteType) {
-      ...QuestionDetails
+      id
+      upvotedBy
+      downvotedBy
+      points
     }
   }
-  ${QUESTION_DETAILS}
 `;
 
 export const ADD_QUES_COMMENT = gql`
@@ -95,11 +97,37 @@ export const POST_ANSWER = gql`
   ${ANSWER_DETAILS}
 `;
 
-export const VOTE_ANSWER = gql`
-  mutation submitVote($quesId: ID!, $ansId: ID!, $voteType: VoteType!) {
-    voteAnswer(quesId: $quesId, ansId: $ansId, voteType: $voteType) {
+export const EDIT_ANSWER = gql`
+  mutation updateAnswer($quesId: ID!, $ansId: ID!, $body: String!) {
+    editAnswer(quesId: $quesId, ansId: $ansId, body: $body) {
       ...AnswerDetails
     }
   }
   ${ANSWER_DETAILS}
+`;
+
+export const DELETE_ANSWER = gql`
+  mutation removeAnswer($quesId: ID!, $ansId: ID!) {
+    deleteAnswer(quesId: $quesId, ansId: $ansId)
+  }
+`;
+
+export const VOTE_ANSWER = gql`
+  mutation submitVote($quesId: ID!, $ansId: ID!, $voteType: VoteType!) {
+    voteAnswer(quesId: $quesId, ansId: $ansId, voteType: $voteType) {
+      id
+      upvotedBy
+      downvotedBy
+      points
+    }
+  }
+`;
+
+export const ACCEPT_ANSWER = gql`
+  mutation submitAcceptAns($quesId: ID!, $ansId: ID!) {
+    acceptAnswer(quesId: $quesId, ansId: $ansId) {
+      id
+      acceptedAnswer
+    }
+  }
 `;

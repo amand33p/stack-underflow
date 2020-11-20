@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { VOTE_ANSWER } from '../graphql/mutations';
+import {
+  VOTE_ANSWER,
+  ACCEPT_ANSWER,
+  EDIT_ANSWER,
+  DELETE_ANSWER,
+} from '../graphql/mutations';
+import { VIEW_QUESTION } from '../graphql/queries';
 import QuesAnsDetails from './QuesAnsDetails';
 import SortAnsBar from './SortAnsBar';
 import { useAuthContext } from '../context/auth';
@@ -18,13 +24,61 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
   const [sortBy, setSortBy] = useState('VOTES');
 
-  const [submitVote] = useMutation(VOTE_ANSWER, {
+  const [updateAnswer] = useMutation(EDIT_ANSWER, {
+    update: (_, { data }) => {
+      console.log(data);
+    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
   });
 
-  const upvoteAns = (ansId, upvotedBy, downvotedBy, answer) => {
+  const [removeAnswer] = useMutation(DELETE_ANSWER, {
+    update: (proxy, { data }) => {
+      const dataInCache = proxy.readQuery({
+        query: VIEW_QUESTION,
+        variables: { quesId },
+      });
+
+      const filteredAnswers = dataInCache.viewQuestion.answers.filter(
+        (c) => c.id !== data.deleteAnswer
+      );
+
+      const updatedData = {
+        ...dataInCache.viewQuestion,
+        answers: filteredAnswers,
+      };
+
+      proxy.writeQuery({
+        query: VIEW_QUESTION,
+        variables: { quesId },
+        data: { viewQuestion: updatedData },
+      });
+    },
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+
+  const [submitVote] = useMutation(VOTE_ANSWER, {
+    update: (_, { data }) => {
+      console.log(data);
+    },
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+
+  const [submitAcceptAns] = useMutation(ACCEPT_ANSWER, {
+    update: (_, { data }) => {
+      console.log(data);
+    },
+    onError: (err) => {
+      console.log(err.graphQLErrors[0].message);
+    },
+  });
+
+  const upvoteAns = (ansId, upvotedBy, downvotedBy) => {
     const { updatedUpvotedArr, updatedDownvotedArr, updatedPoints } = upvote(
       upvotedBy,
       downvotedBy,
@@ -34,10 +88,9 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
     submitVote({
       variables: { quesId, ansId, voteType: 'UPVOTE' },
       optimisticResponse: {
-        __typename: 'Mutation',
         voteAnswer: {
-          ...answer,
           __typename: 'Answer',
+          id: ansId,
           upvotedBy: updatedUpvotedArr,
           downvotedBy: updatedDownvotedArr,
           points: updatedPoints,
@@ -46,7 +99,7 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
     });
   };
 
-  const downvoteAns = (ansId, upvotedBy, downvotedBy, answer) => {
+  const downvoteAns = (ansId, upvotedBy, downvotedBy) => {
     const { updatedUpvotedArr, updatedDownvotedArr, updatedPoints } = downvote(
       upvotedBy,
       downvotedBy,
@@ -56,10 +109,9 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
     submitVote({
       variables: { quesId, ansId, voteType: 'DOWNVOTE' },
       optimisticResponse: {
-        __typename: 'Mutation',
         voteAnswer: {
-          ...answer,
           __typename: 'Answer',
+          id: ansId,
           upvotedBy: updatedUpvotedArr,
           downvotedBy: updatedDownvotedArr,
           points: updatedPoints,
@@ -68,15 +120,30 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
     });
   };
 
-  const editAns = (ansId) => {};
+  const editAns = (editedAnswerBody, ansId) => {
+    updateAnswer({ variables: { quesId, ansId, body: editedAnswerBody } });
+  };
 
-  const deleteAns = (ansId) => {};
+  const deleteAns = (ansId) => {
+    removeAnswer({ variables: { quesId, ansId } });
+  };
 
-  const acceptAns = (ansId) => {};
+  const acceptAns = (ansId) => {
+    submitAcceptAns({
+      variables: { quesId, ansId },
+      optimisticResponse: {
+        acceptAnswer: {
+          id: quesId,
+          acceptedAnswer: acceptedAnswer === ansId ? null : ansId,
+          __typename: 'Question',
+        },
+      },
+    });
+  };
 
-  const addAnsComment = ({ commentBody }, ansId) => {};
+  const addAnsComment = (commentBody, ansId) => {};
 
-  const editAnsComment = (commentId, ansId) => {};
+  const editAnsComment = (editedCommentBody, commentId, ansId) => {};
 
   const deleteAnsComment = (commentId, ansId) => {};
 
@@ -101,13 +168,11 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           <div key={a.id} className={classes.answerWrapper}>
             <QuesAnsDetails
               quesAns={a}
-              upvoteQuesAns={() =>
-                upvoteAns(a.id, a.upvotedBy, a.downvotedBy, a)
-              }
+              upvoteQuesAns={() => upvoteAns(a.id, a.upvotedBy, a.downvotedBy)}
               downvoteQuesAns={() =>
-                downvoteAns(a.id, a.upvotedBy, a.downvotedBy, a)
+                downvoteAns(a.id, a.upvotedBy, a.downvotedBy)
               }
-              editQuesAns={() => editAns(a.id)}
+              editQuesAns={editAns}
               deleteQuesAns={() => deleteAns(a.id)}
               acceptAnswer={() => acceptAns(a.id)}
               addComment={addAnsComment}
