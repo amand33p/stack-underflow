@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '../graphql/queries';
+import RecentQuestions from '../components/RecentQuestions';
 import { formatDateAgo } from '../utils/helperFuncs';
 
 import { Avatar, Typography, Divider } from '@material-ui/core';
@@ -54,39 +55,89 @@ const UserPage = () => {
           to={`/user/${username}`}
         />
         <Typography variant="h5" color="secondary" className={classes.cardText}>
-          {reputation} <Typography variant="subtitle1">REPUTATION</Typography>
+          {reputation} <Typography variant="caption">REPUTATION</Typography>
         </Typography>
       </div>
       <div className={classes.infoCard}>
         <div className={classes.userInfo}>
           <div>
-            <Typography variant="h4" color="secondary">
+            <Typography
+              variant="h4"
+              color="primary"
+              className={classes.bigText}
+            >
               {userName}
             </Typography>
-            <Typography variant="body1" color="secondary">
+            <Typography
+              variant="body1"
+              color="secondary"
+              className={classes.smallText}
+            >
               member for {formatDateAgo(createdAt)}
             </Typography>
           </div>
           <div className={classes.statsBar}>
             <div style={{ marginRight: 10 }}>
-              <Typography variant="h6" color="secondary">
+              <Typography
+                variant="h4"
+                color="primary"
+                className={classes.bigText}
+              >
                 {totalAnswers}
               </Typography>
-              <Typography variant="caption" color="secondary">
+              <Typography
+                variant="body1"
+                color="secondary"
+                className={classes.smallText}
+              >
                 answers
               </Typography>
             </div>
             <div>
-              <Typography variant="h6" color="secondary">
+              <Typography
+                variant="h4"
+                color="primary"
+                className={classes.bigText}
+              >
                 {totalQuestions}
               </Typography>
-              <Typography variant="caption" color="secondary">
+              <Typography
+                variant="body1"
+                color="secondary"
+                className={classes.smallText}
+              >
                 questions
               </Typography>
             </div>
           </div>
         </div>
         <Divider />
+        <div className={classes.recentActivity}>
+          <div style={{ marginBottom: '1em' }}>
+            <Typography variant="h6" color="primary">
+              Last Asked Questions
+            </Typography>
+            <Divider />
+            {recentQuestions.map((q) => (
+              <div key={q.id}>
+                <RecentQuestions question={q} />
+                <Divider />
+              </div>
+            ))}
+          </div>
+          <div>
+            <Typography variant="h6" color="primary">
+              Last Answered Questions
+            </Typography>
+            <Divider />
+            {recentAnswers.map((q) => (
+              <div key={q.id}>
+                <RecentQuestions question={q} />
+                <Divider />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
