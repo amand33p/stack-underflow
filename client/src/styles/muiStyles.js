@@ -21,6 +21,7 @@ export const useNavStyles = makeStyles(
       alignItems: 'center',
     },
     logoWrapper: {
+      marginRight: '1em',
       [theme.breakpoints.down('xs')]: {
         display: 'flex',
         alignItems: 'center',
@@ -39,6 +40,17 @@ export const useNavStyles = makeStyles(
     },
     appBar: {
       borderTop: '4px solid #f4649f',
+    },
+    searchBar: {
+      flexGrow: 0.75,
+      [theme.breakpoints.down('xs')]: {
+        flexGrow: 1,
+        marginLeft: '0.6em',
+        marginRight: '0.6em',
+      },
+    },
+    searchBtn: {
+      padding: '0.2em',
     },
   }),
   { index: 1 }
