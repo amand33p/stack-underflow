@@ -118,24 +118,36 @@ const UserPage = () => {
               Last Asked Questions
             </Typography>
             <Divider />
-            {recentQuestions.map((q) => (
-              <div key={q.id}>
-                <RecentQuestions question={q} />
-                <Divider />
-              </div>
-            ))}
+            {recentQuestions.length !== 0 ? (
+              recentQuestions.map((q) => (
+                <div key={q.id}>
+                  <RecentQuestions question={q} />
+                  <Divider />
+                </div>
+              ))
+            ) : (
+              <Typography variant="subtitle1">
+                No questions asked yet.
+              </Typography>
+            )}
           </div>
           <div>
             <Typography variant="h6" color="primary">
               Last Answered Questions
             </Typography>
             <Divider />
-            {recentAnswers.map((q) => (
-              <div key={q.id}>
-                <RecentQuestions question={q} />
-                <Divider />
-              </div>
-            ))}
+            {recentAnswers.length !== 0 ? (
+              recentAnswers.map((q) => (
+                <div key={q.id}>
+                  <RecentQuestions question={q} />
+                  <Divider />
+                </div>
+              ))
+            ) : (
+              <Typography variant="subtitle1">
+                No questions answered yet.
+              </Typography>
+            )}
           </div>
         </div>
       </div>
