@@ -46,6 +46,11 @@ const Routes = () => {
             <QuesListPage tagFilterActive={true} />
             <RightSidePanel />
           </Route>
+          <Route exact path="/search/:query">
+            <NavMenuDesktop />
+            <QuesListPage searchFilterActive={true} />
+            <RightSidePanel />
+          </Route>
         </Switch>
       </Grid>
     </Container>

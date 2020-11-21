@@ -22,7 +22,7 @@ const DesktopNavMenu = () => {
           <MenuItem
             selected={
               pathname === '/' ||
-              (pathname !== '/tags' && pathname !== '/users')
+              (!pathname.startsWith('/tag') && !pathname.startsWith('/user'))
             }
             component={RouterLink}
             to="/"
@@ -31,7 +31,7 @@ const DesktopNavMenu = () => {
             Stack Underflow
           </MenuItem>
           <MenuItem
-            selected={pathname === '/tags'}
+            selected={pathname.startsWith('/tag')}
             component={RouterLink}
             to="/tags"
           >
@@ -39,7 +39,7 @@ const DesktopNavMenu = () => {
             Tags
           </MenuItem>
           <MenuItem
-            selected={pathname === '/users'}
+            selected={pathname.startsWith('/user')}
             component={RouterLink}
             to="/users"
           >

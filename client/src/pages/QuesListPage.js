@@ -12,7 +12,7 @@ import { Typography, Button, Divider, useMediaQuery } from '@material-ui/core';
 import { useQuesListStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 
-const QuesListPage = ({ tagFilterActive }) => {
+const QuesListPage = ({ tagFilterActive, searchFilterActive }) => {
   const [fetchQuestions, { data, loading }] = useLazyQuery(GET_QUESTIONS, {
     fetchPolicy: 'network-only',
     onError: (err) => {
@@ -20,27 +20,27 @@ const QuesListPage = ({ tagFilterActive }) => {
     },
   });
 
+  const { tagName, query } = useParams();
   const { clearEdit } = useStateContext();
   const [quesData, setQuesData] = useState(null);
   const [sortBy, setSortBy] = useState('HOT');
   const [page, setPage] = useState(1);
-  const { tagName } = useParams();
   const classes = useQuesListStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const getQues = (sortBy, page, limit, filterByTag) => {
+  const getQues = (sortBy, page, limit, filterByTag, filterBySearch) => {
     fetchQuestions({
-      variables: { sortBy, page, limit, filterByTag },
+      variables: { sortBy, page, limit, filterByTag, filterBySearch },
     });
   };
 
   useEffect(() => {
-    getQues(sortBy, 1, 12, tagName);
+    getQues(sortBy, 1, 12, tagName, query);
     setPage(1);
     window.scrollTo(0, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, tagName]);
+  }, [sortBy, tagName, query]);
 
   useEffect(() => {
     if (data && page === 1) {
@@ -59,7 +59,7 @@ const QuesListPage = ({ tagFilterActive }) => {
   }, [data]);
 
   const handleLoadPosts = () => {
-    getQues(sortBy, page + 1, 12, tagName);
+    getQues(sortBy, page + 1, 12, tagName, query);
     setPage(page + 1);
   };
 
@@ -67,7 +67,11 @@ const QuesListPage = ({ tagFilterActive }) => {
     <div className={classes.root}>
       <div className={classes.topBar}>
         <Typography variant={isMobile ? 'h6' : 'h5'} color="secondary">
-          {!tagFilterActive ? 'All Questions' : `Questions tagged [${tagName}]`}
+          {tagFilterActive
+            ? `Questions tagged [${tagName}]`
+            : searchFilterActive
+            ? `Search results for "${query}"`
+            : 'All Questions'}
         </Typography>
         <Button
           variant="contained"
@@ -84,7 +88,21 @@ const QuesListPage = ({ tagFilterActive }) => {
       <Divider />
       {loading && page === 1 && <div>loading...</div>}
       {quesData &&
-        quesData.questions.map((q) => <QuesCard key={q.id} question={q} />)}
+        (quesData.questions.length !== 0 ? (
+          quesData.questions.map((q) => <QuesCard key={q.id} question={q} />)
+        ) : (
+          <Typography
+            color="secondary"
+            variant="h6"
+            className={classes.noQuesText}
+          >
+            {tagFilterActive
+              ? `There are no questions tagged "${tagName}".`
+              : searchFilterActive
+              ? `No matches found for your search "${query}".`
+              : 'No questions found.'}
+          </Typography>
+        ))}
       {quesData && quesData.next && (
         <LoadMoreButton
           loading={page !== 1 && loading}

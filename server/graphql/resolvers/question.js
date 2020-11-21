@@ -14,7 +14,7 @@ const {
 module.exports = {
   Query: {
     getQuestions: async (_, args) => {
-      const { sortBy, filterByTag } = args;
+      const { sortBy, filterByTag, filterBySearch } = args;
       const page = Number(args.page);
       const limit = Number(args.limit);
 
@@ -39,6 +39,23 @@ module.exports = {
       let findQuery = {};
       if (filterByTag) {
         findQuery = { tags: { $all: [filterByTag] } };
+      } else if (filterBySearch) {
+        findQuery = {
+          $or: [
+            {
+              title: {
+                $regex: filterBySearch,
+                $options: 'i',
+              },
+            },
+            {
+              body: {
+                $regex: filterBySearch,
+                $options: 'i',
+              },
+            },
+          ],
+        };
       }
 
       try {

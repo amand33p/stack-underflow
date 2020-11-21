@@ -127,6 +127,10 @@ export const useQuesListStyles = makeStyles(
       width: '50%',
       display: 'flex',
     },
+    noQuesText: {
+      textAlign: 'center',
+      marginTop: '2em',
+    },
   }),
   { index: 1 }
 );

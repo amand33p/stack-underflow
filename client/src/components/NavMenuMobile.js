@@ -49,7 +49,8 @@ const MobileNavMenu = () => {
       >
         <MenuItem
           selected={
-            pathname === '/' || (pathname !== '/tags' && pathname !== '/users')
+            pathname === '/' ||
+            (!pathname.startsWith('/tag') && !pathname.startsWith('/user'))
           }
           dense
           component={RouterLink}
@@ -60,7 +61,7 @@ const MobileNavMenu = () => {
           Stack Underflow
         </MenuItem>
         <MenuItem
-          selected={pathname === '/tags'}
+          selected={pathname.startsWith('/tag')}
           dense
           component={RouterLink}
           to="/tags"
@@ -70,7 +71,7 @@ const MobileNavMenu = () => {
           Tags
         </MenuItem>
         <MenuItem
-          selected={pathname === '/users'}
+          selected={pathname.startsWith('/user')}
           dense
           component={RouterLink}
           to="/users"

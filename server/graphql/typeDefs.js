@@ -143,6 +143,7 @@ module.exports = gql`
       page: Int!
       limit: Int!
       filterByTag: String
+      filterBySearch: String
     ): PaginatedQuesList!
     viewQuestion(quesId: ID!): Question
     getUser(username: String!): User!

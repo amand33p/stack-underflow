@@ -7,12 +7,14 @@ export const GET_QUESTIONS = gql`
     $page: Int!
     $limit: Int!
     $filterByTag: String
+    $filterBySearch: String
   ) {
     getQuestions(
       sortBy: $sortBy
       page: $page
       limit: $limit
       filterByTag: $filterByTag
+      filterBySearch: $filterBySearch
     ) {
       next {
         page
