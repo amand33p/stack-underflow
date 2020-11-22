@@ -8,6 +8,7 @@ import SortQuesBar from '../components/SortQuesBar';
 import QuesCard from '../components/QuesCard';
 import AuthFormModal from '../components/AuthFormModal';
 import LoadMoreButton from '../components/LoadMoreButton';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { filterDuplicates } from '../utils/helperFuncs';
 
 import { Typography, Button, Divider, useMediaQuery } from '@material-ui/core';
@@ -18,7 +19,7 @@ const QuesListPage = ({ tagFilterActive, searchFilterActive }) => {
   const [fetchQuestions, { data, loading }] = useLazyQuery(GET_QUESTIONS, {
     fetchPolicy: 'network-only',
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      console.log(err);
     },
   });
 
@@ -94,7 +95,11 @@ const QuesListPage = ({ tagFilterActive, searchFilterActive }) => {
       </div>
       <SortQuesBar isMobile={isMobile} sortBy={sortBy} setSortBy={setSortBy} />
       <Divider />
-      {loading && page === 1 && <div>loading...</div>}
+      {loading && page === 1 && (
+        <div style={{ minWidth: '100%' }}>
+          <LoadingSpinner size={60} />
+        </div>
+      )}
       {quesData &&
         (quesData.questions.length !== 0 ? (
           quesData.questions.map((q) => <QuesCard key={q.id} question={q} />)

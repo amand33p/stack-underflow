@@ -29,11 +29,11 @@ const SearchBar = ({ isMobile, setSearchOpen }) => {
       <form onSubmit={handleSearch}>
         <TextField
           type="search"
+          size="small"
           placeholder="Search for questions…"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           variant="outlined"
-          margin="dense"
           fullWidth
           InputProps={{
             startAdornment: (

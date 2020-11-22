@@ -42,7 +42,7 @@ export const useNavStyles = makeStyles(
       borderTop: '4px solid #f4649f',
     },
     searchBar: {
-      flexGrow: 0.75,
+      flexGrow: 0.6,
       [theme.breakpoints.down('xs')]: {
         flexGrow: 1,
         marginLeft: '0.6em',
@@ -147,7 +147,7 @@ export const useQuesListStyles = makeStyles(
   { index: 1 }
 );
 
-export const useTagsPanelStyles = makeStyles(
+export const useRightSidePanelStyles = makeStyles(
   (theme) => ({
     rootPanel: {
       position: 'sticky',

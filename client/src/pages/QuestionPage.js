@@ -7,6 +7,7 @@ import { useAuthContext } from '../context/auth';
 import QuesPageContent from '../components/QuesPageContent';
 import RightSidePanel from '../components/RightSidePanel';
 import AuthFormModal from '../components/AuthFormModal';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { formatDateAgo } from '../utils/helperFuncs';
 
 import {
@@ -20,7 +21,7 @@ import { useQuesPageStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 
 const QuestionPage = () => {
-  const [fetchQuestion, { data }] = useLazyQuery(VIEW_QUESTION, {
+  const [fetchQuestion, { data, loading }] = useLazyQuery(VIEW_QUESTION, {
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
@@ -44,8 +45,12 @@ const QuestionPage = () => {
     }
   }, [data]);
 
-  if (!question) {
-    return <div>loading...</div>;
+  if (loading || !question) {
+    return (
+      <div style={{ minWidth: '100%' }}>
+        <LoadingSpinner size={80} />
+      </div>
+    );
   }
 
   const { title, views, createdAt, updatedAt } = question;
