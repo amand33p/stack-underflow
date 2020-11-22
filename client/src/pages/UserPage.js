@@ -3,6 +3,7 @@ import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '../graphql/queries';
 import RecentQuestions from '../components/RecentQuestions';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { formatDateAgo } from '../utils/helperFuncs';
 
 import { Avatar, Typography, Divider } from '@material-ui/core';
@@ -12,7 +13,7 @@ const UserPage = () => {
   const classes = useUserPageStyles();
   const { username } = useParams();
   const [fetchedUser, setFetchedUser] = useState(null);
-  const [fetchUser, { data }] = useLazyQuery(GET_USER, {
+  const [fetchUser, { data, loading }] = useLazyQuery(GET_USER, {
     onError: (err) => {
       console.log(err.graphQLErrors[0].message);
     },
@@ -29,8 +30,12 @@ const UserPage = () => {
     }
   }, [data]);
 
-  if (!fetchedUser) {
-    return <div>loading...</div>;
+  if (loading || !fetchedUser) {
+    return (
+      <div style={{ minWidth: '100%' }}>
+        <LoadingSpinner size={80} />
+      </div>
+    );
   }
 
   const {
