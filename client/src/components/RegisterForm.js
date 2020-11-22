@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import SofLogo from '../svg/stack-overflow.svg';
 
 import {
@@ -21,12 +23,35 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
+const validationSchema = yup.object({
+  username: yup
+    .string()
+    .required('Required')
+    .max(20, 'Must be at most 20 characters')
+    .min(3, 'Must be at least 3 characters')
+    .matches(
+      /^[a-zA-Z0-9-_]*$/,
+      'Only alphanum, dash & underscore characters are allowed'
+    ),
+  password: yup
+    .string()
+    .required('Required')
+    .min(6, 'Must be at least 6 characters'),
+  confirmPassword: yup
+    .string()
+    .required('Required')
+    .min(6, 'Must be at least 6 characters'),
+});
+
 const RegisterForm = ({ setAuthType, closeModal }) => {
-  const { register, handleSubmit, reset } = useForm();
   const [showPass, setShowPass] = useState(false);
   const [showConfPass, setShowConfPass] = useState(false);
   const classes = useAuthFormStyles();
   const { setUser } = useAuthContext();
+  const { register, handleSubmit, reset, errors } = useForm({
+    mode: 'onTouched',
+    resolver: yupResolver(validationSchema),
+  });
 
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     update: (_, { data }) => {
@@ -60,6 +85,8 @@ const RegisterForm = ({ setAuthType, closeModal }) => {
             label="Username"
             variant="outlined"
             size="small"
+            error={'username' in errors}
+            helperText={'username' in errors ? errors.username.message : ''}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -79,6 +106,8 @@ const RegisterForm = ({ setAuthType, closeModal }) => {
             label="Password"
             variant="outlined"
             size="small"
+            error={'password' in errors}
+            helperText={'password' in errors ? errors.password.message : ''}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -112,6 +141,10 @@ const RegisterForm = ({ setAuthType, closeModal }) => {
             label="Confirm Password"
             variant="outlined"
             size="small"
+            error={'confirmPassword' in errors}
+            helperText={
+              'confirmPassword' in errors ? errors.confirmPassword.message : ''
+            }
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

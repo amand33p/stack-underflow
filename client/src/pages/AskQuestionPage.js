@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { POST_QUESTION, EDIT_QUESTION } from '../graphql/mutations';
 import { useStateContext } from '../context/state';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import {
   Typography,
@@ -14,16 +16,29 @@ import {
 } from '@material-ui/core';
 import { useAskQuesPageStyles } from '../styles/muiStyles';
 
+const validationSchema = yup.object({
+  title: yup
+    .string()
+    .required('Required')
+    .min(15, 'Must be at least 15 characters'),
+  body: yup
+    .string()
+    .required('Required')
+    .min(30, 'Must be at least 30 characters'),
+});
+
 const AskQuestionPage = () => {
   const classes = useAskQuesPageStyles();
   const history = useHistory();
   const { editValues, clearEdit } = useStateContext();
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, errors } = useForm({
     defaultValues: {
       title: editValues ? editValues.title : '',
       body: editValues ? editValues.body : '',
     },
+    mode: 'onTouched',
+    resolver: yupResolver(validationSchema),
   });
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState(editValues ? editValues.tags : []);
@@ -76,6 +91,10 @@ const AskQuestionPage = () => {
     if (e.keyCode === 32 && value.trim() !== '') {
       if (tags.includes(value)) return console.log('dup');
 
+      if (!/^[a-zA-Z0-9-]*$/.test(value)) {
+        return console.log('Only alphanum characters & dash are allowed');
+      }
+
       setTags((prevTags) => [...prevTags, value]);
       setTagInput('');
     }
@@ -106,6 +125,8 @@ const AskQuestionPage = () => {
             label="Title"
             variant="outlined"
             size="small"
+            error={'title' in errors}
+            helperText={'title' in errors ? errors.title.message : ''}
             className={classes.inputField}
             InputProps={{
               startAdornment: (
@@ -133,6 +154,8 @@ const AskQuestionPage = () => {
             label="Body"
             variant="outlined"
             size="small"
+            error={'body' in errors}
+            helperText={'body' in errors ? errors.body.message : ''}
             className={classes.inputField}
             InputProps={{
               startAdornment: (

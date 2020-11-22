@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.2.5",
+    "@hookform/resolvers": "^1.0.1",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
@@ -19,7 +20,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "typeface-montserrat": "^1.1.13",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "yup": "^0.30.0"
   },
   "scripts": {
     "start": "react-scripts start",
