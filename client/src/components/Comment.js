@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import DeleteDialog from './DeleteDialog';
 import { formatDayTime } from '../utils/helperFuncs';
 
@@ -10,21 +9,21 @@ import EditIcon from '@material-ui/icons/Edit';
 
 const Comment = ({ comment, user, quesAnsId, editComment, deleteComment }) => {
   const [editOpen, setEditOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: {
-      editedCommentBody: comment.body,
-    },
-  });
+  const [editedCommentBody, setEditedCommentBody] = useState(comment.body);
   const classes = useQuesPageStyles();
+
+  useEffect(() => {
+    setEditedCommentBody(comment.body);
+  }, [comment]);
 
   const closeInput = () => {
     setEditOpen(false);
   };
 
-  const handleCommentEdit = ({ editedCommentBody }) => {
+  const handleCommentEdit = (e) => {
+    e.preventDefault();
     editComment(editedCommentBody, comment.id, quesAnsId);
     closeInput();
-    reset();
   };
 
   return (
@@ -64,13 +63,9 @@ const Comment = ({ comment, user, quesAnsId, editComment, deleteComment }) => {
           )}
         </div>
       ) : (
-        <form
-          className={classes.smallForm}
-          onSubmit={handleSubmit(handleCommentEdit)}
-        >
+        <form className={classes.smallForm} onSubmit={handleCommentEdit}>
           <TextField
-            inputRef={register}
-            name="editedCommentBody"
+            value={editedCommentBody}
             required
             fullWidth
             type="text"
@@ -79,6 +74,7 @@ const Comment = ({ comment, user, quesAnsId, editComment, deleteComment }) => {
             size="small"
             multiline
             rows={2}
+            onChange={(e) => setEditedCommentBody(e.target.value)}
           />
           <div className={classes.submitCancelBtns}>
             <Button

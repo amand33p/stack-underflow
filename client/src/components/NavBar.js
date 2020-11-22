@@ -30,7 +30,7 @@ const NavBar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   useEffect(() => {
-    if (!isMobile) {
+    if (!isMobile && searchOpen) {
       setSearchOpen(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,9 +93,7 @@ const NavBar = () => {
                   </Typography>
                 )}
               </div>
-              {!isMobile && (
-                <SearchBar isMobile={true} setSearchOpen={setSearchOpen} />
-              )}
+              {!isMobile && <SearchBar />}
             </div>
             {isMobile ? (
               <>
@@ -114,7 +112,7 @@ const NavBar = () => {
           </Container>
         )}
         {searchOpen && isMobile && (
-          <SearchBar isMobile={true} setSearchOpen={setSearchOpen} />
+          <SearchBar isMobile={isMobile} setSearchOpen={setSearchOpen} />
         )}
       </Toolbar>
     </AppBar>

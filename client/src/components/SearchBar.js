@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory, Link as RouterLink } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { InputAdornment, IconButton, TextField } from '@material-ui/core';
 import { useNavStyles } from '../styles/muiStyles';
@@ -43,13 +43,7 @@ const SearchBar = ({ isMobile, setSearchOpen }) => {
             ),
             endAdornment: (searchInput || isMobile) && (
               <InputAdornment position="end">
-                <IconButton
-                  color="primary"
-                  size="small"
-                  component={RouterLink}
-                  to="/"
-                  onClick={clearSearch}
-                >
+                <IconButton color="primary" size="small" onClick={clearSearch}>
                   <ArrowBackIcon />
                 </IconButton>
               </InputAdornment>

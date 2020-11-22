@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+import { ReactComponent as UpvoteIcon } from '../svg/upvote.svg';
+import { ReactComponent as DownvoteIcon } from '../svg/downvote.svg';
 
 import { DialogTitle } from './CustomDialogTitle';
 import {
@@ -9,13 +11,16 @@ import {
   Button,
   MenuItem,
   useMediaQuery,
+  Link,
+  SvgIcon,
+  IconButton,
 } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import { useDialogStyles } from '../styles/muiStyles';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-const AuthFormModal = ({ closeMenu }) => {
+const AuthFormModal = ({ closeMenu, buttonType }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [authType, setAuthType] = useState('login');
   const classes = useDialogStyles();
@@ -25,7 +30,7 @@ const AuthFormModal = ({ closeMenu }) => {
   const handleLoginModal = () => {
     setAuthType('login');
     setModalOpen(true);
-    if (isMobile) {
+    if (buttonType === 'mobile') {
       closeMenu();
     }
   };
@@ -33,7 +38,7 @@ const AuthFormModal = ({ closeMenu }) => {
   const handleSignupModal = () => {
     setAuthType('signup');
     setModalOpen(true);
-    if (isMobile) {
+    if (buttonType === 'mobile') {
       closeMenu();
     }
   };
@@ -42,9 +47,56 @@ const AuthFormModal = ({ closeMenu }) => {
     setModalOpen(false);
   };
 
-  return (
-    <div>
-      {!isMobile ? (
+  const triggerButton = () => {
+    if (buttonType === 'ask') {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          size={isMobile ? 'small' : 'medium'}
+          style={{ minWidth: '9em' }}
+          onClick={handleLoginModal}
+        >
+          Ask Question
+        </Button>
+      );
+    } else if (buttonType === 'link') {
+      return (
+        <Link onClick={handleLoginModal} style={{ cursor: 'pointer' }}>
+          ask your own question.
+        </Link>
+      );
+    } else if (buttonType === 'upvote') {
+      return (
+        <IconButton onClick={handleLoginModal}>
+          <SvgIcon className={classes.upDownIcon}>
+            <UpvoteIcon />
+          </SvgIcon>
+        </IconButton>
+      );
+    } else if (buttonType === 'downvote') {
+      return (
+        <IconButton onClick={handleLoginModal}>
+          <SvgIcon className={classes.upDownIcon}>
+            <DownvoteIcon />
+          </SvgIcon>
+        </IconButton>
+      );
+    } else if (buttonType === 'mobile') {
+      return (
+        <div>
+          <MenuItem onClick={handleLoginModal}>
+            <ExitToAppIcon className={classes.menuIcon} />
+            Log In
+          </MenuItem>
+          <MenuItem onClick={handleSignupModal}>
+            <PersonAddIcon className={classes.menuIcon} />
+            Sign Up
+          </MenuItem>
+        </div>
+      );
+    } else {
+      return (
         <div>
           <Button
             color="primary"
@@ -64,18 +116,13 @@ const AuthFormModal = ({ closeMenu }) => {
             Sign Up
           </Button>
         </div>
-      ) : (
-        <div>
-          <MenuItem onClick={handleLoginModal}>
-            <ExitToAppIcon className={classes.menuIcon} />
-            Log In
-          </MenuItem>
-          <MenuItem onClick={handleSignupModal}>
-            <PersonAddIcon className={classes.menuIcon} />
-            Sign Up
-          </MenuItem>
-        </div>
-      )}
+      );
+    }
+  };
+
+  return (
+    <div style={{ display: 'inline' }}>
+      {triggerButton()}
       <Dialog
         open={modalOpen}
         onClose={handleModalClose}

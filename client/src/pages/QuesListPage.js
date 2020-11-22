@@ -3,8 +3,10 @@ import { useLazyQuery } from '@apollo/client';
 import { GET_QUESTIONS } from '../graphql/queries';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useStateContext } from '../context/state';
+import { useAuthContext } from '../context/auth';
 import SortQuesBar from '../components/SortQuesBar';
 import QuesCard from '../components/QuesCard';
+import AuthFormModal from '../components/AuthFormModal';
 import LoadMoreButton from '../components/LoadMoreButton';
 import { filterDuplicates } from '../utils/helperFuncs';
 
@@ -22,6 +24,7 @@ const QuesListPage = ({ tagFilterActive, searchFilterActive }) => {
 
   const { tagName, query } = useParams();
   const { clearEdit } = useStateContext();
+  const { user } = useAuthContext();
   const [quesData, setQuesData] = useState(null);
   const [sortBy, setSortBy] = useState('HOT');
   const [page, setPage] = useState(1);
@@ -73,16 +76,21 @@ const QuesListPage = ({ tagFilterActive, searchFilterActive }) => {
             ? `Search results for "${query}"`
             : 'All Questions'}
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          size={isMobile ? 'small' : 'medium'}
-          component={RouterLink}
-          to="/ask"
-          onClick={() => clearEdit()}
-        >
-          Ask Question
-        </Button>
+        {user ? (
+          <Button
+            variant="contained"
+            color="primary"
+            size={isMobile ? 'small' : 'medium'}
+            component={RouterLink}
+            to="/ask"
+            onClick={() => clearEdit()}
+            style={{ minWidth: '9em' }}
+          >
+            Ask Question
+          </Button>
+        ) : (
+          <AuthFormModal buttonType="ask" />
+        )}
       </div>
       <SortQuesBar isMobile={isMobile} sortBy={sortBy} setSortBy={setSortBy} />
       <Divider />

@@ -15,7 +15,6 @@ const CommentSection = ({
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [inputOpen, setInputOpen] = useState(false);
-  //const [editOpen, setEditOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
   const classes = useQuesPageStyles();
 

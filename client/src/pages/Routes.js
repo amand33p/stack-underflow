@@ -1,4 +1,4 @@
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import NavMenuDesktop from '../components/NavMenuDesktop';
 import RightSidePanel from '../components/RightSidePanel';
 import QuesListPage from './QuesListPage';
@@ -7,10 +7,13 @@ import AllUsersPage from './AllUsersPage';
 import QuestionPage from './QuestionPage';
 import AskQuestionPage from './AskQuestionPage';
 import UserPage from './UserPage';
+import { useAuthContext } from '../context/auth';
 
 import { Container, Grid } from '@material-ui/core';
 
 const Routes = () => {
+  const { user } = useAuthContext();
+
   return (
     <Container disableGutters>
       <Grid container direction="row" wrap="nowrap" justify="space-between">
@@ -21,9 +24,15 @@ const Routes = () => {
             <RightSidePanel />
           </Route>
           <Route exact path="/ask">
-            <NavMenuDesktop />
-            <AskQuestionPage />
-            <RightSidePanel />
+            {user ? (
+              <>
+                <NavMenuDesktop />
+                <AskQuestionPage />
+                <RightSidePanel />
+              </>
+            ) : (
+              <Redirect to="/" />
+            )}
           </Route>
           <Route exact path="/tags">
             <NavMenuDesktop />

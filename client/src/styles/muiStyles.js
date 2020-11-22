@@ -50,7 +50,7 @@ export const useNavStyles = makeStyles(
       },
     },
     searchBtn: {
-      padding: '0.2em',
+      padding: '0.1em',
     },
   }),
   { index: 1 }
@@ -278,6 +278,10 @@ export const useDialogStyles = makeStyles(
     menuIcon: {
       marginRight: '6px',
       fontSize: '1.3em',
+    },
+    upDownIcon: {
+      color: '#aa9aaa',
+      fontSize: 32,
     },
   }),
   { index: 1 }

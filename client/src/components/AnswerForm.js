@@ -5,6 +5,7 @@ import { POST_ANSWER } from '../graphql/mutations';
 import { VIEW_QUESTION } from '../graphql/queries';
 import { useAuthContext } from '../context/auth';
 import { useStateContext } from '../context/state';
+import AuthFormModal from '../components/AuthFormModal';
 
 import { Typography, Button, TextField, Chip, Link } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
@@ -80,7 +81,7 @@ const AnswerForm = ({ quesId, tags }) => {
         </form>
       )}
       <div className={classes.footerText}>
-        <Typography variant="body1">
+        <span>
           Browse other questions tagged{' '}
           {tags.map((t) => (
             <Chip
@@ -96,10 +97,14 @@ const AnswerForm = ({ quesId, tags }) => {
             />
           ))}{' '}
           or{' '}
-          <Link component={RouterLink} to="/ask" onClick={() => clearEdit()}>
-            ask your own question.
-          </Link>
-        </Typography>
+          {user ? (
+            <Link component={RouterLink} to="/ask" onClick={() => clearEdit()}>
+              ask your own question.
+            </Link>
+          ) : (
+            <AuthFormModal buttonType="link" />
+          )}
+        </span>
       </div>
     </div>
   );

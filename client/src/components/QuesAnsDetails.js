@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { UpvoteButton, DownvoteButton } from './VoteButtons';
 import { useAuthContext } from '../context/auth';
 import PostedByUser from './PostedByUser';
 import CommentSection from './CommentSection';
 import AcceptAnswerButton from './AcceptAnswerButton';
 import DeleteDialog from './DeleteDialog';
+import AuthFormModal from './AuthFormModal';
 import { ReactComponent as AcceptedIcon } from '../svg/accepted.svg';
 
 import {
@@ -47,11 +47,14 @@ const QuesAnsDetails = ({
   const classes = useQuesPageStyles();
   const { user } = useAuthContext();
   const [editAnsOpen, setEditAnsOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: {
-      editedAnswerBody: body,
-    },
-  });
+  const [editedAnswerBody, setEditedAnswerBody] = useState(body);
+
+  useEffect(() => {
+    if (isAnswer) {
+      setEditedAnswerBody(body);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [body]);
 
   const openEditInput = () => {
     setEditAnsOpen(true);
@@ -61,28 +64,36 @@ const QuesAnsDetails = ({
     setEditAnsOpen(false);
   };
 
-  const handleAnswerEdit = ({ editedAnswerBody }) => {
+  const handleAnswerEdit = (e) => {
+    e.preventDefault();
     editQuesAns(editedAnswerBody, id);
     closeEditInput();
-    reset();
   };
 
   return (
     <div className={classes.quesAnsWrapper}>
       <div className={classes.voteColumn}>
-        <UpvoteButton
-          checked={user ? upvotedBy.includes(user.id) : false}
-          user={user}
-          handleUpvote={upvoteQuesAns}
-        />
+        {user ? (
+          <UpvoteButton
+            checked={user ? upvotedBy.includes(user.id) : false}
+            user={user}
+            handleUpvote={upvoteQuesAns}
+          />
+        ) : (
+          <AuthFormModal buttonType="upvote" />
+        )}
         <Typography variant="h6" color="secondary">
           {points}
         </Typography>
-        <DownvoteButton
-          checked={user ? downvotedBy.includes(user.id) : false}
-          user={user}
-          handleDownvote={downvoteQuesAns}
-        />
+        {user ? (
+          <DownvoteButton
+            checked={user ? downvotedBy.includes(user.id) : false}
+            user={user}
+            handleDownvote={downvoteQuesAns}
+          />
+        ) : (
+          <AuthFormModal buttonType="downvote" />
+        )}
         {isAnswer && user && user.id === author.id && (
           <AcceptAnswerButton
             checked={acceptedAnswer === id}
@@ -99,15 +110,12 @@ const QuesAnsDetails = ({
         {!editAnsOpen ? (
           <Typography variant="body1">{body}</Typography>
         ) : (
-          <form
-            className={classes.smallForm}
-            onSubmit={handleSubmit(handleAnswerEdit)}
-          >
+          <form className={classes.smallForm} onSubmit={handleAnswerEdit}>
             <TextField
-              inputRef={register}
-              name="editedAnswerBody"
+              value={editedAnswerBody}
               required
               fullWidth
+              onChange={(e) => setEditedAnswerBody(e.target.value)}
               type="text"
               placeholder="Enter at least 30 characters"
               variant="outlined"

@@ -3,8 +3,10 @@ import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import { VIEW_QUESTION } from '../graphql/queries';
 import { useStateContext } from '../context/state';
+import { useAuthContext } from '../context/auth';
 import QuesPageContent from '../components/QuesPageContent';
 import RightSidePanel from '../components/RightSidePanel';
+import AuthFormModal from '../components/AuthFormModal';
 import { formatDateAgo } from '../utils/helperFuncs';
 
 import {
@@ -24,6 +26,7 @@ const QuestionPage = () => {
     },
   });
   const { clearEdit } = useStateContext();
+  const { user } = useAuthContext();
   const { quesId } = useParams();
   const [question, setQuestion] = useState(null);
   const classes = useQuesPageStyles();
@@ -54,17 +57,21 @@ const QuestionPage = () => {
           <Typography variant={isMobile ? 'h6' : 'h5'} color="secondary">
             {title}
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            size={isMobile ? 'small' : 'medium'}
-            component={RouterLink}
-            to="/ask"
-            onClick={() => clearEdit()}
-            style={{ minWidth: '9em' }}
-          >
-            Ask Question
-          </Button>
+          {user ? (
+            <Button
+              variant="contained"
+              color="primary"
+              size={isMobile ? 'small' : 'medium'}
+              component={RouterLink}
+              to="/ask"
+              onClick={() => clearEdit()}
+              style={{ minWidth: '9em' }}
+            >
+              Ask Question
+            </Button>
+          ) : (
+            <AuthFormModal buttonType="ask" />
+          )}
         </div>
         <div className={classes.quesInfo}>
           <Typography variant="caption" style={{ marginRight: 10 }}>

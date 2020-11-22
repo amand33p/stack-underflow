@@ -74,7 +74,7 @@ const MobileUserMenu = ({ user, logoutUser }) => {
             </MenuItem>
           </div>
         ) : (
-          <AuthFormModal closeMenu={handleCloseMenu} />
+          <AuthFormModal buttonType="mobile" closeMenu={handleCloseMenu} />
         )}
       </Menu>
     </div>
