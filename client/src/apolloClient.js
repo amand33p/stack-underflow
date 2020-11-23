@@ -1,9 +1,10 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from 'apollo-link-context';
 import storage from './utils/localStorage';
+import backendUrl from './backendUrl';
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000',
+  uri: backendUrl,
 });
 
 const authLink = setContext(() => {
