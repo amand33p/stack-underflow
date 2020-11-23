@@ -3,9 +3,12 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
+import { useStateContext } from '../context/state';
+import ErrorMessage from './ErrorMessage';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import SofLogo from '../svg/stack-overflow.svg';
+import { getErrorMsg } from '../utils/helperFuncs';
 
 import {
   TextField,
@@ -29,26 +32,31 @@ const validationSchema = yup.object({
 
 const LoginForm = ({ setAuthType, closeModal }) => {
   const [showPass, setShowPass] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
   const classes = useAuthFormStyles();
   const { setUser } = useAuthContext();
+  const { notify } = useStateContext();
   const { register, handleSubmit, reset, errors } = useForm({
     mode: 'onTouched',
     resolver: yupResolver(validationSchema),
   });
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update: (_, { data }) => {
-      setUser(data.login);
-      reset();
-      closeModal();
-    },
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      setErrorMsg(getErrorMsg(err));
     },
   });
 
   const onLogin = ({ username, password }) => {
-    loginUser({ variables: { username, password } });
+    loginUser({
+      variables: { username, password },
+      update: (_, { data }) => {
+        setUser(data.login);
+        notify(`Welcome, ${data.login.username}! You're logged in.`);
+        reset();
+        closeModal();
+      },
+    });
   };
 
   return (
@@ -128,6 +136,10 @@ const LoginForm = ({ setAuthType, closeModal }) => {
           Sign Up
         </Link>
       </Typography>
+      <ErrorMessage
+        errorMsg={errorMsg}
+        clearErrorMsg={() => setErrorMsg(null)}
+      />
     </div>
   );
 };

@@ -14,6 +14,7 @@ import QuesAnsDetails from './QuesAnsDetails';
 import AnswerList from './AnswerList';
 import AnswerForm from './AnswerForm';
 import { upvote, downvote } from '../utils/voteQuesAns';
+import { getErrorMsg } from '../utils/helperFuncs';
 
 import { Divider } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
@@ -31,37 +32,37 @@ const QuesPageContent = ({ question }) => {
   } = question;
 
   const { user } = useAuthContext();
-  const { setEditValues } = useStateContext();
+  const { setEditValues, notify } = useStateContext();
   const history = useHistory();
   const classes = useQuesPageStyles();
 
   const [submitVote] = useMutation(VOTE_QUESTION, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
   const [removeQuestion] = useMutation(DELETE_QUESTION, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
   const [postQuesComment] = useMutation(ADD_QUES_COMMENT, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
   const [updateQuesComment] = useMutation(EDIT_QUES_COMMENT, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
   const [removeQuesComment] = useMutation(DELETE_QUES_COMMENT, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
@@ -83,9 +84,6 @@ const QuesPageContent = ({ question }) => {
           downvotedBy: updatedDownvotedArr,
           points: updatedPoints,
         },
-      },
-      update: (_, { data }) => {
-        console.log(data);
       },
     });
   };
@@ -109,9 +107,6 @@ const QuesPageContent = ({ question }) => {
           points: updatedPoints,
         },
       },
-      update: (_, { data }) => {
-        console.log(data);
-      },
     });
   };
 
@@ -125,6 +120,7 @@ const QuesPageContent = ({ question }) => {
       variables: { quesId },
       update: () => {
         history.push('/');
+        notify('Question deleted!');
       },
     });
   };
@@ -148,6 +144,8 @@ const QuesPageContent = ({ question }) => {
           variables: { quesId },
           data: { viewQuestion: updatedData },
         });
+
+        notify('Comment added to question!');
       },
     });
   };
@@ -155,8 +153,8 @@ const QuesPageContent = ({ question }) => {
   const editQuesComment = (editedCommentBody, commentId) => {
     updateQuesComment({
       variables: { quesId, commentId, body: editedCommentBody },
-      update: (_, { data }) => {
-        console.log(data);
+      update: () => {
+        notify('Comment edited!');
       },
     });
   };
@@ -184,6 +182,8 @@ const QuesPageContent = ({ question }) => {
           variables: { quesId },
           data: { viewQuestion: updatedData },
         });
+
+        notify('Comment deleted!');
       },
     });
   };

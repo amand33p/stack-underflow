@@ -8,7 +8,7 @@ import QuesPageContent from '../components/QuesPageContent';
 import RightSidePanel from '../components/RightSidePanel';
 import AuthFormModal from '../components/AuthFormModal';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { formatDateAgo } from '../utils/helperFuncs';
+import { formatDateAgo, getErrorMsg } from '../utils/helperFuncs';
 
 import {
   Typography,
@@ -21,18 +21,18 @@ import { useQuesPageStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 
 const QuestionPage = () => {
-  const [fetchQuestion, { data, loading }] = useLazyQuery(VIEW_QUESTION, {
-    onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
-    },
-  });
-  const { clearEdit } = useStateContext();
+  const { clearEdit, notify } = useStateContext();
   const { user } = useAuthContext();
   const { quesId } = useParams();
   const [question, setQuestion] = useState(null);
   const classes = useQuesPageStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
+  const [fetchQuestion, { data, loading }] = useLazyQuery(VIEW_QUESTION, {
+    onError: (err) => {
+      notify(getErrorMsg(err), 'error');
+    },
+  });
 
   useEffect(() => {
     fetchQuestion({ variables: { quesId } });
@@ -47,7 +47,7 @@ const QuestionPage = () => {
 
   if (loading || !question) {
     return (
-      <div style={{ minWidth: '100%' }}>
+      <div style={{ minWidth: '100%', marginTop: '20%' }}>
         <LoadingSpinner size={80} />
       </div>
     );

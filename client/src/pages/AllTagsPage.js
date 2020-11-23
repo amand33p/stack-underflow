@@ -3,15 +3,18 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_TAGS } from '../graphql/queries';
 import { Link as RouterLink } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { useStateContext } from '../context/state';
+import { getErrorMsg } from '../utils/helperFuncs';
 
 import { Typography, Chip, TextField, InputAdornment } from '@material-ui/core';
 import { useTagsPageStyles } from '../styles/muiStyles';
 import SearchIcon from '@material-ui/icons/Search';
 
 const AllTagsPage = () => {
+  const { notify } = useStateContext();
   const { data, loading } = useQuery(GET_ALL_TAGS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
 

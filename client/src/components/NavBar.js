@@ -4,6 +4,7 @@ import NavMenuMobile from './NavMenuMobile';
 import UserMenuMobile from './UserMenuMobile';
 import UserMenuDesktop from './UserMenuDesktop';
 import SearchBar from './SearchBar';
+import DarkModeSwitch from './DarkModeSwitch';
 import { useAuthContext } from '../context/auth';
 import SofLogo from '../svg/stack-overflow.svg';
 
@@ -104,10 +105,14 @@ const NavBar = () => {
                 >
                   <SearchIcon />
                 </IconButton>
+                <DarkModeSwitch />
                 <UserMenuMobile user={user} logoutUser={handleLogout} />
               </>
             ) : (
-              <UserMenuDesktop user={user} logoutUser={handleLogout} />
+              <>
+                <UserMenuDesktop user={user} logoutUser={handleLogout} />
+                <DarkModeSwitch />
+              </>
             )}
           </Container>
         )}

@@ -12,7 +12,7 @@ const removeUser = () => localStorage.removeItem(storageKeyToken);
 const saveDarkMode = (boolean) =>
   localStorage.setItem(storageKeyDarkMode, boolean);
 
-const loadDarkMode = () => localStorage.getItem(storageKeyDarkMode);
+const loadDarkMode = () => JSON.parse(localStorage.getItem(storageKeyDarkMode));
 
 export default {
   saveUser,

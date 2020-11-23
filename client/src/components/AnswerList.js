@@ -13,8 +13,10 @@ import { VIEW_QUESTION } from '../graphql/queries';
 import QuesAnsDetails from './QuesAnsDetails';
 import SortAnsBar from './SortAnsBar';
 import { useAuthContext } from '../context/auth';
+import { useStateContext } from '../context/state';
 import sortAnswers from '../utils/sortAnswers';
 import { upvote, downvote } from '../utils/voteQuesAns';
+import { getErrorMsg } from '../utils/helperFuncs';
 
 import { Typography, useMediaQuery, Divider } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
@@ -22,6 +24,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
   const { user } = useAuthContext();
+  const { notify } = useStateContext();
   const classes = useQuesPageStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
@@ -29,39 +32,39 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
 
   const [updateAnswer] = useMutation(EDIT_ANSWER, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
   const [removeAnswer] = useMutation(DELETE_ANSWER, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
   const [submitVote] = useMutation(VOTE_ANSWER, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
   const [submitAcceptAns] = useMutation(ACCEPT_ANSWER, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
   const [postAnsComment] = useMutation(ADD_ANS_COMMENT, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
   const [updateAnsComment] = useMutation(EDIT_ANS_COMMENT, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
   const [removeAnsComment] = useMutation(DELETE_ANS_COMMENT, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
@@ -75,6 +78,7 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
     submitVote({
       variables: { quesId, ansId, voteType: 'UPVOTE' },
       optimisticResponse: {
+        __typename: 'Mutation',
         voteAnswer: {
           __typename: 'Answer',
           id: ansId,
@@ -82,9 +86,6 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           downvotedBy: updatedDownvotedArr,
           points: updatedPoints,
         },
-      },
-      update: (_, { data }) => {
-        console.log(data);
       },
     });
   };
@@ -99,6 +100,7 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
     submitVote({
       variables: { quesId, ansId, voteType: 'DOWNVOTE' },
       optimisticResponse: {
+        __typename: 'Mutation',
         voteAnswer: {
           __typename: 'Answer',
           id: ansId,
@@ -107,17 +109,14 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           points: updatedPoints,
         },
       },
-      update: (_, { data }) => {
-        console.log(data);
-      },
     });
   };
 
   const editAns = (editedAnswerBody, ansId) => {
     updateAnswer({
       variables: { quesId, ansId, body: editedAnswerBody },
-      update: (_, { data }) => {
-        console.log(data);
+      update: () => {
+        notify('Answer updated!');
       },
     });
   };
@@ -145,6 +144,8 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           variables: { quesId },
           data: { viewQuestion: updatedData },
         });
+
+        notify('Answer deleted!');
       },
     });
   };
@@ -159,8 +160,8 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           __typename: 'Question',
         },
       },
-      update: (_, { data }) => {
-        console.log(data);
+      update: () => {
+        notify('You have accepted the answer.');
       },
     });
   };
@@ -188,6 +189,8 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           variables: { quesId },
           data: { viewQuestion: updatedData },
         });
+
+        notify('Comment added to answer!');
       },
     });
   };
@@ -195,8 +198,8 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
   const editAnsComment = (editedCommentBody, commentId, ansId) => {
     updateAnsComment({
       variables: { quesId, ansId, commentId, body: editedCommentBody },
-      update: (_, { data }) => {
-        console.log(data);
+      update: () => {
+        notify('Comment edited!');
       },
     });
   };
@@ -231,6 +234,8 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
           variables: { quesId },
           data: { viewQuestion: updatedData },
         });
+
+        notify('Comment deleted!');
       },
     });
   };

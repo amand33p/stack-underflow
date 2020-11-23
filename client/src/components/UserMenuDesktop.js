@@ -28,7 +28,7 @@ const UserMenuDesktop = ({ user, logoutUser }) => {
   return (
     <div>
       {user ? (
-        <div>
+        <div style={{ display: 'inline' }}>
           <Button
             className={classes.userBtn}
             onClick={handleOpenMenu}

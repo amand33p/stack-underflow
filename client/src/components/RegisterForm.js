@@ -3,9 +3,12 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
+import { useStateContext } from '../context/state';
+import ErrorMessage from './ErrorMessage';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import SofLogo from '../svg/stack-overflow.svg';
+import { getErrorMsg } from '../utils/helperFuncs';
 
 import {
   TextField,
@@ -45,30 +48,37 @@ const validationSchema = yup.object({
 
 const RegisterForm = ({ setAuthType, closeModal }) => {
   const [showPass, setShowPass] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
   const [showConfPass, setShowConfPass] = useState(false);
   const classes = useAuthFormStyles();
   const { setUser } = useAuthContext();
+  const { notify } = useStateContext();
   const { register, handleSubmit, reset, errors } = useForm({
     mode: 'onTouched',
     resolver: yupResolver(validationSchema),
   });
 
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-    update: (_, { data }) => {
-      setUser(data.register);
-      reset();
-      closeModal();
-    },
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      setErrorMsg(getErrorMsg(err));
     },
   });
 
   const onRegister = ({ username, password, confirmPassword }) => {
     if (password !== confirmPassword)
-      return console.log('confirm password failed');
+      return setErrorMsg('Both passwords need to match.');
 
-    registerUser({ variables: { username, password } });
+    registerUser({
+      variables: { username, password },
+      update: (_, { data }) => {
+        setUser(data.register);
+        notify(
+          `Welcome, ${data.register.username}! You've successfully registered.`
+        );
+        reset();
+        closeModal();
+      },
+    });
   };
 
   return (
@@ -186,6 +196,10 @@ const RegisterForm = ({ setAuthType, closeModal }) => {
           Log In
         </Link>
       </Typography>
+      <ErrorMessage
+        errorMsg={errorMsg}
+        clearErrorMsg={() => setErrorMsg(null)}
+      />
     </div>
   );
 };

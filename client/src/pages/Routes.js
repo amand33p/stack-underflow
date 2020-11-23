@@ -7,6 +7,7 @@ import AllUsersPage from './AllUsersPage';
 import QuestionPage from './QuestionPage';
 import AskQuestionPage from './AskQuestionPage';
 import UserPage from './UserPage';
+import NotFoundPage from './NotFoundPage';
 import { useAuthContext } from '../context/auth';
 
 import { Container, Grid } from '@material-ui/core';
@@ -58,6 +59,11 @@ const Routes = () => {
           <Route exact path="/search/:query">
             <NavMenuDesktop />
             <QuesListPage searchFilterActive={true} />
+            <RightSidePanel />
+          </Route>
+          <Route>
+            <NavMenuDesktop />
+            <NotFoundPage />
             <RightSidePanel />
           </Route>
         </Switch>

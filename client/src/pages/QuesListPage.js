@@ -9,22 +9,15 @@ import QuesCard from '../components/QuesCard';
 import AuthFormModal from '../components/AuthFormModal';
 import LoadMoreButton from '../components/LoadMoreButton';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { filterDuplicates } from '../utils/helperFuncs';
+import { filterDuplicates, getErrorMsg } from '../utils/helperFuncs';
 
 import { Typography, Button, Divider, useMediaQuery } from '@material-ui/core';
 import { useQuesListStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 
 const QuesListPage = ({ tagFilterActive, searchFilterActive }) => {
-  const [fetchQuestions, { data, loading }] = useLazyQuery(GET_QUESTIONS, {
-    fetchPolicy: 'network-only',
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
   const { tagName, query } = useParams();
-  const { clearEdit } = useStateContext();
+  const { clearEdit, notify } = useStateContext();
   const { user } = useAuthContext();
   const [quesData, setQuesData] = useState(null);
   const [sortBy, setSortBy] = useState('HOT');
@@ -32,6 +25,12 @@ const QuesListPage = ({ tagFilterActive, searchFilterActive }) => {
   const classes = useQuesListStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
+  const [fetchQuestions, { data, loading }] = useLazyQuery(GET_QUESTIONS, {
+    fetchPolicy: 'network-only',
+    onError: (err) => {
+      notify(getErrorMsg(err), 'error');
+    },
+  });
 
   const getQues = (sortBy, page, limit, filterByTag, filterBySearch) => {
     fetchQuestions({
@@ -96,7 +95,7 @@ const QuesListPage = ({ tagFilterActive, searchFilterActive }) => {
       <SortQuesBar isMobile={isMobile} sortBy={sortBy} setSortBy={setSortBy} />
       <Divider />
       {loading && page === 1 && (
-        <div style={{ minWidth: '100%' }}>
+        <div style={{ minWidth: '100%', marginTop: '1em' }}>
           <LoadingSpinner size={60} />
         </div>
       )}

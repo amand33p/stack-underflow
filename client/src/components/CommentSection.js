@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Comment from './Comment';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Divider, Button, TextField } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
+
+const validationSchema = yup.object({
+  commentBody: yup.string().min(5, 'Must be at least 5 characters'),
+});
 
 const CommentSection = ({
   user,
@@ -13,10 +19,13 @@ const CommentSection = ({
   deleteComment,
   quesAnsId,
 }) => {
+  const classes = useQuesPageStyles();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [inputOpen, setInputOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
-  const classes = useQuesPageStyles();
+  const { register, handleSubmit, reset, errors } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(validationSchema),
+  });
 
   const closeInput = () => {
     setInputOpen(false);
@@ -82,6 +91,10 @@ const CommentSection = ({
             size="small"
             multiline
             rows={3}
+            error={'commentBody' in errors}
+            helperText={
+              'commentBody' in errors ? errors.commentBody.message : ''
+            }
           />
           <div className={classes.submitCancelBtns}>
             <Button

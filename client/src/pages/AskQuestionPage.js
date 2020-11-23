@@ -4,8 +4,10 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { POST_QUESTION, EDIT_QUESTION } from '../graphql/mutations';
 import { useStateContext } from '../context/state';
+import ErrorMessage from '../components/ErrorMessage';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { getErrorMsg } from '../utils/helperFuncs';
 
 import {
   Typography,
@@ -30,69 +32,73 @@ const validationSchema = yup.object({
 const AskQuestionPage = () => {
   const classes = useAskQuesPageStyles();
   const history = useHistory();
-  const { editValues, clearEdit } = useStateContext();
-
+  const { editValues, clearEdit, notify } = useStateContext();
+  const [tagInput, setTagInput] = useState('');
+  const [tags, setTags] = useState(editValues ? editValues.tags : []);
+  const [errorMsg, setErrorMsg] = useState(null);
   const { register, handleSubmit, reset, errors } = useForm({
     defaultValues: {
       title: editValues ? editValues.title : '',
       body: editValues ? editValues.body : '',
     },
-    mode: 'onTouched',
+    mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
-  const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState(editValues ? editValues.tags : []);
 
   const [addQuestion, { addQuesLoading }] = useMutation(POST_QUESTION, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      setErrorMsg(getErrorMsg(err));
     },
   });
 
   const [updateQuestion, { editQuesLoading }] = useMutation(EDIT_QUESTION, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      setErrorMsg(getErrorMsg(err));
     },
   });
 
   const postQuestion = ({ title, body }) => {
-    if (tags.length === 0) return console.log('tags needed');
+    if (tags.length === 0) return setErrorMsg('Atleast one tag must be added.');
 
     addQuestion({
       variables: { title, body, tags },
       update: (_, { data }) => {
         history.push(`/questions/${data.postQuestion.id}`);
         reset();
+        notify('Question posted!');
       },
     });
   };
 
   const editQuestion = ({ title, body }) => {
-    if (tags.length === 0) return console.log('tags needed');
+    if (tags.length === 0) return setErrorMsg('Atleast one tag must be added.');
 
     updateQuestion({
       variables: { quesId: editValues.quesId, title, body, tags },
       update: (_, { data }) => {
         history.push(`/questions/${data.editQuestion.id}`);
         clearEdit();
-        reset();
+        notify('Question edited!');
       },
     });
   };
 
   const handleTags = (e) => {
     if (tags.length > 5) {
-      return console.log('only 5 tags pls');
+      return setErrorMsg('Max 5 tags can be added! Not more than that.');
     }
 
     const value = e.target.value.toLowerCase().trim() || '';
     setTagInput(value);
 
     if (e.keyCode === 32 && value.trim() !== '') {
-      if (tags.includes(value)) return console.log('dup');
+      if (tags.includes(value))
+        return setErrorMsg(
+          "Duplicate tag found! You can't add the same tag twice."
+        );
 
       if (!/^[a-zA-Z0-9-]*$/.test(value)) {
-        return console.log('Only alphanum characters & dash are allowed');
+        return setErrorMsg('Only alphanumeric characters & dash are allowed.');
       }
 
       setTags((prevTags) => [...prevTags, value]);
@@ -214,6 +220,10 @@ const AskQuestionPage = () => {
           {editValues ? 'Update Your Question' : 'Post Your Question'}
         </Button>
       </form>
+      <ErrorMessage
+        errorMsg={errorMsg}
+        clearErrorMsg={() => setErrorMsg(null)}
+      />
     </div>
   );
 };

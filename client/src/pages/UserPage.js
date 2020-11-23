@@ -4,18 +4,20 @@ import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '../graphql/queries';
 import RecentQuestions from '../components/RecentQuestions';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { formatDateAgo } from '../utils/helperFuncs';
+import { useStateContext } from '../context/state';
+import { formatDateAgo, getErrorMsg } from '../utils/helperFuncs';
 
 import { Avatar, Typography, Divider } from '@material-ui/core';
 import { useUserPageStyles } from '../styles/muiStyles';
 
 const UserPage = () => {
   const classes = useUserPageStyles();
+  const { notify } = useStateContext();
   const { username } = useParams();
   const [fetchedUser, setFetchedUser] = useState(null);
   const [fetchUser, { data, loading }] = useLazyQuery(GET_USER, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
@@ -32,7 +34,7 @@ const UserPage = () => {
 
   if (loading || !fetchedUser) {
     return (
-      <div style={{ minWidth: '100%' }}>
+      <div style={{ minWidth: '100%', marginTop: '20%' }}>
         <LoadingSpinner size={80} />
       </div>
     );

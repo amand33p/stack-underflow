@@ -50,7 +50,12 @@ export const useNavStyles = makeStyles(
       },
     },
     searchBtn: {
-      padding: '0.1em',
+      padding: '0.2em',
+    },
+    iconBtn: {
+      [theme.breakpoints.down('xs')]: {
+        padding: '0.2em',
+      },
     },
   }),
   { index: 1 }
@@ -645,6 +650,39 @@ export const useVoteBtnsStyles = makeStyles(
     checkedIcon: {
       color: '#964ec2',
       fontSize: 32,
+    },
+  }),
+  { index: 1 }
+);
+
+export const useAlertStyles = makeStyles(
+  (theme) => ({
+    root: {
+      width: '100%',
+      '& > * + *': {
+        marginTop: theme.spacing(2),
+      },
+      marginTop: '0.8em',
+      marginBottom: '0.8em',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useNotFoundPageStyles = makeStyles(
+  (theme) => ({
+    root: {
+      width: '100%',
+      marginTop: '1em',
+      padding: '0.4em 1em',
+    },
+    textWrapper: {
+      marginTop: '15%',
+      textAlign: 'center',
+    },
+    icon: {
+      fontSize: '6em',
+      marginBottom: '0.3em',
     },
   }),
   { index: 1 }

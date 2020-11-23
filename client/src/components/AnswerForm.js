@@ -6,19 +6,29 @@ import { VIEW_QUESTION } from '../graphql/queries';
 import { useAuthContext } from '../context/auth';
 import { useStateContext } from '../context/state';
 import AuthFormModal from '../components/AuthFormModal';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { getErrorMsg } from '../utils/helperFuncs';
 
 import { Typography, Button, TextField, Chip, Link } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
 
+const validationSchema = yup.object({
+  answerBody: yup.string().min(30, 'Must be at least 30 characters'),
+});
+
 const AnswerForm = ({ quesId, tags }) => {
-  const { register, handleSubmit, reset } = useForm();
-  const { user } = useAuthContext();
-  const { clearEdit } = useStateContext();
   const classes = useQuesPageStyles();
+  const { user } = useAuthContext();
+  const { clearEdit, notify } = useStateContext();
+  const { register, handleSubmit, reset, errors } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(validationSchema),
+  });
 
   const [addAnswer] = useMutation(POST_ANSWER, {
     onError: (err) => {
-      console.log(err.graphQLErrors[0].message);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
@@ -43,6 +53,8 @@ const AnswerForm = ({ quesId, tags }) => {
           variables: { quesId },
           data: { viewQuestion: updatedData },
         });
+
+        notify('Answer submitted!');
       },
     });
   };
@@ -65,6 +77,8 @@ const AnswerForm = ({ quesId, tags }) => {
             placeholder="Enter atleast 30 characters"
             variant="outlined"
             size="small"
+            error={'answerBody' in errors}
+            helperText={'answerBody' in errors ? errors.answerBody.message : ''}
             multiline
             rows={5}
           />

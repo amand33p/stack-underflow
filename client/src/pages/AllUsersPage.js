@@ -3,7 +3,8 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_USERS } from '../graphql/queries';
 import { Link as RouterLink } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { formatDateAgo } from '../utils/helperFuncs';
+import { useStateContext } from '../context/state';
+import { formatDateAgo, getErrorMsg } from '../utils/helperFuncs';
 
 import {
   Typography,
@@ -16,9 +17,10 @@ import { useUsersPageStyles } from '../styles/muiStyles';
 import SearchIcon from '@material-ui/icons/Search';
 
 const AllUsersPage = () => {
+  const { notify } = useStateContext();
   const { data, loading } = useQuery(GET_ALL_USERS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
