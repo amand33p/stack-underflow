@@ -37,7 +37,11 @@ const MobileUserMenu = ({ user, logoutUser }) => {
           <MoreVertIcon color="primary" />
         </IconButton>
       ) : (
-        <IconButton onClick={handleOpenMenu} color="primary">
+        <IconButton
+          onClick={handleOpenMenu}
+          color="primary"
+          className={classes.moreBtn}
+        >
           <MoreVertIcon color="primary" />
         </IconButton>
       )}

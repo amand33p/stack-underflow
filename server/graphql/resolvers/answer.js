@@ -154,7 +154,7 @@ module.exports = {
           );
         }
 
-        if (question.author.toString() === user._id.toString()) {
+        if (targetAnswer.author.toString() === user._id.toString()) {
           throw new UserInputError("You can't vote for your own post.");
         }
 

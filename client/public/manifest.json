@@ -8,9 +8,9 @@
       "type": "image/png"
     },
     {
-      "src": "logo192.png",
+      "src": "logo256.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "256x256"
     },
     {
       "src": "logo512.png",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#f576aa",
-  "background_color": "#f9adcc"
+  "theme_color": "#ede0f4",
+  "background_color": "#ede0f4"
 }

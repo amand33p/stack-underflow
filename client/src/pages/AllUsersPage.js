@@ -50,7 +50,9 @@ const AllUsersPage = () => {
       {!loading && data ? (
         <div className={classes.usersWrapper}>
           {data.getAllUsers
-            .filter((u) => u.username.includes(filterInput))
+            .filter((u) =>
+              u.username.toLowerCase().includes(filterInput.toLowerCase())
+            )
             .map((u) => (
               <div key={u.id} className={classes.userBox}>
                 <Avatar

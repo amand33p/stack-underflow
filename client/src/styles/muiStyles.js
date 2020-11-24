@@ -95,9 +95,15 @@ export const useMenuStyles = makeStyles(
       borderRadius: 2,
       [theme.breakpoints.down('xs')]: {
         marginRight: '0.2em',
-        width: theme.spacing(3),
-        height: theme.spacing(3),
+        width: theme.spacing(2.8),
+        height: theme.spacing(2.8),
       },
+    },
+    moreBtn: {
+      padding: '0.2em',
+    },
+    userBtnMob: {
+      padding: '0.3em',
     },
   }),
   { index: 1 }
@@ -384,6 +390,7 @@ export const useUsersPageStyles = makeStyles(
     },
     userBox: {
       display: 'flex',
+      alignItems: 'center',
     },
     avatar: {
       width: theme.spacing(6),

@@ -50,7 +50,9 @@ const AllTagsPage = () => {
       {!loading && data ? (
         <div className={classes.tagsWrapper}>
           {data.getAllTags
-            .filter((t) => t.tagName.includes(filterInput))
+            .filter((t) =>
+              t.tagName.toLowerCase().includes(filterInput.toLowerCase())
+            )
             .map((t) => (
               <div key={t.tagName} className={classes.tagBox}>
                 <Chip
