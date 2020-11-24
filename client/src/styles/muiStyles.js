@@ -196,6 +196,7 @@ export const useQuesCardStyles = makeStyles(
       borderBottom: '1px solid #dfdfdf',
       display: 'flex',
       padding: '0.5em 0',
+      borderRadius: 0,
     },
     infoWrapper: {
       width: '10%',
