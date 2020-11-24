@@ -45,17 +45,23 @@ const AskQuestionPage = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const [addQuestion, { addQuesLoading }] = useMutation(POST_QUESTION, {
-    onError: (err) => {
-      setErrorMsg(getErrorMsg(err));
-    },
-  });
+  const [addQuestion, { loading: addQuesLoading }] = useMutation(
+    POST_QUESTION,
+    {
+      onError: (err) => {
+        setErrorMsg(getErrorMsg(err));
+      },
+    }
+  );
 
-  const [updateQuestion, { editQuesLoading }] = useMutation(EDIT_QUESTION, {
-    onError: (err) => {
-      setErrorMsg(getErrorMsg(err));
-    },
-  });
+  const [updateQuestion, { loading: editQuesLoading }] = useMutation(
+    EDIT_QUESTION,
+    {
+      onError: (err) => {
+        setErrorMsg(getErrorMsg(err));
+      },
+    }
+  );
 
   const postQuestion = ({ title, body }) => {
     if (tags.length === 0) return setErrorMsg('Atleast one tag must be added.');
