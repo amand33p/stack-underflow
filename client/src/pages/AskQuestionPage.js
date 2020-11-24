@@ -84,14 +84,14 @@ const AskQuestionPage = () => {
   };
 
   const handleTags = (e) => {
-    if (tags.length > 5) {
-      return setErrorMsg('Max 5 tags can be added! Not more than that.');
-    }
-
-    const value = e.target.value.toLowerCase().trim() || '';
+    const value = e.target.value.toLowerCase().trim();
     setTagInput(value);
 
-    if (e.keyCode === 32 && value.trim() !== '') {
+    const keyCode = e.target.value
+      .charAt(e.target.selectionStart - 1)
+      .charCodeAt();
+
+    if (keyCode === 32 && value.trim() !== '') {
       if (tags.includes(value))
         return setErrorMsg(
           "Duplicate tag found! You can't add the same tag twice."
@@ -99,6 +99,10 @@ const AskQuestionPage = () => {
 
       if (!/^[a-zA-Z0-9-]*$/.test(value)) {
         return setErrorMsg('Only alphanumeric characters & dash are allowed.');
+      }
+
+      if (tags.length >= 5) {
+        return setErrorMsg('Max 5 tags can be added! Not more than that.');
       }
 
       setTags((prevTags) => [...prevTags, value]);
