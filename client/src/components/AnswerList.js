@@ -160,8 +160,12 @@ const AnswerList = ({ quesId, answers, acceptedAnswer, quesAuthor }) => {
           __typename: 'Question',
         },
       },
-      update: () => {
-        notify('You have accepted the answer.');
+      update: (_, { data }) => {
+        if (data.acceptAnswer.acceptedAnswer) {
+          notify('Accepted the answer!');
+        } else {
+          notify('Un-accepted the answer.');
+        }
       },
     });
   };
