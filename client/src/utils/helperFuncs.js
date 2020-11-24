@@ -1,13 +1,11 @@
-import { formatDistanceToNow, format } from 'date-fns';
+import { formatDistanceToNowStrict, format } from 'date-fns';
 
 export const filterDuplicates = (originalArr, arrToConcat) => {
   return arrToConcat.filter((a) => !originalArr.find((o) => o.id === a.id));
 };
 
 export const formatDateAgo = (date) => {
-  return formatDistanceToNow(new Date(date), {
-    includeSeconds: true,
-  });
+  return formatDistanceToNowStrict(new Date(date));
 };
 
 export const formatDayTime = (date) => {
