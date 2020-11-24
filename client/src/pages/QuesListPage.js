@@ -69,7 +69,11 @@ const QuesListPage = ({ tagFilterActive, searchFilterActive }) => {
   return (
     <div className={classes.root}>
       <div className={classes.topBar}>
-        <Typography variant={isMobile ? 'h6' : 'h5'} color="secondary">
+        <Typography
+          variant={isMobile ? 'h6' : 'h5'}
+          color="secondary"
+          style={{ wordWrap: 'anywhere' }}
+        >
           {tagFilterActive
             ? `Questions tagged [${tagName}]`
             : searchFilterActive

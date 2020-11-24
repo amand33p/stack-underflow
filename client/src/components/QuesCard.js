@@ -48,7 +48,7 @@ const QuesCard = ({ question }) => {
         >
           {title}
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" style={{ wordWrap: 'anywhere' }}>
           {body.length > 150 ? body.slice(0, 150) + '...' : body}
         </Typography>
         <div className={classes.bottomWrapper}>

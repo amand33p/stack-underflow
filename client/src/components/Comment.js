@@ -30,7 +30,7 @@ const Comment = ({ comment, user, quesAnsId, editComment, deleteComment }) => {
     <div className={classes.commentWrapper}>
       {!editOpen ? (
         <div>
-          <Typography variant="caption">
+          <Typography variant="caption" style={{ wordWrap: 'anywhere' }}>
             {comment.body} –{' '}
             <Link
               component={RouterLink}
@@ -55,7 +55,7 @@ const Comment = ({ comment, user, quesAnsId, editComment, deleteComment }) => {
               edit
             </Button>
           )}
-          {user && (user.id === comment.author.id || user.role === 'admin') && (
+          {user && (user.id === comment.author.id || user.role === 'ADMIN') && (
             <DeleteDialog
               bodyType="comment"
               handleDelete={() => deleteComment(comment.id, quesAnsId)}

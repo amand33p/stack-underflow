@@ -108,7 +108,9 @@ const QuesAnsDetails = ({
       </div>
       <div className={classes.quesBody}>
         {!editAnsOpen ? (
-          <Typography variant="body1">{body}</Typography>
+          <Typography variant="body1" style={{ wordWrap: 'anywhere' }}>
+            {body}
+          </Typography>
         ) : (
           <form className={classes.smallForm} onSubmit={handleAnswerEdit}>
             <TextField
@@ -176,7 +178,7 @@ const QuesAnsDetails = ({
                   Edit
                 </Button>
               )}
-              {user && (user.id === author.id || user.role === 'admin') && (
+              {user && (user.id === author.id || user.role === 'ADMIN') && (
                 <DeleteDialog
                   bodyType={isAnswer ? 'answer' : 'question'}
                   handleDelete={deleteQuesAns}

@@ -26,7 +26,7 @@ const AnswerForm = ({ quesId, tags }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const [addAnswer] = useMutation(POST_ANSWER, {
+  const [addAnswer, { loading }] = useMutation(POST_ANSWER, {
     onError: (err) => {
       notify(getErrorMsg(err), 'error');
     },
@@ -88,6 +88,7 @@ const AnswerForm = ({ quesId, tags }) => {
               variant="contained"
               style={{ marginTop: '0.8em' }}
               type="submit"
+              disabled={loading}
             >
               Post Your Answer
             </Button>

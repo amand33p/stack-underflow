@@ -59,7 +59,11 @@ const QuestionPage = () => {
     <div className={classes.root}>
       <div className={classes.topBar}>
         <div className={classes.titleWrapper}>
-          <Typography variant={isMobile ? 'h6' : 'h5'} color="secondary">
+          <Typography
+            variant={isMobile ? 'h6' : 'h5'}
+            color="secondary"
+            style={{ wordWrap: 'anywhere' }}
+          >
             {title}
           </Typography>
           {user ? (

@@ -215,6 +215,7 @@ export const useQuesCardStyles = makeStyles(
     title: {
       fontSize: '1.2em',
       fontWeight: 500,
+      wordWrap: 'anywhere',
       textDecoration: 'none',
       '&:hover': {
         filter: 'brightness(200%)',
