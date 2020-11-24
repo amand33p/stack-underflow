@@ -29,6 +29,7 @@ const QuesPageContent = ({ question }) => {
     title,
     body,
     tags,
+    author,
   } = question;
 
   const { user } = useAuthContext();
@@ -205,6 +206,7 @@ const QuesPageContent = ({ question }) => {
         quesId={quesId}
         answers={answers}
         acceptedAnswer={acceptedAnswer}
+        quesAuthor={author}
       />
       <AnswerForm quesId={quesId} tags={tags} />
     </div>

@@ -22,7 +22,7 @@ import { Typography, useMediaQuery, Divider } from '@material-ui/core';
 import { useQuesPageStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 
-const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
+const AnswerList = ({ quesId, answers, acceptedAnswer, quesAuthor }) => {
   const { user } = useAuthContext();
   const { notify } = useStateContext();
   const classes = useQuesPageStyles();
@@ -273,6 +273,7 @@ const AnswerList = ({ quesId, answers, acceptedAnswer }) => {
               deleteComment={deleteAnsComment}
               isAnswer={true}
               acceptedAnswer={acceptedAnswer}
+              quesAuthor={quesAuthor}
             />
             <Divider />
           </div>

@@ -30,6 +30,7 @@ const QuesAnsDetails = ({
   acceptAnswer,
   isAnswer,
   acceptedAnswer,
+  quesAuthor,
 }) => {
   const {
     id,
@@ -94,17 +95,19 @@ const QuesAnsDetails = ({
         ) : (
           <AuthFormModal buttonType="downvote" />
         )}
-        {isAnswer && user && user.id === author.id && (
+        {isAnswer && user && user.id === quesAuthor.id && (
           <AcceptAnswerButton
             checked={acceptedAnswer === id}
             handleAcceptAns={acceptAnswer}
           />
         )}
-        {isAnswer && acceptedAnswer === id && (!user || user.id !== author.id) && (
-          <SvgIcon className={classes.checkedAcceptIcon}>
-            <AcceptedIcon />
-          </SvgIcon>
-        )}
+        {isAnswer &&
+          acceptedAnswer === id &&
+          (!user || user.id !== quesAuthor.id) && (
+            <SvgIcon className={classes.checkedAcceptIcon}>
+              <AcceptedIcon />
+            </SvgIcon>
+          )}
       </div>
       <div className={classes.quesBody}>
         {!editAnsOpen ? (

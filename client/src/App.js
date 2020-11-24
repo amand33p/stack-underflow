@@ -1,7 +1,6 @@
 import NavBar from './components/NavBar';
 import ToastNotification from './components/ToastNotification';
 import Routes from './pages/Routes';
-import { AuthProvider } from './context/auth';
 import { useStateContext } from './context/state';
 
 import customTheme from './styles/customTheme';
@@ -14,15 +13,13 @@ const App = () => {
   const classes = useBodyStyles();
 
   return (
-    <AuthProvider>
-      <ThemeProvider theme={customTheme(darkMode)}>
-        <Paper className={classes.root} elevation={0}>
-          <NavBar />
-          <Routes />
-          <ToastNotification />
-        </Paper>
-      </ThemeProvider>
-    </AuthProvider>
+    <ThemeProvider theme={customTheme(darkMode)}>
+      <Paper className={classes.root} elevation={0}>
+        <ToastNotification />
+        <NavBar />
+        <Routes />
+      </Paper>
+    </ThemeProvider>
   );
 };
 
