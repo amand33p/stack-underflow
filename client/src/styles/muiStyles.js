@@ -183,9 +183,6 @@ export const useRightSidePanelStyles = makeStyles(
       gridTemplateColumns: 'repeat(2, minmax(130px, 1fr))',
       gridGap: '8px',
     },
-    tag: {
-      backgroundColor: `${theme.palette.primary.main}15`,
-    },
   }),
   { index: 1 }
 );
@@ -242,7 +239,6 @@ export const useQuesCardStyles = makeStyles(
     tag: {
       marginRight: '0.5em',
       marginTop: '0.5em',
-      backgroundColor: `${theme.palette.primary.main}15`,
     },
     bottomWrapper: {
       display: 'flex',
@@ -365,7 +361,6 @@ export const useTagsPageStyles = makeStyles(
     },
     tag: {
       marginBottom: '0.9em',
-      backgroundColor: `${theme.palette.primary.main}15`,
     },
   }),
   { index: 1 }
@@ -453,7 +448,6 @@ export const useQuesPageStyles = makeStyles(
     tag: {
       marginRight: '0.5em',
       marginTop: '0.5em',
-      backgroundColor: `${theme.palette.primary.main}15`,
     },
     tagsWrapper: {
       display: 'flex',
@@ -516,7 +510,6 @@ export const useQuesPageStyles = makeStyles(
       alignItems: 'flex-start',
     },
     footerTag: {
-      backgroundColor: `${theme.palette.primary.main}15`,
       marginRight: '0.5em',
     },
   }),
@@ -629,7 +622,7 @@ export const useAskQuesPageStyles = makeStyles(
       padding: '0.4em 1em',
     },
     quesForm: {
-      paddingTop: '2em',
+      paddingTop: '0.8em',
     },
     inputWrapper: {
       marginBottom: '2em',
@@ -643,7 +636,6 @@ export const useAskQuesPageStyles = makeStyles(
       },
     },
     tag: {
-      backgroundColor: `${theme.palette.primary.main}15`,
       marginRight: '0.5em',
     },
   }),

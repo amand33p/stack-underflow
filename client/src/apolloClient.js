@@ -42,6 +42,11 @@ const client = new ApolloClient({
               return incoming;
             },
           },
+          tags: {
+            merge(existing, incoming) {
+              return incoming;
+            },
+          },
         },
       },
       Answer: {

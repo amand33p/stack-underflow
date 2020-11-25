@@ -36,6 +36,9 @@ const customTheme = (darkMode) =>
           borderRadius: 3,
           padding: '0px',
         },
+        outlined: {
+          backgroundColor: darkMode ? '#c197db15' : '#964ec215',
+        },
       },
     },
     props: {

@@ -16,6 +16,7 @@ import {
   InputAdornment,
   Chip,
 } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useAskQuesPageStyles } from '../styles/muiStyles';
 
 const validationSchema = yup.object({
@@ -90,6 +91,7 @@ const AskQuestionPage = () => {
   };
 
   const handleTags = (e) => {
+    if (!e || (!e.target.value && e.target.value !== '')) return;
     const value = e.target.value.toLowerCase().trim();
     setTagInput(value);
 
@@ -108,7 +110,12 @@ const AskQuestionPage = () => {
       }
 
       if (tags.length >= 5) {
+        setTagInput('');
         return setErrorMsg('Max 5 tags can be added! Not more than that.');
+      }
+
+      if (value.length > 15) {
+        return setErrorMsg("A single tag can't have more than 15 characters.");
       }
 
       setTags((prevTags) => [...prevTags, value]);
@@ -121,6 +128,10 @@ const AskQuestionPage = () => {
       <Typography variant="h5" color="secondary">
         {editValues ? 'Edit Your Question' : 'Ask A Question'}
       </Typography>
+      <ErrorMessage
+        errorMsg={errorMsg}
+        clearErrorMsg={() => setErrorMsg(null)}
+      />
       <form
         className={classes.quesForm}
         onSubmit={
@@ -186,37 +197,40 @@ const AskQuestionPage = () => {
           <Typography variant="caption" color="secondary">
             Add up to 5 tags to describe what your question is about
           </Typography>
-          <TextField
-            fullWidth
-            value={tagInput}
-            name="tags"
-            type="text"
-            label="Tags"
-            variant="outlined"
-            size="small"
-            placeholder="Enter space button to add tags"
-            className={classes.inputField}
-            onChange={handleTags}
-            onKeyDown={handleTags}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  {tags.map((t) => (
-                    <Chip
-                      key={t}
-                      label={t}
-                      variant="outlined"
-                      color="primary"
-                      size="small"
-                      className={classes.tag}
-                      onDelete={() =>
-                        setTags((prevTags) => prevTags.filter((p) => p !== t))
-                      }
-                    />
-                  ))}
-                </InputAdornment>
-              ),
+          <Autocomplete
+            multiple
+            freeSolo
+            options={[]}
+            getOptionLabel={(option) => option}
+            value={tags}
+            inputValue={tagInput}
+            onInputChange={handleTags}
+            onChange={(e, value, reason) => {
+              setTags(value);
             }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Tags"
+                placeholder="Enter space button to add tags"
+                onKeyDown={handleTags}
+                fullWidth
+                className={classes.inputField}
+                size="small"
+              />
+            )}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip
+                  variant="outlined"
+                  label={option}
+                  color="primary"
+                  size="small"
+                  {...getTagProps({ index })}
+                />
+              ))
+            }
           />
         </div>
         <Button
@@ -230,10 +244,6 @@ const AskQuestionPage = () => {
           {editValues ? 'Update Your Question' : 'Post Your Question'}
         </Button>
       </form>
-      <ErrorMessage
-        errorMsg={errorMsg}
-        clearErrorMsg={() => setErrorMsg(null)}
-      />
     </div>
   );
 };
