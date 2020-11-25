@@ -110,7 +110,7 @@ const AnswerForm = ({ quesId, tags }) => {
               className={classes.footerTag}
               clickable
             />
-          ))}{' '}
+          ))}
           or{' '}
           {user ? (
             <Link component={RouterLink} to="/ask" onClick={() => clearEdit()}>
