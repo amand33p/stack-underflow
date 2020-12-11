@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useApolloClient } from '@apollo/client';
 import NavMenuMobile from './NavMenuMobile';
 import UserMenuMobile from './UserMenuMobile';
 import UserMenuDesktop from './UserMenuDesktop';
@@ -26,6 +27,7 @@ import SearchIcon from '@material-ui/icons/Search';
 const NavBar = () => {
   const { user, logoutUser } = useAuthContext();
   const [searchOpen, setSearchOpen] = useState(false);
+  const client = useApolloClient();
   const classes = useNavStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
@@ -39,6 +41,7 @@ const NavBar = () => {
 
   const handleLogout = () => {
     logoutUser();
+    client.resetStore();
   };
 
   return (
