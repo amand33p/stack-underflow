@@ -32,7 +32,7 @@ Fullstack [Stack Overflow](https://stackoverflow.com/) clone (QnA site) made wit
 
 ## Features
 
-- Authentication (login/register with username)
+- Authentication (login/register with username-password)
 - CRUD questions, answers & comments
 - Upvote/downvote questions & answers
 - Tags for organising questions
@@ -65,3 +65,36 @@ Fullstack [Stack Overflow](https://stackoverflow.com/) clone (QnA site) made wit
 ![Mobile-3](https://github.com/amand33p/stack-underflow-mern-gql/blob/master/screenshots/mobile-3.jpg)
 ![Mobile-4](https://github.com/amand33p/stack-underflow-mern-gql/blob/master/screenshots/mobile-4.jpg)
 ![Mobile-5](https://github.com/amand33p/stack-underflow-mern-gql/blob/master/screenshots/mobile-5.jpg)
+
+## Usage
+
+#### Env variable:
+
+Create a .env file in server directory and add the following:
+
+```
+MONGODB_URI = "Your Mongo URI"
+PORT = 4000
+SECRET = "Your JWT secret"
+
+```
+
+#### Client:
+
+Open client/src/backendUrl.js & change "backend" variable to `"http://localhost:4000"`
+
+```
+cd client
+npm install
+npm start
+```
+
+#### Server:
+
+Note: Make sure that you have installed 'nodemon' as global package.
+
+```
+cd server
+npm install
+npm run dev
+```
