@@ -128,10 +128,6 @@ const AskQuestionPage = () => {
       <Typography variant="h5" color="secondary">
         {editValues ? 'Edit Your Question' : 'Ask A Question'}
       </Typography>
-      <ErrorMessage
-        errorMsg={errorMsg}
-        clearErrorMsg={() => setErrorMsg(null)}
-      />
       <form
         className={classes.quesForm}
         onSubmit={
@@ -243,6 +239,10 @@ const AskQuestionPage = () => {
         >
           {editValues ? 'Update Your Question' : 'Post Your Question'}
         </Button>
+        <ErrorMessage
+          errorMsg={errorMsg}
+          clearErrorMsg={() => setErrorMsg(null)}
+        />
       </form>
     </div>
   );
