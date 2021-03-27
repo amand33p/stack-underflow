@@ -68,6 +68,14 @@ Fullstack [Stack Overflow](https://stackoverflow.com/) clone (QnA site) made wit
 
 ## Usage
 
+### Install nodemon
+
+This is a dependecy that you need in your environment
+
+```
+npm install -g nodemon
+```
+
 #### Env variable:
 
 Create a .env file in server directory and add the following:
